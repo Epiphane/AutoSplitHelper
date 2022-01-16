@@ -79,6 +79,6 @@ Configs/*
 *.pak
 
 Plugins/*
+!Plugins/AutoSplitMod/
 !Plugins/SML/
 !Plugins/SMLEditor/
-!Plugins/ExampleMod/
