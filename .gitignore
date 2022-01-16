@@ -84,6 +84,7 @@ Plugins/*
 !Plugins/DoggoJam/
 Plugins/*/Metadata/Crypto.json
 !Plugins/Alpakit/
+!Plugins/AutoSplitHelper/
 !Plugins/SML/
 !Plugins/SMLEditor/
 !Plugins/ExampleMod/
