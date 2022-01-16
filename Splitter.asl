@@ -54,6 +54,18 @@ update {
 start {
   if (vars.line == null) return false; // If there is no logfile, don't run this block.
   if (vars.line.IndexOf("Intro Done") >= 0) {
+    vars.triggers = new List<string> {
+      "Schematic_Tutorial1_C",
+      "Schematic_Tutorial1_5_C",
+      "Schematic_Tutorial2_C",
+      // "Schematic_Tutorial3_C",
+      "Schematic_Tutorial4_C",
+      "Schematic_Tutorial5_C",
+      "Schematic_2-5_C",
+      "Schematic_2-1_C",
+      "SetGamePhase: 1",
+    };
+    
     return true;
   }
 
