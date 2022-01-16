@@ -1,0 +1,35 @@
+{
+   "FileVersion": 3,
+   "Version": 1,
+   "SemVersion": "1.0.1",
+   "VersionName": "1.0.1",
+   "FriendlyName": "AutoSplitHelper",
+   "Description": "Automatic split timing for speedrunning",
+   "Category": "Modding",
+   "CreatedBy": "Epiphane",
+   "CreatedByURL": "https://github.com/Epiphane",
+   "DocsURL": "https://github.com/Epiphane/AutoSplitHelper/blob/master/README.md",
+   "MarketplaceURL": "",
+   "SupportURL": "",
+   "CanContainContent": true,
+   "IsBetaVersion": false,
+   "IsExperimentalVersion": false,
+   "Installed": false,
+   "RemoteVersionRange": "^1.0.0",
+   "AcceptsAnyRemoteVersion": true,
+   "Modules": [
+      {
+         "Name": "AutoSplitHelper",
+         "Type": "Runtime",
+         "LoadingPhase": "PostEngineInit"
+      }
+   ],
+	"Plugins": [
+		{
+			"Name": "SML",
+			"SemVersion": "^3.3.0",
+			"bIsOptional": false,
+			"Enabled": true
+		}
+	]
+}

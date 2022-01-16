@@ -1,9 +1,15 @@
-# SatisfactoryModLoader [![CI](https://github.com/satisfactorymodding/SatisfactoryModLoader/actions/workflows/build.yml/badge.svg)](https://github.com/satisfactorymodding/SatisfactoryModLoader/actions/workflows/build.yml)
-A tool used to load mods for the game Satisfactory. It's under development until Coffee Stain releases a proper Unreal modding API.
+# AutoSplitHelper
+
+This mod adds extra event logging to Satisfactory's main output, which can be used by autosplitters to trigger clock events. The extra log options are all findable by searching for "LogAutoSplitHelper" in your game logs, and will report:
+
+- Intro is over (start the timer)
+- HUB Upgrade purchases
+- Space elevator submissions
+- Game session exits (reset/pause)
 
 # Discord Server
-Join our [discord server](https://discord.gg/QzcG9nX) to talk about SML and Satisfactory Modding in general.
+Join the [Satisfactory Speedrunning discord](https://discord.gg/qD6CpuB5) to talk about speedrunning, ask questions, and provide any feedback you have!
 
-# DISCLAIMER
-This software is provided by the author "as is". In no event shall the author be liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to procurement of substitute goods or services; loss of use, data, or profits; or business interruption) however caused and on any 
-theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
+# Contributing
+
+I'm a human, with a human life and human needs. I'l happily respond to issues and review pull requests when I can, but I have other things to do than mod Satisfactory. Please be patient with me or reach out via Discord (Epiphane#6997, or the server linked above) if you have concerns, feedback, or questions :)

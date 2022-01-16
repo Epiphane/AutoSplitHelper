@@ -2,19 +2,25 @@
 
 using UnrealBuildTool;
 
-public class AutoSplitMod : ModuleRules
+public class AutoSplitHelper : ModuleRules
 {
-    public AutoSplitMod(ReadOnlyTargetRules Target) : base(Target)
+    public AutoSplitHelper(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
         PublicDependencyModuleNames.AddRange(new string[] {
-            "Core", "CoreUObject",
+            "Core",
+            "CoreUObject",
             "Engine",
             "InputCore",
-            "OnlineSubsystem", "OnlineSubsystemUtils", "OnlineSubsystemNULL",
+            "OnlineSubsystem",
+            "OnlineSubsystemUtils",
+            "OnlineSubsystemNULL",
             "SignificanceManager",
-            "PhysX", "APEX", "PhysXVehicles", "ApexDestruction",
+            "PhysX",
+            "APEX",
+            "PhysXVehicles",
+            "ApexDestruction",
             "AkAudio",
             "ReplicationGraph",
             "UMG",
@@ -23,8 +29,11 @@ public class AutoSplitMod : ModuleRules
             "AssetRegistry",
             "GameplayTasks",
             "AnimGraphRuntime",
-            "Slate", "SlateCore",
+            "Slate",
+            "SlateCore",
             "Json",
-            "FactoryGame", "SML" });
+            "FactoryGame",
+            "SML"
+        });
     }
 }

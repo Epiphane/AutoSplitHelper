@@ -16,13 +16,13 @@ struct SML_API FBasicRegistrationInfo {
 public:
     /** Mod reference of the plugin which actually performed the object registration. Usually same as OwnedByModReference */
     UPROPERTY(BlueprintReadOnly)
-    FName RegistrarModReference;
+        FName RegistrarModReference;
     /** Mod reference of the plugin which owns the actual registered object */
     UPROPERTY(BlueprintReadOnly)
-    FName OwnedByModReference;
+        FName OwnedByModReference;
     /** Object that was registered */
     UPROPERTY(BlueprintReadOnly)
-    UClass* RegisteredObject;
+        UClass* RegisteredObject;
 };
 
 /** Holds information about item registration entry */
@@ -34,7 +34,7 @@ public:
      * List of all recipes that reference this item descriptor
      */
     UPROPERTY(BlueprintReadOnly)
-    TArray<TSubclassOf<UFGRecipe>> ReferencedBy;
+        TArray<TSubclassOf<UFGRecipe>> ReferencedBy;
 };
 
 /** Holds information about recipe registration entry */
@@ -46,7 +46,7 @@ public:
      * List of all schematics that reference this recipe
      */
     UPROPERTY(BlueprintReadOnly)
-    TArray<TSubclassOf<UFGSchematic>> ReferencedBy;
+        TArray<TSubclassOf<UFGSchematic>> ReferencedBy;
 };
 
 /** Holds information about schematic registration entry */
@@ -58,7 +58,7 @@ public:
      * List of all research trees that reference this schematic
      */
     UPROPERTY(BlueprintReadOnly)
-    TArray<TSubclassOf<UFGResearchTree>> ReferencedBy;
+        TArray<TSubclassOf<UFGResearchTree>> ReferencedBy;
 };
 
 /** Holds information about research tree registration entry */
@@ -146,8 +146,8 @@ public:
     AModContentRegistry();
 
     /** Retrieves global mod content registry instance */
-	UFUNCTION(BlueprintPure, DisplayName = "GetModContentRegistry", meta = (DefaultToSelf = "WorldContext"))
-    static AModContentRegistry* Get(UObject* WorldContext);
+    UFUNCTION(BlueprintPure, DisplayName = "GetModContentRegistry", meta = (DefaultToSelf = "WorldContext"))
+        static AModContentRegistry* Get(UObject* WorldContext);
 
     /**
      * Registers schematic to be usable by the game
@@ -158,7 +158,7 @@ public:
      * @param Schematic class of schematic to be registered
      */
     UFUNCTION(BlueprintCallable, CustomThunk)
-    void RegisterSchematic(const FName ModReference, TSubclassOf<UFGSchematic> Schematic);
+        void RegisterSchematic(const FName ModReference, TSubclassOf<UFGSchematic> Schematic);
 
     /**
      * Registers research tree to be usable by the game
@@ -170,7 +170,7 @@ public:
      * @param ResearchTree class of research tree being registered
      */
     UFUNCTION(BlueprintCallable, CustomThunk)
-    void RegisterResearchTree(const FName ModReference, TSubclassOf<UFGResearchTree> ResearchTree);
+        void RegisterResearchTree(const FName ModReference, TSubclassOf<UFGResearchTree> ResearchTree);
 
     /**
      * Registers recipe to be usable by the game
@@ -181,27 +181,27 @@ public:
      * @param Recipe class of recipe being registered
      */
     UFUNCTION(BlueprintCallable, CustomThunk)
-    void RegisterRecipe(const FName ModReference, TSubclassOf<UFGRecipe> Recipe);
+        void RegisterRecipe(const FName ModReference, TSubclassOf<UFGRecipe> Recipe);
 
     /** Register resource sink item points for each item row in the passed table object */
     UFUNCTION(BlueprintCallable, CustomThunk)
-    void RegisterResourceSinkItemPointTable(const FName ModReference, UDataTable* PointTable);
+        void RegisterResourceSinkItemPointTable(const FName ModReference, UDataTable* PointTable);
 
     /** Retrieves list of all currently loaded item descriptors */
     UFUNCTION(BlueprintPure)
-    TArray<FItemRegistrationInfo> GetLoadedItemDescriptors();
+        TArray<FItemRegistrationInfo> GetLoadedItemDescriptors();
 
     /** Retrieves list of all obtainable item descriptors, e.g ones referenced by any recipe */
     UFUNCTION(BlueprintPure)
-    TArray<FItemRegistrationInfo> GetObtainableItemDescriptors() const;
+        TArray<FItemRegistrationInfo> GetObtainableItemDescriptors() const;
 
     /** Retrieves registration entry for item descriptor */
     UFUNCTION(BlueprintPure)
-    FItemRegistrationInfo GetItemDescriptorInfo(TSubclassOf<UFGItemDescriptor> ItemDescriptor);
+        FItemRegistrationInfo GetItemDescriptorInfo(TSubclassOf<UFGItemDescriptor> ItemDescriptor);
 
     /** Retrieves list of all currently registered recipes*/
     UFUNCTION(BlueprintPure)
-    FORCEINLINE TArray<FRecipeRegistrationInfo> GetRegisteredRecipes() const {
+        FORCEINLINE TArray<FRecipeRegistrationInfo> GetRegisteredRecipes() const {
         TArray<FRecipeRegistrationInfo> RegistrationInfos;
         for (const TSharedPtr<FRecipeRegistrationInfo>& RegistrationInfo : RecipeRegistryState.GetAllObjects()) {
             RegistrationInfos.Add(*RegistrationInfo);
@@ -211,14 +211,14 @@ public:
 
     /** Retrieves registration entry for recipe */
     UFUNCTION(BlueprintPure)
-    FORCEINLINE FRecipeRegistrationInfo GetRecipeInfo(TSubclassOf<UFGRecipe> Recipe) const {
+        FORCEINLINE FRecipeRegistrationInfo GetRecipeInfo(TSubclassOf<UFGRecipe> Recipe) const {
         const TSharedPtr<FRecipeRegistrationInfo> RegistrationInfo = RecipeRegistryState.FindObject(Recipe);
         return RegistrationInfo.IsValid() ? *RegistrationInfo : FRecipeRegistrationInfo{};
     }
 
     /** Retrieves list of all currently registered research trees */
     UFUNCTION(BlueprintPure)
-    FORCEINLINE TArray<FResearchTreeRegistrationInfo> GetRegisteredResearchTrees() const {
+        FORCEINLINE TArray<FResearchTreeRegistrationInfo> GetRegisteredResearchTrees() const {
         TArray<FResearchTreeRegistrationInfo> RegistrationInfos;
         for (const TSharedPtr<FResearchTreeRegistrationInfo>& RegistrationInfo : ResearchTreeRegistryState.GetAllObjects()) {
             RegistrationInfos.Add(*RegistrationInfo);
@@ -228,14 +228,14 @@ public:
 
     /** Retrieves registration entry for research tree */
     UFUNCTION(BlueprintPure)
-    FORCEINLINE FResearchTreeRegistrationInfo GetResearchTreeRegistrationInfo(TSubclassOf<UFGResearchTree> ResearchTree) const {
+        FORCEINLINE FResearchTreeRegistrationInfo GetResearchTreeRegistrationInfo(TSubclassOf<UFGResearchTree> ResearchTree) const {
         const TSharedPtr<FResearchTreeRegistrationInfo> RegistrationInfo = ResearchTreeRegistryState.FindObject(ResearchTree);
         return RegistrationInfo.IsValid() ? *RegistrationInfo : FResearchTreeRegistrationInfo{};
     }
 
     /** Retrieves list of all currently registered research trees */
     UFUNCTION(BlueprintPure)
-    FORCEINLINE TArray<FSchematicRegistrationInfo> GetRegisteredSchematics() const {
+        FORCEINLINE TArray<FSchematicRegistrationInfo> GetRegisteredSchematics() const {
         TArray<FSchematicRegistrationInfo> RegistrationInfos;
         for (const TSharedPtr<FSchematicRegistrationInfo>& RegistrationInfo : SchematicRegistryState.GetAllObjects()) {
             RegistrationInfos.Add(*RegistrationInfo);
@@ -245,26 +245,26 @@ public:
 
     /** Retrieves registration entry for schematic */
     UFUNCTION(BlueprintPure)
-    FORCEINLINE FSchematicRegistrationInfo GetSchematicRegistrationInfo(TSubclassOf<UFGSchematic> Schematic) const {
+        FORCEINLINE FSchematicRegistrationInfo GetSchematicRegistrationInfo(TSubclassOf<UFGSchematic> Schematic) const {
         const TSharedPtr<FSchematicRegistrationInfo> RegistrationInfo = SchematicRegistryState.FindObject(Schematic);
         return RegistrationInfo.IsValid() ? *RegistrationInfo : FSchematicRegistrationInfo{};
     }
 
     /** Returns true when given recipe is registered */
     UFUNCTION(BlueprintPure)
-    FORCEINLINE bool IsRecipeRegistered(TSubclassOf<UFGRecipe> Recipe) const {
+        FORCEINLINE bool IsRecipeRegistered(TSubclassOf<UFGRecipe> Recipe) const {
         return Recipe != NULL && RecipeRegistryState.ContainsObject(Recipe);
     }
 
     /** Returns true when given schematic is registered */
     UFUNCTION(BlueprintPure)
-    FORCEINLINE bool IsSchematicRegistered(TSubclassOf<UFGSchematic> Schematic) const {
+        FORCEINLINE bool IsSchematicRegistered(TSubclassOf<UFGSchematic> Schematic) const {
         return Schematic != NULL && SchematicRegistryState.ContainsObject(Schematic);
     }
 
     /** Returns true when given research tree is registered */
     UFUNCTION(BlueprintPure)
-    FORCEINLINE bool IsResearchTreeRegistered(TSubclassOf<UFGResearchTree> ResearchTree) const {
+        FORCEINLINE bool IsResearchTreeRegistered(TSubclassOf<UFGResearchTree> ResearchTree) const {
         return ResearchTree != NULL && ResearchTreeRegistryState.ContainsObject(ResearchTree);
     }
 
@@ -292,25 +292,25 @@ public:
     //Add objects from registry states to reference collector
     static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
-	//Callbacks to be fired when new entries are registered
+    //Callbacks to be fired when new entries are registered
 
-	/** Called when recipe is registered into content registry */
-	UPROPERTY(BlueprintAssignable)
-	FOnRecipeRegistered OnRecipeRegistered;
+    /** Called when recipe is registered into content registry */
+    UPROPERTY(BlueprintAssignable)
+        FOnRecipeRegistered OnRecipeRegistered;
 
-	/** Called when schematic is registered into content registry */
-	UPROPERTY(BlueprintAssignable)
-	FOnSchematicRegistered OnSchematicRegistered;
+    /** Called when schematic is registered into content registry */
+    UPROPERTY(BlueprintAssignable)
+        FOnSchematicRegistered OnSchematicRegistered;
 
-	/** Called when research tree is registered into the registry */
-	UPROPERTY(BlueprintAssignable)
-	FOnResearchTreeRegistered OnResearchTreeRegistered;
+    /** Called when research tree is registered into the registry */
+    UPROPERTY(BlueprintAssignable)
+        FOnResearchTreeRegistered OnResearchTreeRegistered;
 protected:
-	/** Called early when subsystem is spawned */
-	virtual void Init() override;
+    /** Called early when subsystem is spawned */
+    virtual void Init() override;
 private:
     friend class FSatisfactoryModLoader;
-	friend class UWorldModuleManager;
+    friend class UWorldModuleManager;
 
     /** True if content registry is frozen and does not accept registrations anymore */
     bool bIsRegistryFrozen;
@@ -322,12 +322,12 @@ private:
     /** True when we have subscribed to schematic manager delegates already */
     bool bSubscribedToSchematicManager;
 
-	/** Pending registrations of item sink point tables */
-	UPROPERTY()
-	TMap<UDataTable*, FName> PendingItemSinkPointsRegistrations;
+    /** Pending registrations of item sink point tables */
+    UPROPERTY()
+        TMap<UDataTable*, FName> PendingItemSinkPointsRegistrations;
 
-	/** Pointer to the currently active script callstack frame, used for debugging purposes */
-	FFrame* ActiveScriptFramePtr;
+    /** Pointer to the currently active script callstack frame, used for debugging purposes */
+    FFrame* ActiveScriptFramePtr;
 
     /**
      * Map with cached registration info for each discovered item descriptor class
@@ -361,11 +361,11 @@ private:
     /** Quick version of UBlueprintAssetHelperLibrary, using predefined mod reference for vanilla content */
     static FName FindContentOwnerFast(UClass* ContentClass);
 
-	/** Called when module content registration is finished and registry can be frozen */
-	void NotifyModuleRegistrationFinished();
+    /** Called when module content registration is finished and registry can be frozen */
+    void NotifyModuleRegistrationFinished();
 
-	/** Flushed pending resource sink registrations into the resource sink subsystem, if it is available */
-	void FlushPendingResourceSinkRegistrations();
+    /** Flushed pending resource sink registrations into the resource sink subsystem, if it is available */
+    void FlushPendingResourceSinkRegistrations();
 
     /** Freezes registry in place and clears out all unreferenced objects */
     void FreezeRegistryState();
@@ -373,12 +373,14 @@ private:
     void EnsureRegistryUnfrozen() const;
     /** Checks SaveGame fields for unregistered objects and NULLs. Requires registry to be frozen already */
     void CheckSavedDataForMissingObjects();
-	/** Unlocks tutorial schematics if it's needed */
-	void UnlockTutorialSchematics();
+    /** Unlocks tutorial schematics if it's needed */
+    void UnlockTutorialSchematics();
+
+    friend class UAutoSplitHelper;
 
     /** Called when schematic is purchased in schematic manager */
     UFUNCTION()
-    void OnSchematicPurchased(TSubclassOf<UFGSchematic> Schematic);
+        void OnSchematicPurchased(TSubclassOf<UFGSchematic> Schematic);
 
     /** Associate items referenced in recipe with given mod reference if they are not associated already */
     void MarkItemDescriptorsFromRecipe(const TSubclassOf<UFGRecipe>& Recipe, const FName ModReference);
@@ -403,10 +405,10 @@ private:
         return RegistrationInfo;
     }
 
-	//Custom Thunks for calling Register functions through Reflection, primary point of which
-	//is providing FFrame callstack context to the registration methods for debugging in seamless manner
-	DECLARE_FUNCTION(execRegisterResourceSinkItemPointTable);
-	DECLARE_FUNCTION(execRegisterRecipe);
-	DECLARE_FUNCTION(execRegisterResearchTree);
-	DECLARE_FUNCTION(execRegisterSchematic);
+    //Custom Thunks for calling Register functions through Reflection, primary point of which
+    //is providing FFrame callstack context to the registration methods for debugging in seamless manner
+    DECLARE_FUNCTION(execRegisterResourceSinkItemPointTable);
+    DECLARE_FUNCTION(execRegisterRecipe);
+    DECLARE_FUNCTION(execRegisterResearchTree);
+    DECLARE_FUNCTION(execRegisterSchematic);
 };
