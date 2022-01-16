@@ -224,7 +224,6 @@ start {
   if (vars.line.IndexOf("Intro Done") >= 0) {
     return true;
   }
-
   return false;
 }
 

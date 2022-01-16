@@ -72,12 +72,21 @@
 			"Enabled": true
 		},
 		{
+			"Name": "AutoSplitMod",
+			"Enabled": true
+		},
+		{
 			"Name": "OculusVR",
 			"Enabled": false
 		},
 		{
 			"Name": "SteamVR",
-			"Enabled": false
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Win32",
+				"Win64",
+				"Linux"
+			]
 		}
 	]
 }
