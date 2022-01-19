@@ -32,6 +32,21 @@ This is the what LiveSplit uses to receive the events sent by the game. A simple
 5. Browse for the path where you downloaded Splitter.asl
 ![Browsing for Script path](./Docs/LayoutSettings.png)
 
+## Split Setup
+
+**IMPORTANT**: The way AutoSplitHelper works is by reading the names of your splits, and then triggering them based on when the corresponding milestone is completed in-game. Because of this, you must name your splits **exactly** according to the English name of those splits. A full list of what split names are supported can be found in [supported-splits.md](./supported-splits.md). For ease, the current splits uploaded to speedrun.com use the following names, which are all covered by AutoSplitHelper:
+
+```
+HUB Upgrade 1
+HUB Upgrade 2
+HUB Upgrade 3
+HUB Upgrade 4/5
+HUB Upgrade 6
+Awesome Sink
+Part Assembly
+Send Package 1
+```
+
 # Discord Server
 Join the [Satisfactory Speedrunning discord](https://discord.gg/qD6CpuB5) to talk about speedrunning, ask questions, and provide any feedback you have!
 
