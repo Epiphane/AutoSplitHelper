@@ -15,21 +15,30 @@ UAutoSplitHelper::UAutoSplitHelper()
 
 void UAutoSplitHelper::DispatchLifecycleEvent(ELifecyclePhase Phase)
 {
-    if (Phase == ELifecyclePhase::POST_INITIALIZATION && !HasSubscribed)
+    if (Phase == ELifecyclePhase::POST_INITIALIZATION)
     {
-        SUBSCRIBE_METHOD(AFGTutorialIntroManager::IntroDone, [](auto&, AFGTutorialIntroManager*) {
-            UE_LOG(LogAutoSplitHelper, Display, TEXT("Intro Done"));
-            });
+        AFGTutorialIntroManager* TutorialIntroManager = AFGTutorialIntroManager::Get(this);
+        if (TutorialIntroManager && TutorialIntroManager->GetIsTutorialCompleted())
+        {
+            UE_LOG(LogAutoSplitHelper, Display, TEXT("Intro Done (skipped)"));
+        }
 
-        SUBSCRIBE_METHOD(AModContentRegistry::OnSchematicPurchased, [](auto&, AModContentRegistry*, TSubclassOf<UFGSchematic> schematic) {
-            UE_LOG(LogAutoSplitHelper, Display, TEXT("Schematic Purchased: %s"), *schematic->GetName());
-            });
+        if (!HasSubscribed)
+        {
+            SUBSCRIBE_METHOD(AFGTutorialIntroManager::IntroDone, [](auto&, AFGTutorialIntroManager*) {
+                UE_LOG(LogAutoSplitHelper, Display, TEXT("Intro Done"));
+                });
 
-        SUBSCRIBE_METHOD(AFGGamePhaseManager::SetGamePhase, [](auto&, AFGGamePhaseManager*, EGamePhase newPhase) {
-            UE_LOG(LogAutoSplitHelper, Display, TEXT("SetGamePhase: %d"), newPhase);
-            });
+            SUBSCRIBE_METHOD(AModContentRegistry::OnSchematicPurchased, [](auto&, AModContentRegistry*, TSubclassOf<UFGSchematic> schematic) {
+                UE_LOG(LogAutoSplitHelper, Display, TEXT("Schematic Purchased: %s"), *schematic->GetName());
+                });
 
-        HasSubscribed = true;
+            SUBSCRIBE_METHOD(AFGGamePhaseManager::SetGamePhase, [](auto&, AFGGamePhaseManager*, EGamePhase newPhase) {
+                UE_LOG(LogAutoSplitHelper, Display, TEXT("SetGamePhase: %d"), newPhase);
+                });
+
+            HasSubscribed = true;
+        }
     }
 }
 
