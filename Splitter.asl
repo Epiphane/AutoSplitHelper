@@ -87,14 +87,29 @@ startup {
   vars.SplitTriggers["Launch".ToLower()]          = vars.SplitTriggers["Send Package".ToLower()];
   vars.SplitTriggers["Space Elevator".ToLower()]  = vars.SplitTriggers["Send Package".ToLower()];
   vars.SplitTriggers["Package".ToLower()]         = vars.SplitTriggers["Send Package".ToLower()];
-
+  
+  // Check split names
   if (timer.Run == null) {
-    print("WARNING: No run information available, can't inspect split names");
+    if (MessageBox.Show(
+      "No run information available, can't inspect split names. Please reach out to me by clicking Yes",
+      "AutoSplit Error",
+      MessageBoxButtons.YesNo,
+      MessageBoxIcon.Error
+    ) == DialogResult.Yes) {
+      Process.Start("https://github.com/Epiphane/AutoSplitHelper/blob/master/FAQ.md");
+    }
   }
   else {
     foreach (var split in timer.Run) {
       if (!vars.SplitTriggers.ContainsKey(split.Name.ToLower())) {
-        print("WARNING: Split name not recognized, you will have to manually split for '" + split.Name + "'");
+        if (MessageBox.Show(
+          "Split name not recognized: '" + split.Name + "'.\nYou will have to manually split for '" + split.Name + "'\n\nPress YES to open the FAQ page",
+          "AutoSplit Error",
+          MessageBoxButtons.YesNo,
+          MessageBoxIcon.Error
+        ) == DialogResult.Yes) {
+          Process.Start("https://github.com/Epiphane/AutoSplitHelper/blob/master/FAQ.md");
+        }
       }
     }
   }
@@ -110,6 +125,32 @@ init {
   vars.reader = new StreamReader(new FileStream(vars.logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)); 
   vars.line = null;
   vars.trigger = null;
+  vars.modActive = false;
+  
+  if (timer.Run == null) {
+    if (MessageBox.Show(
+      "No run information available, can't inspect split names. Please reach out to me by clicking Yes",
+      "AutoSplit Error",
+      MessageBoxButtons.YesNo,
+      MessageBoxIcon.Error
+    ) == DialogResult.Yes) {
+      Process.Start("https://github.com/Epiphane/AutoSplitHelper/blob/master/FAQ.md");
+    }
+  }
+  else {
+    foreach (var split in timer.Run) {
+      if (!vars.SplitTriggers.ContainsKey(split.Name.ToLower())) {
+        if (MessageBox.Show(
+          "Split name not recognized: '" + split.Name + "'.\nYou will have to manually split for '" + split.Name + "'\n\nPress YES to open the FAQ page",
+          "AutoSplit Error",
+          MessageBoxButtons.YesNo,
+          MessageBoxIcon.Error
+        ) == DialogResult.Yes) {
+          Process.Start("https://github.com/Epiphane/AutoSplitHelper/blob/master/FAQ.md");
+        }
+      }
+    }
+  }
 }
 
 update {
@@ -126,11 +167,34 @@ update {
     vars.line = vars.reader.ReadLine();
     // If nothing was read, don't run any other blocks.
     if (vars.line == null) {
-      return false; 
+      return false;
+    }
+
+    int index;
+    if (!vars.modActive) {
+      index = vars.line.IndexOf("AutoSplitHelper");
+      if (index >= 0) {
+        print("AutoSplitHelper mod detected");
+        vars.modActive = true;
+      }
+
+      index = vars.line.IndexOf("Starting Game");
+      if (index >= 0) {
+        if (MessageBox.Show(
+          "Satisfactory AutoSplitHelper mod not detected, splits will not be recorded automatically. Make sure you have mods enabled!\n\nTo install AutoSplitHelper, click Yes",
+          "AutoSplit Error",
+          MessageBoxButtons.YesNo,
+          MessageBoxIcon.Error
+        ) == DialogResult.Yes) {
+          Process.Start("https://github.com/Epiphane/AutoSplitHelper/blob/master/README.md#game-mod");
+        }
+        
+        return false;
+      }
     }
 
     // We only care about AutoSplitHelper logs
-    int index = vars.line.IndexOf("LogAutoSplitHelper: ");
+    index = vars.line.IndexOf("LogAutoSplitHelper: ");
     if (index < 0) {
       continue;
     }
@@ -163,6 +227,7 @@ split {
 reset {
   if (vars.line == null) return false; // If there is no logfile, don't run this block.
   if (vars.line.IndexOf("Game session ending") >= 0) {
+    print("RESETTING");
     return true;
   }
 

@@ -1,6 +1,6 @@
 {
    "FileVersion": 3,
-   "Version": 3,
+   "Version": 1,
    "SemVersion": "1.0.3",
    "VersionName": "1.0.3",
    "FriendlyName": "AutoSplitHelper",
