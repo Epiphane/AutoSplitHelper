@@ -3,6 +3,7 @@
 #include "Patching/NativeHookManager.h"
 #include "FGSchematicManager.h"
 #include "FGTutorialIntroManager.h"
+#include "FGCharacterPlayer.h"
 #include "FGGamePhaseManager.h"
 #include "Registry/ModContentRegistry.h"
 
@@ -36,6 +37,12 @@ void UAutoSplitHelper::DispatchLifecycleEvent(ELifecyclePhase Phase)
             SUBSCRIBE_METHOD(AFGGamePhaseManager::SetGamePhase, [](auto&, AFGGamePhaseManager*, EGamePhase newPhase) {
                 UE_LOG(LogAutoSplitHelper, Display, TEXT("SetGamePhase: %d"), newPhase);
                 });
+
+            AFGCharacterPlayer* player = TutorialIntroManager->GetWorld()->SpawnActor<AFGCharacterPlayer>();
+            SUBSCRIBE_METHOD_VIRTUAL(AFGCharacterPlayer::Died, player, [](auto&, AFGCharacterPlayer*, AActor*) {
+                UE_LOG(LogAutoSplitHelper, Display, TEXT("Player Died"));
+                });
+            player->Destroy();
 
             HasSubscribed = true;
         }
