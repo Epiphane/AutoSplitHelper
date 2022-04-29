@@ -79,6 +79,6 @@ Configs/*
 *.pak
 
 Plugins/*
-!Plugins/AutoSplitHelper/
+!Plugins/DoggoJam/
 !Plugins/SML/
 !Plugins/SMLEditor/
