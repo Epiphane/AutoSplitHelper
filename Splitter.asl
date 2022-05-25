@@ -93,6 +93,8 @@ startup {
   settings.Add("ignore_warnings", false, "Ignore split name warnings");
   
   // Check split names
+  // Removed due to duplicate notifications
+  /*
   if (timer.Run == null) {
     if (MessageBox.Show(
       "No run information available, can't inspect split names. Please reach out to me by clicking Yes",
@@ -117,6 +119,7 @@ startup {
       }
     }
   }
+  */
 }
 
 init {
