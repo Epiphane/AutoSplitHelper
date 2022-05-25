@@ -87,6 +87,10 @@ startup {
   vars.SplitTriggers["Launch".ToLower()]          = vars.SplitTriggers["Send Package".ToLower()];
   vars.SplitTriggers["Space Elevator".ToLower()]  = vars.SplitTriggers["Send Package".ToLower()];
   vars.SplitTriggers["Package".ToLower()]         = vars.SplitTriggers["Send Package".ToLower()];
+
+  // Settings
+  settings.Add("reset_on_exit", true, "Reset timer when exiting game");
+  settings.Add("ignore_warnings", false, "Ignore split name warnings");
   
   // Check split names
   if (timer.Run == null) {
@@ -127,26 +131,32 @@ init {
   vars.trigger = null;
   vars.modActive = false;
   
-  if (timer.Run == null) {
-    if (MessageBox.Show(
-      "No run information available, can't inspect split names. Please reach out to me by clicking Yes",
-      "AutoSplit Error",
-      MessageBoxButtons.YesNo,
-      MessageBoxIcon.Error
-    ) == DialogResult.Yes) {
-      Process.Start("https://github.com/Epiphane/AutoSplitHelper/blob/master/FAQ.md");
+  do {
+    vars.line = vars.reader.ReadLine();
+  } while (vars.reader != null && vars.line != null);
+  
+  if (!settings["ignore_warnings"]) {
+    if (timer.Run == null) {
+      if (MessageBox.Show(
+        "No run information available, can't inspect split names. Please reach out to me by clicking Yes",
+        "AutoSplit Error",
+        MessageBoxButtons.YesNo,
+        MessageBoxIcon.Error
+      ) == DialogResult.Yes) {
+        Process.Start("https://github.com/Epiphane/AutoSplitHelper/blob/master/FAQ.md");
+      }
     }
-  }
-  else {
-    foreach (var split in timer.Run) {
-      if (!vars.SplitTriggers.ContainsKey(split.Name.ToLower())) {
-        if (MessageBox.Show(
-          "Split name not recognized: '" + split.Name + "'.\nYou will have to manually split for '" + split.Name + "'\n\nPress YES to open the FAQ page",
-          "AutoSplit Error",
-          MessageBoxButtons.YesNo,
-          MessageBoxIcon.Error
-        ) == DialogResult.Yes) {
-          Process.Start("https://github.com/Epiphane/AutoSplitHelper/blob/master/FAQ.md");
+    else {
+      foreach (var split in timer.Run) {
+        if (!vars.SplitTriggers.ContainsKey(split.Name.ToLower())) {
+          if (MessageBox.Show(
+            "Split name not recognized: '" + split.Name + "'.\nYou will have to manually split for '" + split.Name + "'\n\nPress YES to open the FAQ page",
+            "AutoSplit Error",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Error
+          ) == DialogResult.Yes) {
+            Process.Start("https://github.com/Epiphane/AutoSplitHelper/blob/master/FAQ.md");
+          }
         }
       }
     }
@@ -180,13 +190,15 @@ update {
 
       index = vars.line.IndexOf("Starting Game");
       if (index >= 0) {
-        if (MessageBox.Show(
-          "Satisfactory AutoSplitHelper mod not detected, splits will not be recorded automatically. Make sure you have mods enabled!\n\nTo install AutoSplitHelper, click Yes",
-          "AutoSplit Error",
-          MessageBoxButtons.YesNo,
-          MessageBoxIcon.Error
-        ) == DialogResult.Yes) {
-          Process.Start("https://github.com/Epiphane/AutoSplitHelper/blob/master/README.md#game-mod");
+        if (!settings["ignore_warnings"]) {
+          if (MessageBox.Show(
+            "Satisfactory AutoSplitHelper mod not detected, splits will not be recorded automatically. Make sure you have mods enabled!\n\nTo install AutoSplitHelper, click Yes",
+            "AutoSplit Error",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Error
+          ) == DialogResult.Yes) {
+            Process.Start("https://github.com/Epiphane/AutoSplitHelper/blob/master/README.md#game-mod");
+          }
         }
         
         return false;
@@ -225,6 +237,11 @@ split {
 }
 
 reset {
+  if (!settings["reset_on_exit"]) {
+    // Never reset if the setting is disabled
+    return false;
+  }
+
   if (vars.line == null) return false; // If there is no logfile, don't run this block.
   if (vars.line.IndexOf("Game session ending") >= 0) {
     print("RESETTING");
