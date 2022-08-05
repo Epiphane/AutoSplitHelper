@@ -83,5 +83,6 @@ Configs/*
 Plugins/*
 !Plugins/DoggoJam/
 Plugins/*/Metadata/Crypto.json
+!Plugins/Alpakit/
 !Plugins/SML/
 !Plugins/SMLEditor/
