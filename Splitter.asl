@@ -38,6 +38,7 @@ startup {
     { "Advanced Steel Production".ToLower(),    "Schematic_4-1_C" },
     { "Improved Melee Combat".ToLower(),        "Schematic_4-2_C" },
     { "Hypertubes".ToLower(),                   "Schematic_4-4_C" },
+    { "FICSIT Blueprints".ToLower(),            "Schematic_4-5_C" },
 
     // Tier 5
     { "Oil Processing".ToLower(),               "Schematic_5-1_C" },

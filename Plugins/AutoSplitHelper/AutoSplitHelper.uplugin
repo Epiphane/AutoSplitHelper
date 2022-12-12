@@ -1,8 +1,8 @@
 {
    "FileVersion": 3,
    "Version": 1,
-   "SemVersion": "1.0.3",
-   "VersionName": "1.0.3",
+   "SemVersion": "1.0.4",
+   "VersionName": "1.0.4",
    "FriendlyName": "AutoSplitHelper",
    "Description": "Automatic split timing for speedrunning",
    "Category": "Modding",
@@ -27,7 +27,7 @@
 	"Plugins": [
 		{
 			"Name": "SML",
-			"SemVersion": "^3.3.0",
+			"SemVersion": "^3.4.1",
 			"bIsOptional": false,
 			"Enabled": true
 		}

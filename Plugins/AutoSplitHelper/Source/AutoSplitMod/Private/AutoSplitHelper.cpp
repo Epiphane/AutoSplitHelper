@@ -38,11 +38,14 @@ void UAutoSplitHelper::DispatchLifecycleEvent(ELifecyclePhase Phase)
                 UE_LOG(LogAutoSplitHelper, Display, TEXT("SetGamePhase: %d"), newPhase);
                 });
 
-            AFGCharacterPlayer* player = TutorialIntroManager->GetWorld()->SpawnActor<AFGCharacterPlayer>();
-            SUBSCRIBE_METHOD_VIRTUAL(AFGCharacterPlayer::Died, player, [](auto&, AFGCharacterPlayer*, AActor*) {
-                UE_LOG(LogAutoSplitHelper, Display, TEXT("Player Died"));
-                });
-            player->Destroy();
+            if (TutorialIntroManager)
+            {
+                AFGCharacterPlayer* player = TutorialIntroManager->GetWorld()->SpawnActor<AFGCharacterPlayer>();
+                SUBSCRIBE_METHOD_VIRTUAL(AFGCharacterPlayer::Died, player, [](auto&, AFGCharacterPlayer*, AActor*) {
+                    UE_LOG(LogAutoSplitHelper, Display, TEXT("Player Died"));
+                    });
+                player->Destroy();
+            }
 
             HasSubscribed = true;
         }
