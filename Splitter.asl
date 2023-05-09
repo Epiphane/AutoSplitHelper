@@ -80,6 +80,7 @@ startup {
 
     // Other
     { "Send Package".ToLower(), "SetGamePhase: " }, // Catches all packages
+    { "Overclocking".ToLower(), "Research_PowerSlugs_2_C" }, // Overclocking in the MAM
   };
 
   // Aliases

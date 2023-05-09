@@ -40,14 +40,15 @@ Vehicular Transport
 
 Basic Steel Production
 
+Improved Melee Combat
+
 Tier 4
 ------
 Advanced Steel Production
 
-Improved Melee Combat
-
 Hypertubes
 
+FICSIT Blueprints
 
 Tier 5
 ------
@@ -118,4 +119,3 @@ Launch          - Any space elevator launch
 Space Elevator  - Any space elevator launch
 
 Package         - Any space elevator launch
-
