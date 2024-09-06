@@ -77,6 +77,7 @@ startup {
     { "Send Package 2".ToLower(), "SetGamePhase: 2" },
     { "Send Package 3".ToLower(), "SetGamePhase: 3" },
     { "Send Package 4".ToLower(), "SetGamePhase: 4" },
+    { "Send Package 5".ToLower(), "SetGamePhase: 5" },
 
     // Other
     { "Send Package".ToLower(), "SetGamePhase: " }, // Catches all packages
