@@ -1,4 +1,4 @@
-state("FactoryGame-Win64-Shipping") {}
+state("FactoryGameSteam-Win64-Shipping") {}
 
 startup {
   vars.logPath = Environment.ExpandEnvironmentVariables("%LOCALAPPDATA%\\FactoryGame\\Saved\\Logs\\FactoryGame.log");
@@ -36,7 +36,8 @@ startup {
 
     // Tier 4
     { "Advanced Steel Production".ToLower(),    "Schematic_4-1_C" },
-    { "Improved Melee Combat".ToLower(),        "Schematic_4-2_C" },
+    { "Enhanced Asset Security".ToLower(),      "Schematic_4-2_C" },
+    { "Expanded Power Infrastructure".ToLower(),"Schematic_4-3_C" },
     { "Hypertubes".ToLower(),                   "Schematic_4-4_C" },
     { "FICSIT Blueprints".ToLower(),            "Schematic_4-5_C" },
 
@@ -45,15 +46,18 @@ startup {
     { "Oil Processing 2".ToLower(),             "Schematic_5-1-1_C" },
     { "Industrial Manufacturing".ToLower(),     "Schematic_5-2_C" },
     { "Logistics Mk.3".ToLower(),               "Schematic_5-3_C" },
-    { "Alternative Fluid Transport".ToLower(),  "Schematic_5-4_C" },
+    { "Fluid Packaging".ToLower(),              "Schematic_5-4_C" },
     { "Alternative Fluid Transport 2".ToLower(),"Schematic_5-4-1_C" },
+    { "Petroleum Power".ToLower(),              "Schematic_5-5_C" },
+    { "Petroleum Power 2".ToLower(),            "Schematic_5-5-1_C" },
 
     // Tier 6
-    { "Expanded Power Infrastructure".ToLower(),"Schematic_6-1_C" },
+    { "Logistics Mk.4".ToLower(),               "Schematic_6-1_C" },
     { "Jetpack".ToLower(),                      "Schematic_6-2_C" },
     { "Monorail Train Technology".ToLower(),    "Schematic_6-3_C" },
-    { "Gas Mask".ToLower(),                     "Schematic_6-4_C" },
     { "Pipeline Engineering Mk.2".ToLower(),    "Schematic_6-5_C" },
+    { "FICSIT Blueprints Mk.2".ToLower(),       "Schematic_6-6_C" },
+    { "Railway Signaling".ToLower(),            "Schematic_6-7_C" },
     
     // Tier 7
     { "Bauxite Refinement".ToLower(),           "Schematic_7-1_C" },
@@ -61,7 +65,8 @@ startup {
     { "Logistics Mk.5".ToLower(),               "Schematic_7-2_C" },
     { "Hazmat Suit".ToLower(),                  "Schematic_7-3_C" },
     { "Aeronautical Engineering".ToLower(),     "Schematic_7-4_C" },
-    { "Aeronautical Engineering 2".ToLower(),   "Schematic_7-4-1_C" },
+    { "Control System Development 2".ToLower(), "Schematic_7-4-1_C" },
+    { "Control System Development".ToLower(),   "Schematic_7-5_C" },
     
     // Tier 8
     { "Nuclear Power".ToLower(),                  "Schematic_8-1_C" },
@@ -72,15 +77,25 @@ startup {
     { "Particle Enrichment".ToLower(),            "Schematic_8-5_C" },
     { "Particle Enrichment 2".ToLower(),          "Schematic_8-5-1_C" },
 
+    // Tier 9
+    { "Matter Conversion".ToLower(),              "Schematic_9-1_C" },
+    { "Matter Conversion - Background Unlocks".ToLower(),
+                                                  "Schematic_9-1-1_C" },
+    { "Quantum Encoding".ToLower(),               "Schematic_9-2_C" },
+    { "FICSIT Blueprints Mk.3".ToLower(),         "Schematic_9-3_C" },
+    { "Spatial Energy Regulation".ToLower(),      "Schematic_9-4_C" },
+    { "Peak Efficiency".ToLower(),                "Schematic_9-5_C" },
+
     // Space Elevator
-    { "Send Package 1".ToLower(), "SetGamePhase: 1" },
-    { "Send Package 2".ToLower(), "SetGamePhase: 2" },
-    { "Send Package 3".ToLower(), "SetGamePhase: 3" },
-    { "Send Package 4".ToLower(), "SetGamePhase: 4" },
-    { "Send Package 5".ToLower(), "SetGamePhase: 5" },
+    { "Send Package 1".ToLower(), "Sending Space Elevator: GP_Project_Assembly_Phase_0" },
+    { "Send Package 2".ToLower(), "Sending Space Elevator: GP_Project_Assembly_Phase_1" },
+    { "Send Package 3".ToLower(), "Sending Space Elevator: GP_Project_Assembly_Phase_2" },
+    { "Send Package 4".ToLower(), "Sending Space Elevator: GP_Project_Assembly_Phase_3" },
+    { "Send Package 5".ToLower(), "Sending Space Elevator: GP_Project_Assembly_Phase_4" },
+    { "Finish".ToLower(), "SetGamePhase: GP_Project_Assembly_Phase_6" },
 
     // Other
-    { "Send Package".ToLower(), "SetGamePhase: " }, // Catches all packages
+    { "Send Package".ToLower(), "Sending Space Elevator: " }, // Catches all packages
     { "Overclocking".ToLower(), "Research_PowerSlugs_2_C" }, // Overclocking in the MAM
   };
 
@@ -90,39 +105,12 @@ startup {
   vars.SplitTriggers["Launch".ToLower()]          = vars.SplitTriggers["Send Package".ToLower()];
   vars.SplitTriggers["Space Elevator".ToLower()]  = vars.SplitTriggers["Send Package".ToLower()];
   vars.SplitTriggers["Package".ToLower()]         = vars.SplitTriggers["Send Package".ToLower()];
+  vars.SplitTriggers["Improved Melee Combat".ToLower()] = vars.SplitTriggers["Enhanced Asset Security".ToLower()];
+  vars.SplitTriggers["Alternative Fluid Transport".ToLower()] = vars.SplitTriggers["Fluid Packaging".ToLower()];
 
   // Settings
   settings.Add("reset_on_exit", true, "Reset timer when exiting game");
   settings.Add("ignore_warnings", false, "Ignore split name warnings");
-  
-  // Check split names
-  // Removed due to duplicate notifications
-  /*
-  if (timer.Run == null) {
-    if (MessageBox.Show(
-      "No run information available, can't inspect split names. Please reach out to me by clicking Yes",
-      "AutoSplit Error",
-      MessageBoxButtons.YesNo,
-      MessageBoxIcon.Error
-    ) == DialogResult.Yes) {
-      Process.Start("https://github.com/Epiphane/AutoSplitHelper/blob/master/FAQ.md");
-    }
-  }
-  else {
-    foreach (var split in timer.Run) {
-      if (!vars.SplitTriggers.ContainsKey(split.Name.ToLower())) {
-        if (MessageBox.Show(
-          "Split name not recognized: '" + split.Name + "'.\nYou will have to manually split for '" + split.Name + "'\n\nPress YES to open the FAQ page",
-          "AutoSplit Error",
-          MessageBoxButtons.YesNo,
-          MessageBoxIcon.Error
-        ) == DialogResult.Yes) {
-          Process.Start("https://github.com/Epiphane/AutoSplitHelper/blob/master/FAQ.md");
-        }
-      }
-    }
-  }
-  */
 }
 
 init {
