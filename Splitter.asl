@@ -1,4 +1,5 @@
 state("FactoryGameSteam-Win64-Shipping") {}
+state("FactoryGameEGS") {}
 
 startup {
   vars.logPath = Environment.ExpandEnvironmentVariables("%LOCALAPPDATA%\\FactoryGame\\Saved\\Logs\\FactoryGame.log");
