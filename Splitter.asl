@@ -96,8 +96,16 @@ startup {
     { "Finish".ToLower(), "SetGamePhase: GP_Project_Assembly_Phase_6" },
 
     // Other
-    { "Send Package".ToLower(), "Sending Space Elevator: " }, // Catches all packages
-    { "Overclocking".ToLower(), "Research_PowerSlugs_2_C" }, // Overclocking in the MAM
+    { "Send Package".ToLower(),       "Sending Space Elevator: " }, // Catches all packages
+    { "Overclocking".ToLower(),       "Research_PowerSlugs_2_C" }, // Overclocking in the MAM
+    { "Power Augmenter".ToLower(),    "Research_Alien_PowerBooster_C" },
+    { "Superslooping".ToLower(),      "Research_Alien_ProductionBooster_C" },
+    { "Crystal Oscillator".ToLower(), "Research_Quartz_2_C" },
+    { "Expand Inventory".ToLower(),   "Research_Caterium_3_1_C" },
+    { "Geothermal Power".ToLower(),   "Research_Caterium_7_2_C" },
+    { "Solid Steel".ToLower(),        "Schematic_Alternate_IngotSteel1_C" },
+    { "Heavy Encased Frame".ToLower(),"Schematic_Alternate_HeavyModularFrame_C" },
+    { "Rigor Motor".ToLower(),        "Schematic_Alternate_Motor1_C" },
   };
 
   // Aliases
@@ -108,6 +116,7 @@ startup {
   vars.SplitTriggers["Package".ToLower()]         = vars.SplitTriggers["Send Package".ToLower()];
   vars.SplitTriggers["Improved Melee Combat".ToLower()] = vars.SplitTriggers["Enhanced Asset Security".ToLower()];
   vars.SplitTriggers["Alternative Fluid Transport".ToLower()] = vars.SplitTriggers["Fluid Packaging".ToLower()];
+  vars.SplitTriggers["Blueprints".ToLower()] = vars.SplitTriggers["FICSIT Blueprints".ToLower()];
 
   // Settings
   settings.Add("reset_on_exit", true, "Reset timer when exiting game");
