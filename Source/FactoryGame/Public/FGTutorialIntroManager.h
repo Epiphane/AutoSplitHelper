@@ -82,6 +82,7 @@ public:
 	UFUNCTION( BlueprintPure, Category = "Tutorial" )
 	FORCEINLINE bool GetIsTutorialCompleted() const { return mHasCompletedIntroTutorial; }
 
+public:
 	/** Gets the current step we are at */
 	UFUNCTION( BlueprintPure, Category = "Tutorial" )
 	FORCEINLINE EIntroTutorialSteps GetCurrentTutorialStep() const { return mCurrentLocalTutorial; }
@@ -168,6 +169,7 @@ protected:
 	UFUNCTION()
 	void OnItemPickuped( AFGPlayerState* playerState, const FItemAmount& totalAmountPickuped );
 
+public:
 	/** Updates progress in the tutorial to next step specified */
 	UFUNCTION( BlueprintCallable, Category = "Tutorial" )
 	void UpdateTutorial( EIntroTutorialSteps nextTutorialStep );
