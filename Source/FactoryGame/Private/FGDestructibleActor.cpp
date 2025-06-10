@@ -10,6 +10,7 @@ void AFGDestructibleActor::GetClearanceData_Implementation(TArray< FFGClearanceD
 
 AFGDestructibleActor::AFGDestructibleActor() : Super() {
 	this->mStaticMeshProxy = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshProxy"));
+	this->mStaticMeshProxy->SetMobility(EComponentMobility::Movable);
 	this->mGeometryCollection = nullptr;
 	this->mDestructibleActorFractureTime = 10.0;
 	this->mDestructibleActorState = EDestructibleActorState::DSS_Intact;
@@ -24,7 +25,7 @@ AFGDestructibleActor::AFGDestructibleActor() : Super() {
 	this->NetDormancy = ENetDormancy::DORM_DormantAll;
 	this->RootComponent = mStaticMeshProxy;
 }
-void AFGDestructibleActor::BeginPlay(){ }
+void AFGDestructibleActor::BeginPlay(){ Super::BeginPlay(); }
 float AFGDestructibleActor::TakeDamage(float damage,  FDamageEvent const& damageEvent, AController* eventInstigator, AActor* damageCauser){ return float(); }
 void AFGDestructibleActor::PreSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 void AFGDestructibleActor::PostSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }

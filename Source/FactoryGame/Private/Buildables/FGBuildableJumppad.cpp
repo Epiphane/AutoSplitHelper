@@ -18,7 +18,9 @@ AFGBuildableJumppad::AFGBuildableJumppad() : Super() {
 	this->mPlayerChainJumpResetTime = 8.0;
 	this->mHasPowerForLaunch = false;
 	this->mLauncherBox = CreateDefaultSubobject<UBoxComponent>(TEXT("LauncherBox"));
+	this->mLauncherBox->SetMobility(EComponentMobility::Static);
 	this->mLauncherMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LauncherMeshComponent"));
+	this->mLauncherMeshComponent->SetMobility(EComponentMobility::Movable);
 	this->mLauncherBox->SetupAttachment(mLauncherMeshComponent);
 	this->mTrajectoryMeshScale = FVector::OneVector;
 	this->mTrajectoryMeshRotation = FRotator::ZeroRotator;
@@ -44,8 +46,8 @@ FVector AFGBuildableJumppad::CalculateLaunchVelocity(const FVector& startLocatio
 const FTrajectoryData& AFGBuildableJumppad::ResimulateTrajectory(){ return *(new FTrajectoryData); }
 FTrajectoryData AFGBuildableJumppad::SimulateTrajectory(UWorld* pWorld, const FVector& StartLocation, const FVector& LaunchVector, float GravityMultiplier, AFGBuildableJumppad* pJumpPad){ return FTrajectoryData(); }
 void AFGBuildableJumppad::Launch(){ }
-void AFGBuildableJumppad::BeginPlay(){ }
-void AFGBuildableJumppad::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
+void AFGBuildableJumppad::BeginPlay(){ Super::BeginPlay(); }
+void AFGBuildableJumppad::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 float AFGBuildableJumppad::GetProductionProgress() const{ return float(); }
 bool AFGBuildableJumppad::CanProduce_Implementation() const{ return bool(); }
 EProductionStatus AFGBuildableJumppad::GetProductionIndicatorStatus() const{ return EProductionStatus(); }

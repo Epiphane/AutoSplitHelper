@@ -5,10 +5,10 @@
 AFGWaterPumpHologram::AFGWaterPumpHologram() : Super() {
 	this->mDefaultWaterPump = nullptr;
 }
-void AFGWaterPumpHologram::BeginPlay(){ }
+void AFGWaterPumpHologram::BeginPlay(){ Super::BeginPlay(); }
 bool AFGWaterPumpHologram::IsValidHitResult(const FHitResult& hitResult) const{ return bool(); }
 void AFGWaterPumpHologram::CheckValidPlacement(){ }
-void AFGWaterPumpHologram::PostHologramPlacement(const FHitResult& hitResult){ }
+void AFGWaterPumpHologram::PostHologramPlacement(const FHitResult& hitResult, bool callForChildren){ }
 bool AFGWaterPumpHologram::TrySnapToActor(const FHitResult& hitResult){ return bool(); }
 void AFGWaterPumpHologram::TrySnapToExtractableResource(const FHitResult& hitResult, FVector& newHitLocation){ }
 void AFGWaterPumpHologram::SetHologramLocationAndRotation(const FHitResult& hitResult){ }

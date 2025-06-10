@@ -8,8 +8,10 @@
 AFGBuildableTrainPlatform::AFGBuildableTrainPlatform() : Super() {
 	this->mRailroadTrack = nullptr;
 	this->mPlatformConnection0 = CreateDefaultSubobject<UFGTrainPlatformConnection>(TEXT("PlatformConnection0"));
+	this->mPlatformConnection0->SetMobility(EComponentMobility::Static);
 	this->mPlatformConnections.Add(mPlatformConnection0);
 	this->mPlatformConnection1 = CreateDefaultSubobject<UFGTrainPlatformConnection>(TEXT("PlatformConnection1"));
+	this->mPlatformConnection1->SetMobility(EComponentMobility::Static);
 	this->mPlatformConnections.Add(mPlatformConnection1);
 	this->mDockedRailroadVehicle = nullptr;
 	this->mStationDockingMaster = nullptr;
@@ -29,7 +31,7 @@ AFGBuildableTrainPlatform::AFGBuildableTrainPlatform() : Super() {
 	this->mPlatformConnection0->SetupAttachment(RootComponent);
 	this->mPlatformConnection1->SetupAttachment(RootComponent);
 }
-void AFGBuildableTrainPlatform::BeginPlay(){ }
+void AFGBuildableTrainPlatform::BeginPlay(){ Super::BeginPlay(); }
 void AFGBuildableTrainPlatform::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGBuildableTrainPlatform, mRailroadTrack);
@@ -45,7 +47,7 @@ void AFGBuildableTrainPlatform::Dismantle_Implementation(){ }
 bool AFGBuildableTrainPlatform::IsUseable_Implementation() const{ return bool(); }
 FRailroadTrackPosition AFGBuildableTrainPlatform::GetTrackPosition() const{ return FRailroadTrackPosition(); }
 int32 AFGBuildableTrainPlatform::GetTrackGraphID() const{ return int32(); }
-AFGBuildableTrainPlatform* AFGBuildableTrainPlatform::GetConnectedPlatformInDirectionOf(uint8 direction){ return nullptr; }
+class UFGTrainPlatformConnection* AFGBuildableTrainPlatform::GetConnectionInOppositeDirection(const class UFGTrainPlatformConnection* sourceConnection){ return nullptr; }
 void AFGBuildableTrainPlatform::NotifyTrainDocked( AFGRailroadVehicle* railroadVehicle,  AFGBuildableRailroadStation* initiatedByStation){ }
 void AFGBuildableTrainPlatform::UpdateDockingSequence(){ }
 void AFGBuildableTrainPlatform::CancelDockingSequence(){ }
@@ -54,5 +56,4 @@ void AFGBuildableTrainPlatform::FinishDockingSequence(){ }
 void AFGBuildableTrainPlatform::OnRep_RailroadTrack(){ }
 void AFGBuildableTrainPlatform::OnRep_UpdateDockingStatus(){ }
 void AFGBuildableTrainPlatform::OnRep_DockedRailroadVehicle(){ }
-void AFGBuildableTrainPlatform::ReverseConnectionDirections(){ }
 void AFGBuildableTrainPlatform::AssignRailroadTrack( AFGBuildableRailroadTrack* track){ }

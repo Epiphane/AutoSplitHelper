@@ -8,17 +8,21 @@ FSimpleBuildingInfo FSimpleBuildingInfo::DefaultSquareFoundation(AFGBuildable* S
 FSimpleBuildingInfo::FSimpleBuildingInfo(AFGBuildable* Source){ }
 AFGRainOcclusionActor::AFGRainOcclusionActor() : Super() {
 	this->mBoxShapedOccluder = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Box Shapes"));
+	this->mBoxShapedOccluder->SetMobility(EComponentMobility::Static);
 	this->mRampShapeOccluder = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Ramp Shapes"));
+	this->mRampShapeOccluder->SetMobility(EComponentMobility::Static);
 	this->mTriangleShapeOccluder = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Triangle Shapes"));
+	this->mTriangleShapeOccluder->SetMobility(EComponentMobility::Static);
 	this->mNumEntriesToHandlePerFrame = 200;
 	this->bIsActive = false;
 	this->RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	this->RootComponent->SetMobility(EComponentMobility::Static);
 	this->mBoxShapedOccluder->SetupAttachment(RootComponent);
 	this->mRampShapeOccluder->SetupAttachment(RootComponent);
 	this->mTriangleShapeOccluder->SetupAttachment(RootComponent);
 }
-void AFGRainOcclusionActor::Tick(float DeltaSeconds){ }
-void AFGRainOcclusionActor::BeginPlay(){ }
+void AFGRainOcclusionActor::Tick(float DeltaSeconds){ Super::Tick(DeltaSeconds); }
+void AFGRainOcclusionActor::BeginPlay(){ Super::BeginPlay(); }
 void AFGRainOcclusionActor::ForceUpdateOcclusionShapes(const FVector& Location, const float& Range){ }
 void AFGRainOcclusionActor::OnTraceCompleted(const FTraceHandle& Handle, FOverlapDatum& Data){ }
 void AFGRainOcclusionActor::AddShape(AFGBuildable* Buildable){ }

@@ -25,8 +25,10 @@ AFGSkySphere::AFGSkySphere() : Super() {
 	this->mDefaultLowSpecMaterial = nullptr;
 	this->mDefaultMesh = nullptr;
 	this->mSkyMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SkySphere"));
+	this->mSkyMeshComponent->SetMobility(EComponentMobility::Static);
 	this->mWeatherChangeDelayTime = FFloatInterval(3.40282e+38, -3.40282e+38);
 	this->mRainOcclusionSceneCapture2DComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("OcclusionSceneCapture"));
+	this->mRainOcclusionSceneCapture2DComponent->SetMobility(EComponentMobility::Movable);
 	this->mRainOcclusionRT = nullptr;
 	this->mRainOcclusionMaterialParameterCollection = nullptr;
 	this->mTimeOfDayCollection = nullptr;
@@ -75,13 +77,14 @@ AFGSkySphere::AFGSkySphere() : Super() {
 	this->PrimaryActorTick.TickInterval = 0.0;
 	this->bReplicates = true;
 	this->RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	this->RootComponent->SetMobility(EComponentMobility::Static);
 	this->mRainOcclusionSceneCapture2DComponent->SetupAttachment(RootComponent);
 }
 void AFGSkySphere::PostActorCreated(){ Super::PostActorCreated(); }
 void AFGSkySphere::PostLoad(){ Super::PostLoad(); }
 void AFGSkySphere::BeginDestroy(){ Super::BeginDestroy(); }
-void AFGSkySphere::Tick(float DeltaTime){ }
-void AFGSkySphere::BeginPlay(){ }
+void AFGSkySphere::Tick(float DeltaTime){ Super::Tick(DeltaTime); }
+void AFGSkySphere::BeginPlay(){ Super::BeginPlay(); }
 void AFGSkySphere::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGSkySphere, mCurrentSelectedWeather);

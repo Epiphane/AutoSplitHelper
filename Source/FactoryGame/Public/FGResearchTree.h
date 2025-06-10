@@ -8,6 +8,7 @@
 #include "FGEventSubsystem.h"
 #include "FGResearchTreeNode.h"
 #include "IncludeInBuild.h"
+#include "Misc/DataValidation.h"
 #include "Styling/SlateBrush.h"
 #include "UObject/NoExportTypes.h"
 #include "FGResearchTree.generated.h"
@@ -34,7 +35,7 @@ public:
 	void PostLoad() override;
 #if WITH_EDITOR
 	virtual void PreSave( FObjectPreSaveContext SaveContext ) override;
-	virtual EDataValidationResult IsDataValid(TArray<FText>& ValidationErrors) override;
+	virtual EDataValidationResult IsDataValid( FDataValidationContext& validationContext ) const override;
 #endif
 	// End UObject interface
 
@@ -81,6 +82,8 @@ public:
 
 	static EResearchTreeStatus GetResearchTreeStatus( TSubclassOf< UFGResearchTree > inClass, UObject* worldContext );
 
+	bool GetIsEventTree() const { return mIsEventTree; }
+	
 protected:
 	/** The name to be displayed to the player before the tree is unlocked */
 	UPROPERTY( EditDefaultsOnly, Category = "Research Tree" )
@@ -118,6 +121,10 @@ protected:
 	UPROPERTY( EditDefaultsOnly, Instanced, Category = "Research Tree" )
 	TArray< class UFGResearchTreeNode* > mNodes;
 
+	/** True if tree is related to event. Will not give achievement if researched. */
+	UPROPERTY( EditDefaultsOnly, Category = "Research Tree" )
+	bool mIsEventTree = false;
+	
 private:
 	/** Asset Bundle data computed at save time. In cooked builds this is accessible from AssetRegistry */
 	UPROPERTY()

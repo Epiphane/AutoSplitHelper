@@ -38,12 +38,16 @@ AFGBoomBoxPlayer::AFGBoomBoxPlayer() : Super() {
 	this->mTurboBassBlockingThreshold = -48.0;
 	this->mTapeTextureParameter = TEXT("Albedo");
 	this->mAkComponent = CreateDefaultSubobject<UAkComponent>(TEXT("AkComponent"));
+	this->mAkComponent->SetMobility(EComponentMobility::Movable);
 	this->mMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
+	this->mMesh->SetMobility(EComponentMobility::Movable);
 	this->mSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
+	this->mSceneRoot->SetMobility(EComponentMobility::Movable);
 	this->mAkComponent->SetupAttachment(mSceneRoot);
 	this->mMesh->SetupAttachment(mSceneRoot);
 	this->mBoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
 	this->mBoxCollision->SetupAttachment(mMesh);
+	this->mBoxCollision->SetMobility(EComponentMobility::Movable);
 	this->mBaseTransformEquipped = FTransform(FQuat::Identity, FVector::ZeroVector, FVector::OneVector);
 	this->mBaseTransformFreeActor = FTransform(FQuat::Identity, FVector::ZeroVector, FVector::OneVector);
 	this->mImpulseRadius = 3000.0;
@@ -100,7 +104,7 @@ TSubclassOf< class UFGTapeData > AFGBoomBoxPlayer::GetCurrentTape() const{ retur
 bool AFGBoomBoxPlayer::IsInEquipmentMode() const{ return bool(); }
 bool AFGBoomBoxPlayer::CanBePickedUp( AFGCharacterPlayer* byPlayer) const{ return bool(); }
 EBoomBoxPickupButtonState AFGBoomBoxPlayer::GetPickupButtonState(AFGCharacterPlayer* player){ return EBoomBoxPickupButtonState(); }
-void AFGBoomBoxPlayer::Tick(float DeltaTime){ }
+void AFGBoomBoxPlayer::Tick(float DeltaTime){ Super::Tick(DeltaTime); }
 void AFGBoomBoxPlayer::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGBoomBoxPlayer, mMode);
@@ -139,8 +143,8 @@ void AFGBoomBoxPlayer::SetPlaybackStateFlag(EBoomBoxPlaybackStateBitfield flag, 
 void AFGBoomBoxPlayer::ApplyTurboBassGameplayEffects( AFGCharacterPlayer* character){ }
 void AFGBoomBoxPlayer::SetAudioVolumeLocally(float normalizedVolume, bool notifyListeners){ }
 UMaterialInterface* AFGBoomBoxPlayer::GetDefaultTapeMaterial(){ return nullptr; }
-void AFGBoomBoxPlayer::BeginPlay(){ }
-void AFGBoomBoxPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
+void AFGBoomBoxPlayer::BeginPlay(){ Super::BeginPlay(); }
+void AFGBoomBoxPlayer::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 void AFGBoomBoxPlayer::OnPawnPossessed( APawn* pawn,  AController* controller){ }
 void AFGBoomBoxPlayer::OnceClientSubsystemsAreReady(){ }
 void AFGBoomBoxPlayer::SongFinished(EAkCallbackType cbType, UAkCallbackInfo* cbInfo){ }

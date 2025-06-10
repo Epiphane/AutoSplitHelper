@@ -2,8 +2,9 @@
 
 #include "UI/FGGridNavigationHelper.h"
 
-void UFGGridNavigationHelper::NativeConstruct(){ }
+void UFGGridNavigationHelper::NativeConstruct(){ Super::NativeConstruct(); }
 void UFGGridNavigationHelper::SetupNavigation(const TArray<UWidget*>& widgets){ }
+void UFGGridNavigationHelper::SetWidgetsToSkip(int amountOfWidgetsToSkip){ }
 UWidget* UFGGridNavigationHelper::DoNavigation(EUINavigation NavigationDirection){ return nullptr; }
 UWidget* UFGGridNavigationHelper::FindNextGridWidget(UWidget* Pivot, EUINavigation NavigationDirection){ return nullptr; }
 UWidget* UFGGridNavigationHelper::FindNextGridWidgetSlate(TSharedPtr<SWidget> slateWidget, EUINavigation NavigationDirection){ return nullptr; }

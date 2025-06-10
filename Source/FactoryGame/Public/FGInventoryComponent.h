@@ -296,6 +296,7 @@ public:
 	 */
 	UFUNCTION( BlueprintCallable, Category = "Inventory" )
 	virtual int32 AddStackToIndex( const int32 idx, const FInventoryStack& stack, const bool allowPartialAdd = false, UFGInventoryComponent* sourceInventory = nullptr );
+	virtual int32 AddStackToIndex_Unsafe( const int32 idx, const FInventoryStack& stack, const bool allowPartialAdd = false, UFGInventoryComponent* sourceInventory = nullptr );
 
 	FORCEINLINE int32 AddSingleItemToEmptyIndex_Unsafe( const int32 idx, const FInventoryItem& item )
 	{
@@ -546,6 +547,7 @@ public:
 	class AFGPlayerState* GetOwningPlayerState() const;
 
 	// Returns true if either the session wide cheat NoCost is enabled or if the individual game mode NoBuildCost is enabled 
+	UFUNCTION( BlueprintPure, Category = "Inventory" )
 	bool GetNoBuildCost() const;
 
 	/** Updates the relevancy owner for this item. This component will only replicate it's data when the relevancy owner allows it to */

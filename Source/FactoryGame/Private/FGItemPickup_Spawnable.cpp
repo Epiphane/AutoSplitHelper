@@ -6,25 +6,31 @@
 AFGItemPickup_Spawnable::AFGItemPickup_Spawnable() : Super() {
 	this->mPickupSound = nullptr;
 	this->mMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	this->mMeshComponent->SetMobility(EComponentMobility::Stationary);
 	this->mPickupMarker = nullptr;
 	this->mPlaySpawnEffect = false;
 	this->bEnableAutoLODGeneration = false;
 	this->RootComponent = mMeshComponent;
 }
 void AFGItemPickup_Spawnable::PostLoad(){ Super::PostLoad(); }
-void AFGItemPickup_Spawnable::BeginPlay(){ }
-void AFGItemPickup_Spawnable::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
+void AFGItemPickup_Spawnable::BeginPlay(){ Super::BeginPlay(); }
+void AFGItemPickup_Spawnable::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 bool AFGItemPickup_Spawnable::ShouldSave_Implementation() const{ return bool(); }
 bool AFGItemPickup_Spawnable::NeedTransform_Implementation(){ return bool(); }
 void AFGItemPickup_Spawnable::UpdateUseState_Implementation( AFGCharacterPlayer* byCharacter, const FVector& atLocation,  UPrimitiveComponent* componentHit, FUseState& out_useState){ }
 void AFGItemPickup_Spawnable::StopIsLookedAt_Implementation( AFGCharacterPlayer* byCharacter, const FUseState& state){ }
 bool AFGItemPickup_Spawnable::ShouldBeRegisteredForPickup() const{ return bool(); }
-AFGItemPickup_Spawnable* AFGItemPickup_Spawnable::CreateItemDrop(UFGInventoryComponent* inventoryComponent, UWorld* world, const FInventoryStack& item, FVector spawnLocation, FRotator spawnRotation, TSubclassOf< AFGItemPickup_Spawnable> itemDropClass , ULevel* spawnLevelOverride , FName spawnNameOverride){ return nullptr; }
+bool AFGItemPickup_Spawnable::CanEverRespawn() const{ return Super::CanEverRespawn(); }
+AFGItemPickup_Spawnable* AFGItemPickup_Spawnable::CreateItemDrop( UFGInventoryComponent* inventoryComponent, UWorld* world, const FInventoryStack& item, const FVector& spawnLocation, const FRotator& spawnRotation, TSubclassOf< AFGItemPickup_Spawnable> itemDropClass, ULevel* spawnLevelOverride, FName spawnNameOverride){ return nullptr; }
 void AFGItemPickup_Spawnable::OnColorUpdated(int32 index){ }
+void AFGItemPickup_Spawnable::ConfigureMeshComponent(const FInventoryStack& item){ }
+void AFGItemPickup_Spawnable::SetCanMove(bool canMove){ }
 AFGItemPickup_Spawnable* AFGItemPickup_Spawnable::AddItemToWorldStackAtLocation(UFGInventoryComponent* inventoryComponent, const FInventoryStack& item, const FVector& spawnLocation, const FRotator& spawnRotation, TSubclassOf< AFGItemPickup_Spawnable > itemDropClass){ return nullptr; }
 void AFGItemPickup_Spawnable::CreateItemDropsInCylinder( UWorld* world, const TArray<FInventoryStack>& items, FVector aroundLocation, float sphereRadius, const TArray<class AActor*>& actorsToIgnore, TArray<class AFGItemPickup_Spawnable*>& out_itemDrops, TSubclassOf<class AFGItemPickup_Spawnable> itemDropClass){ }
-void AFGItemPickup_Spawnable::SpawnInventoryCrate( UWorld* world, const TArray< FInventoryStack >& items, FVector spawnLocation, const TArray<class AActor*>& actorsToIgnore,  AFGCrate*& out_Crate, EFGCrateType crateType , TSubclassOf< AFGCrate > crateClass){ }
-void AFGItemPickup_Spawnable::FindGroundLocationAndRotation( UWorld* world, FVector fromLocation, const TArray<AActor*>& actorsToIgnore, FVector& out_location, FRotator& out_rotation){ }
+void AFGItemPickup_Spawnable::SpawnInventoryCrate(class UWorld* world, const TArray<FInventoryStack>& items, const FVector& spawnLocation, const TArray<class AActor*>& actorsToIgnore, class AFGCrate*& out_Crate, EFGCrateType crateType){  }
+AFGCrate* AFGItemPickup_Spawnable::SpawnInventoryCrate(UWorld* world, const TArray<FInventoryStack>& items, const FVector& spawnLocation, const FSpawnInventoryCrateParameters& spawnParameters){ return nullptr; }
+AFGCrate* AFGItemPickup_Spawnable::SpawnInventoryCrate(const TArray<FInventoryStack>& items, const FVector& spawnLocation, const FSpawnInventoryCrateParameters& spawnParameters, UObject* worldContext){ return nullptr; }
+void AFGItemPickup_Spawnable::FindGroundLocationAndRotation(class UWorld* world, const FVector& fromLocation, const TArray<AActor*>& actorsToIgnore, FVector& out_location, FRotator& out_rotation){  }
 void AFGItemPickup_Spawnable::FindGroundLocationInfrontOfActor(const AActor* sourceActor, float offsetLength, const FInventoryStack& item, FVector& out_location, FRotator& out_rotation){ }
 void AFGItemPickup_Spawnable::PlayPickupEffectImpl(){ }
 bool AFGItemPickup_Spawnable::GenerateSpheresInCapsule(FVector center, float radius, float innerRadius, TArray<FVector>& out_result){ return bool(); }

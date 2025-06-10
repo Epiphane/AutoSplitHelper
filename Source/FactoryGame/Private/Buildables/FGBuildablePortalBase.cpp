@@ -30,9 +30,10 @@ void AFGBuildablePortalBase::GetLifetimeReplicatedProps(TArray< FLifetimePropert
 	DOREPLIFETIME(AFGBuildablePortalBase, mLinkedPortal);
 	DOREPLIFETIME(AFGBuildablePortalBase, mIsPortalTraversable);
 	DOREPLIFETIME(AFGBuildablePortalBase, mPortalName);
+	DOREPLIFETIME(AFGBuildablePortalBase, mLastEditedBy);
 }
-void AFGBuildablePortalBase::BeginPlay(){ }
-void AFGBuildablePortalBase::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
+void AFGBuildablePortalBase::BeginPlay(){ Super::BeginPlay(); }
+void AFGBuildablePortalBase::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 float AFGBuildablePortalBase::GetProducingPowerConsumptionBase() const{ return float(); }
 void AFGBuildablePortalBase::Factory_Tick(float dt){ }
 void AFGBuildablePortalBase::Dismantle_Implementation(){ }
@@ -62,6 +63,7 @@ void AFGBuildablePortalBase::GetPortalSurfaceTransform_Implementation(FTransform
 void AFGBuildablePortalBase::OnPlayerTeleportBegin_Implementation(AFGCharacterPlayer* player, AFGBuildablePortalBase* toPortal, float totalTravelDistance){ }
 void AFGBuildablePortalBase::OnPlayerTeleportComplete_Implementation(AFGCharacterPlayer* player, AFGBuildablePortalBase* fromPortal, float totalTravelDistance){ }
 void AFGBuildablePortalBase::SetPortalName(const FText& inPortalName){ }
+void AFGBuildablePortalBase::SetLastEditedBy(const TArray<FLocalUserNetIdBundle>& lastEditedBy){ }
 float AFGBuildablePortalBase::GetEstimatedPowerConsumptionForTeleport() const{ return float(); }
 float AFGBuildablePortalBase::CalculatePowerConsumptionForDistance(float distance) const{ return float(); }
 FFGPortalCachedFactoryTickData AFGBuildablePortalBase::GetCachedFactoryTickData_ThreadSafe(){ return FFGPortalCachedFactoryTickData(); }

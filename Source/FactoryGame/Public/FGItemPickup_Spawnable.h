@@ -7,6 +7,28 @@
 #include "FGCrate.h"
 #include "FGItemPickup_Spawnable.generated.h"
 
+USTRUCT(BlueprintType)
+struct FACTORYGAME_API FSpawnInventoryCrateParameters
+{
+	GENERATED_BODY()
+	
+	/** Type of the crate to spawn. Default is a dismantle crate */
+	UPROPERTY(EditAnywhere, Category = "Inventory Crate")
+	EFGCrateType CrateType{EFGCrateType::CT_DismantleCrate};
+
+	/** Actors to ignore the collision with when spawning the crate */
+	UPROPERTY(EditAnywhere, Category = "Inventory Crate")
+	TArray<AActor*> ActorsToIgnore;
+
+	/** Whenever to allow merging of this crate with another crate of the same type in proximity */
+	UPROPERTY(EditAnywhere, Category = "Inventory Crate")
+	bool bAllowCrateMerging{true};
+
+	/** Allows overriding the class of the spawned crate */
+	UPROPERTY(EditAnywhere, Category = "Inventory Crate")
+	TSubclassOf<AFGCrate> CrateClassOverride{};
+};
+
 UCLASS( NotPlaceable )
 class FACTORYGAME_API AFGItemPickup_Spawnable : public AFGItemPickup
 {
@@ -32,6 +54,7 @@ public:
 
 	//~ Begin AFGItemPickup interface
 	virtual bool ShouldBeRegisteredForPickup() const override;
+	virtual bool CanEverRespawn() const override;
 	//~ End AFGItemPickup interface
 	
 	/**
@@ -46,22 +69,27 @@ public:
 	*
 	* @return a valid item drop if everything went well
 	*/
-	static AFGItemPickup_Spawnable* CreateItemDrop( UWorld* world, const FInventoryStack& item, FVector spawnLocation, FRotator spawnRotation, TSubclassOf< AFGItemPickup_Spawnable> itemDropClass = nullptr, ULevel* spawnLevelOverride = nullptr, FName spawnNameOverride = NAME_None )
+	static AFGItemPickup_Spawnable* CreateItemDrop( UWorld* world, const FInventoryStack& item, const FVector& spawnLocation, const FRotator& spawnRotation, TSubclassOf< AFGItemPickup_Spawnable> itemDropClass = nullptr, ULevel* spawnLevelOverride = nullptr, FName spawnNameOverride = NAME_None )
 	{
 		return CreateItemDrop( nullptr, world, item, spawnLocation, spawnRotation, itemDropClass, spawnLevelOverride, spawnNameOverride );
 	}
 	UFUNCTION( BlueprintCallable, Category = "ItemDrop", meta = ( DefaultToSelf = "worldContext" ) )
-	static AFGItemPickup_Spawnable* CreateItemDrop( UFGInventoryComponent* inventoryComponent, const FInventoryStack& item, FVector spawnLocation, FRotator spawnRotation, TSubclassOf< AFGItemPickup_Spawnable> itemDropClass = nullptr, ULevel* spawnLevelOverride = nullptr, FName spawnNameOverride = NAME_None )
+	static AFGItemPickup_Spawnable* CreateItemDrop( UFGInventoryComponent* inventoryComponent, const FInventoryStack& item, const FVector& spawnLocation, const FRotator& spawnRotation, TSubclassOf< AFGItemPickup_Spawnable> itemDropClass = nullptr, ULevel* spawnLevelOverride = nullptr, FName spawnNameOverride = NAME_None )
 	{
 		return CreateItemDrop( inventoryComponent, inventoryComponent->GetWorld(), item, spawnLocation, spawnRotation, itemDropClass, spawnLevelOverride, spawnNameOverride );
 	}
 	/**
 	* @copydoc AFGItemPickup_Spawnable::CreateItemDrop
 	*/
-	static AFGItemPickup_Spawnable* CreateItemDrop( UFGInventoryComponent* inventoryComponent, UWorld* world, const FInventoryStack& item, FVector spawnLocation, FRotator spawnRotation, TSubclassOf< AFGItemPickup_Spawnable> itemDropClass = nullptr, ULevel* spawnLevelOverride = nullptr, FName spawnNameOverride = NAME_None );
+	static AFGItemPickup_Spawnable* CreateItemDrop( UFGInventoryComponent* inventoryComponent, UWorld* world, const FInventoryStack& item, const FVector& spawnLocation, const FRotator& spawnRotation, TSubclassOf< AFGItemPickup_Spawnable> itemDropClass = nullptr, ULevel* spawnLevelOverride = nullptr, FName spawnNameOverride = NAME_None );
 
 	UFUNCTION()
 	void OnColorUpdated( int32 index );
+
+	virtual void ConfigureMeshComponent( const FInventoryStack& item );
+
+	virtual bool CanMove() const { return mCanMove; }
+	virtual void SetCanMove( bool canMove );
 
 	/**
 	* Will drop item at location if there are no stack found on location that have enough space available.
@@ -82,7 +110,21 @@ public:
 	* @param spawnLocation - the location where we want to spawn the item drop in
 	* @param crateClass - crate class to use, if null then we take the default one in FactorySettings.
 	*/
-	static void SpawnInventoryCrate( class UWorld* world, const TArray< FInventoryStack >& items, FVector spawnLocation, const TArray<class AActor*>& actorsToIgnore, class AFGCrate*& out_Crate, EFGCrateType crateType = EFGCrateType::CT_DismantleCrate, TSubclassOf< AFGCrate > crateClass = nullptr );
+	static void SpawnInventoryCrate( class UWorld* world, const TArray< FInventoryStack >& items, const FVector& spawnLocation, const TArray<class AActor*>& actorsToIgnore, class AFGCrate*& out_Crate, EFGCrateType crateType = EFGCrateType::CT_DismantleCrate );
+	
+	/**
+	 * Spawns a crate containing the items at the given location, or next to the given location
+	 * @param world The world in which to spawn the crate
+	 * @param items items that are to be added into the crate
+	 * @param spawnLocation location to spawn the crate at
+	 * @param spawnParameters additional parameters for the crate spawning
+	 * @return the spawned crate, or NULL if failed to spawn the crate
+	 */
+	static AFGCrate* SpawnInventoryCrate(UWorld* world, const TArray<FInventoryStack>& items, const FVector& spawnLocation, const FSpawnInventoryCrateParameters& spawnParameters = FSpawnInventoryCrateParameters{});
+
+	/** Spawns an inventory crate containing the provided items at the provided location */
+	UFUNCTION(BlueprintCallable, Category = "Item Drop", meta = (WorldContext = "worldContext"))
+	static AFGCrate* SpawnInventoryCrate(const TArray<FInventoryStack>& items, const FVector& spawnLocation, const FSpawnInventoryCrateParameters& spawnParameters, UObject* worldContext);
 	
 	/**
 	 * Creates item drops in a sphere in the world around a location
@@ -105,7 +147,7 @@ public:
 	/**
 	 * @copydoc AFGItemPickup_Spawnable::FindGroundLocationAndRotation
 	 */
-	static void FindGroundLocationAndRotation( class UWorld* world, FVector fromLocation, const TArray<AActor*>& actorsToIgnore, FVector& out_location, FRotator& out_rotation );
+	static void FindGroundLocationAndRotation( class UWorld* world, const FVector& fromLocation, const TArray<AActor*>& actorsToIgnore, FVector& out_location, FRotator& out_rotation );
 
 	/**
 	 * Find the ground above/below the specified location and how to rotate a mesh to align with it
@@ -163,4 +205,6 @@ private:
 	/** Should we play a spawn effect? */
 	UPROPERTY( SaveGame )
 	bool mPlaySpawnEffect;
+
+	bool mCanMove;
 };

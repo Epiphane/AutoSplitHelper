@@ -13,9 +13,10 @@ EExecutionStatus AChatCommandInstance::ExecuteCommand_Implementation(UCommandSen
 }
 
 void AChatCommandInstance::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AChatCommandInstance, ModReference);
 }
 
 void AChatCommandInstance::PrintCommandUsage(UCommandSender* Player) const {
-	Player->SendChatMessage(FString::Printf(TEXT("Usage: %s"), *Usage), FLinearColor::Red);
+	Player->SendChatMessage(FString::Printf(TEXT("Usage: %s"), *Usage.ToString()), FLinearColor::Red);
 }

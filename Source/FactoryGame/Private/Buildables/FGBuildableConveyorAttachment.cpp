@@ -4,15 +4,21 @@
 #include "FGInventoryComponent.h"
 #include "Hologram/FGConveyorAttachmentHologram.h"
 
+TSubclassOf<UFGRecipe> UFGHologramOverride_ConveyorAttachment_FloorToLift::GetHologramOverride_Implementation(const AFGHologram* hologram, const FHitResult& hitResult) const{ return nullptr; }
+TSubclassOf<UFGRecipe> UFGHologramOverride_ConveyorAttachment_LiftToFloor::GetHologramOverride_Implementation(const AFGHologram* hologram, const FHitResult& hitResult) const{ return nullptr; }
 AFGBuildableConveyorAttachment::AFGBuildableConveyorAttachment() : Super() {
 	this->mInventorySize = 9;
 	this->mBufferInventory = CreateDefaultSubobject<UFGInventoryComponent>(TEXT("StorageInventory"));
 	this->mHologramClass = AFGConveyorAttachmentHologram::StaticClass();
 	this->NetDormancy = ENetDormancy::DORM_DormantAll;
 }
-void AFGBuildableConveyorAttachment::BeginPlay(){ }
+void AFGBuildableConveyorAttachment::BeginPlay(){ Super::BeginPlay(); }
 bool AFGBuildableConveyorAttachment::ShouldShowCenterGuidelinesForHologram(const AFGHologram* hologram) const{ return bool(); }
 void AFGBuildableConveyorAttachment::Dismantle_Implementation(){ }
+bool AFGBuildableConveyorAttachment::CanBeSampled_Implementation() const{ return Super::CanBeSampled_Implementation(); }
+TOptional<TSubclassOf<UFGRecipe>> AFGBuildableConveyorAttachment::GetHologramOverride(const AFGHologram* const hologram, const FHitResult& hitResult) const{ return TOptional<TSubclassOf<UFGRecipe>>(); }
+bool AFGBuildableConveyorAttachment::HasOverrideForHologram(TSubclassOf<UFGItemDescriptor> itemDescriptor) const{ return Super::HasOverrideForHologram(itemDescriptor); }
+void AFGBuildableConveyorAttachment::SaveCurrentDirections(){ }
 AFGBuildableConveyorAttachmentLightweight::AFGBuildableConveyorAttachmentLightweight() : Super() {
 
 }

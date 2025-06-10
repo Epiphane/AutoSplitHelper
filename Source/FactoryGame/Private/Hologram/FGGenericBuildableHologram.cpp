@@ -16,9 +16,8 @@ AFGGenericBuildableHologram::AFGGenericBuildableHologram() : Super() {
 	this->mSnapAxis = EAxis::Z;
 	this->mFoundationSnappingInset = 0.0;
 }
-void AFGGenericBuildableHologram::BeginPlay(){ }
+void AFGGenericBuildableHologram::BeginPlay(){ Super::BeginPlay(); }
 bool AFGGenericBuildableHologram::TrySnapToActor(const FHitResult& hitResult){ return bool(); }
 int32 AFGGenericBuildableHologram::GetRotationStep() const{ return int32(); }
-ENudgeFailReason AFGGenericBuildableHologram::NudgeHologram(const FVector& NudgeInput, const FHitResult& HitResult){ return ENudgeFailReason(); }
 void AFGGenericBuildableHologram::UpdateRotationValuesFromTransform(){ }
-bool AFGGenericBuildableHologram::IsHologramIdenticalToActor(AActor* actor, const FVector& hologramLocationOffset) const{ return bool(); }
+bool AFGGenericBuildableHologram::IsHologramIdenticalToActor(AActor* actor, const FTransform& hologramLocationOffset) const{ return bool(); }

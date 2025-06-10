@@ -8,12 +8,14 @@
 DEFINE_LOG_CATEGORY(LogFGTestManager);
 
 AFGTestManager::AFGTestManager() : Super() {
-	this->mDefaultTestMap = FSoftObjectPath("/Game/FactoryGame/Map/TestMapFactoryGame.TestMapFactoryGame");
+	this->mDefaultTestMap = FSoftObjectPath("/Game/FactoryGame/Map/TestMapFactoryGame.TestMapFactoryGame").ResolveObject();
 	this->mDefaultTestMapOptions = TEXT("?skipOnboarding?allowPossessAny");
 	this->mCheatPowerSourcePowerInfo = CreateDefaultSubobject<UFGPowerInfoComponent>(TEXT("CheatPowerSource"));
 	this->mCheatPowerSinkPowerInfo = CreateDefaultSubobject<UFGPowerInfoComponent>(TEXT("CheatPowerSink"));
 	this->mCheatPowerSourceConnection = CreateDefaultSubobject<UFGPowerConnectionComponent>(TEXT("PowerSourceConnection"));
+	this->mCheatPowerSourceConnection->SetMobility(EComponentMobility::Movable);
 	this->mCheatPowerSinkConnection = CreateDefaultSubobject<UFGPowerConnectionComponent>(TEXT("PowerSinkConnection"));
+	this->mCheatPowerSinkConnection->SetMobility(EComponentMobility::Movable);
 	this->PrimaryActorTick.TickGroup = ETickingGroup::TG_PrePhysics;
 	this->PrimaryActorTick.EndTickGroup = ETickingGroup::TG_PrePhysics;
 	this->PrimaryActorTick.bTickEvenWhenPaused = false;
@@ -23,6 +25,7 @@ AFGTestManager::AFGTestManager() : Super() {
 	this->PrimaryActorTick.TickInterval = 0.0;
 	this->bReplicates = false;
 	this->RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
+	this->RootComponent->SetMobility(EComponentMobility::Movable);
 	this->mCheatPowerSourceConnection->SetupAttachment(RootComponent);
 	this->mCheatPowerSinkConnection->SetupAttachment(RootComponent);
 }
@@ -36,8 +39,8 @@ bool AFGTestManager::ShouldSave_Implementation() const{ return bool(); }
 AFGTestManager* AFGTestManager::Get(const UObject* worldContext){ return nullptr; }
 bool AFGTestManager::ShouldSpawnForWorld(const UWorld* world){ return bool(); }
 FString AFGTestManager::GetWorldGameplayTestName(const UWorld* world){ return FString(); }
-void AFGTestManager::BeginPlay(){ }
-void AFGTestManager::Tick(float DeltaSeconds){ }
+void AFGTestManager::BeginPlay(){ Super::BeginPlay(); }
+void AFGTestManager::Tick(float DeltaSeconds){ Super::Tick(DeltaSeconds); }
 void AFGTestManager::DisplayDebug(UCanvas* Canvas, const FDebugDisplayInfo& DebugDisplay, float& YL, float& YPos){ }
 UFGGameplayTest* AFGTestManager::RunGameplayTest(TSubclassOf<UFGGameplayTest> gameplayTest){ return nullptr; }
 void AFGTestManager::GetRunningGameplayTests(TArray<UFGGameplayTest*>& out_gameplayTests) const{ }

@@ -7,7 +7,6 @@ UFGShoppingListComponent* UFGShoppingListComponent::GetShoppingListComponent(con
 UFGShoppingListComponent::UFGShoppingListComponent() : Super() {
 
 }
-void UFGShoppingListComponent::CopyShoppingListComponent(const UFGShoppingListComponent* otherShoppingListComponent){ }
 void UFGShoppingListComponent::GetShoppingListObjects(TArray<class UFGShoppingListObject*>& out_ShoppingListObjects){ }
 UFGShoppingListObject* UFGShoppingListComponent::GetShoppingListObjectFromClass(TSubclassOf<UObject> objectClass, bool& out_result){ return nullptr; }
 UFGShoppingListObject* UFGShoppingListComponent::GetShoppingListObjectFromObject(UObject* object, bool& out_result){ return nullptr; }
@@ -21,13 +20,14 @@ void UFGShoppingListComponent::OnBlueprintRemoved(const FString& blueprintName){
 void UFGShoppingListComponent::UpdateShoppingListObjectBlueprint( UFGShoppingListObject_Object* shoppingListObject_Object){ }
 void UFGShoppingListComponent::UpdateShoppingListObjectClass( UFGShoppingListObject_Class* shoppingListObject_Class){ }
 void UFGShoppingListComponent::UpdateShoppingList(){ }
-void UFGShoppingListComponent::BeginPlay(){ }
+void UFGShoppingListComponent::BeginPlay(){ Super::BeginPlay(); }
 void UFGShoppingListComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(UFGShoppingListComponent, mShoppingListBlueprints);
 	DOREPLIFETIME(UFGShoppingListComponent, mShoppingListClassEntries);
 }
 void UFGShoppingListComponent::PostLoadGame_Implementation(int32 saveVersion, int32 gameVersion){ }
+void UFGShoppingListComponent::CopyComponentProperties_Implementation(UActorComponent* intoComponent){ }
 void UFGShoppingListComponent::Server_SetNumBlueprintsInShoppingList_Implementation(const FString& blueprintName, int32 totalAmount){ }
 void UFGShoppingListComponent::Server_SetNumForClassInShoppingList_Implementation(TSubclassOf<  UObject > inClass, int32 totalAmount){ }
 void UFGShoppingListComponent::Server_ClearShoppingList_Implementation(){ }

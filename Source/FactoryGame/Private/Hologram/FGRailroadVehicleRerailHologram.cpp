@@ -12,8 +12,9 @@ AFGRailroadVehicleRerailHologram::AFGRailroadVehicleRerailHologram() : Super() {
 	this->PrimaryActorTick.bAllowTickOnDedicatedServer = true;
 	this->PrimaryActorTick.TickInterval = 1.0;
 	this->RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	this->RootComponent->SetMobility(EComponentMobility::Static);
 }
-void AFGRailroadVehicleRerailHologram::Tick(float dt){ }
+void AFGRailroadVehicleRerailHologram::Tick(float dt){ Super::Tick(dt); }
 void AFGRailroadVehicleRerailHologram::PreSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 void AFGRailroadVehicleRerailHologram::PostSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 void AFGRailroadVehicleRerailHologram::PreLoadGame_Implementation(int32 saveVersion, int32 gameVersion){ }

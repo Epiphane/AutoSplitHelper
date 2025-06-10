@@ -10,6 +10,7 @@ AFGBuildablePowerPole::AFGBuildablePowerPole() : Super() {
 	this->mConnectionsWidgetComponent = nullptr;
 	this->mConnectionWidgetClass = nullptr;
 	this->mMeshComponentProxy = CreateDefaultSubobject<UFGColoredInstanceMeshProxy>(TEXT("PoleMeshProxy"));
+	this->mMeshComponentProxy->SetMobility(EComponentMobility::Static);
 	this->mPowerPoleType = EPowerPoleType::PPT_POLE;
 	this->mPowerTowerWireMaxLength = 100000.0;
 	this->mHasPower = false;
@@ -17,7 +18,7 @@ AFGBuildablePowerPole::AFGBuildablePowerPole() : Super() {
 	this->mInteractionRegisterPlayerWithCircuit = true;
 	this->mMeshComponentProxy->SetupAttachment(RootComponent);
 }
-void AFGBuildablePowerPole::BeginPlay(){ }
+void AFGBuildablePowerPole::BeginPlay(){ Super::BeginPlay(); }
 void AFGBuildablePowerPole::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGBuildablePowerPole, mHasPower);

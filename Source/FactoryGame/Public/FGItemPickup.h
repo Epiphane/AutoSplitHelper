@@ -97,6 +97,10 @@ public:
 	UFUNCTION( BlueprintCallable )
 	const class AFGPlayerController* EatenByCreature( const int32 amount );
 	
+	virtual bool CanEverRespawn() const;
+
+	virtual bool CanBePickedUp( class AFGCharacterPlayer* byCharacter ) const;
+	
 	/** Multicast to everyone so picking up clients can see effects */
 	UFUNCTION( BlueprintImplementableEvent,BlueprintCosmetic )
 	void PlayPickupEffect();

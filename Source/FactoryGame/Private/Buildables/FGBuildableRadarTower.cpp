@@ -13,8 +13,8 @@ AFGBuildableRadarTower::AFGBuildableRadarTower() : Super() {
 	this->NetDormancy = ENetDormancy::DORM_Initial;
 	this->NetUpdateFrequency = 1.0;
 }
-void AFGBuildableRadarTower::BeginPlay(){ }
-void AFGBuildableRadarTower::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
+void AFGBuildableRadarTower::BeginPlay(){ Super::BeginPlay(); }
+void AFGBuildableRadarTower::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 bool AFGBuildableRadarTower::AddAsRepresentation(){ return bool(); }
 bool AFGBuildableRadarTower::UpdateRepresentation(){ return bool(); }
 bool AFGBuildableRadarTower::RemoveAsRepresentation(){ return bool(); }
@@ -34,6 +34,7 @@ float AFGBuildableRadarTower::GetActorFogOfWarRevealRadius(){ return float(); }
 ECompassViewDistance AFGBuildableRadarTower::GetActorCompassViewDistance(){ return ECompassViewDistance(); }
 void AFGBuildableRadarTower::SetActorCompassViewDistance(ECompassViewDistance compassViewDistance){ }
 UMaterialInterface* AFGBuildableRadarTower::GetActorRepresentationCompassMaterial(){ return nullptr; }
+void AFGBuildableRadarTower::SetActorLastEditedBy(const TArray<FLocalUserNetIdBundle>& LastEditedBy){ }
 void AFGBuildableRadarTower::PostLoadGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 void AFGBuildableRadarTower::Factory_StartProducing(){ }
 void AFGBuildableRadarTower::Factory_StopProducing(){ }

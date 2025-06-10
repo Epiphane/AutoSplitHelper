@@ -9,6 +9,7 @@
 AFGPipeBuilder::AFGPipeBuilder() : Super() {
 	this->mMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovementComponent"));
 	this->mPipeSupportLocation = CreateDefaultSubobject<USceneComponent>(TEXT("PipeSupportLocation"));
+	this->mPipeSupportLocation->SetMobility(EComponentMobility::Stationary);
 	this->mSplineHologram = nullptr;
 	this->mSupportHologram = nullptr;
 	this->mCurrentSplineSupportRecipeClass = nullptr;
@@ -21,9 +22,9 @@ AFGPipeBuilder::AFGPipeBuilder() : Super() {
 	this->mTrailDistance = 500.0;
 	this->mPipeSupportLocation->SetupAttachment(mMesh);
 }
-void AFGPipeBuilder::BeginPlay(){ }
-void AFGPipeBuilder::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
-void AFGPipeBuilder::Tick(float dt){ }
+void AFGPipeBuilder::BeginPlay(){ Super::BeginPlay(); }
+void AFGPipeBuilder::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
+void AFGPipeBuilder::Tick(float dt){ Super::Tick(dt); }
 void AFGPipeBuilder::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGPipeBuilder, mSplineHologram);

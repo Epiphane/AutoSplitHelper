@@ -27,6 +27,7 @@ UFGVertexAnimatedMeshComponent::UFGVertexAnimatedMeshComponent() : Super() {
 	this->bAllowWindUpDownInterpolation = false;
 	this->mOverClockedAnimationSpeed = 2.0;
 	this->mUnderClockedAnimationSpeed = 0.5;
+	this->bNeedsSimulationForWires = false;
 	this->bHasWindDownSequence = false;
 	this->bHasWindUpSequence = false;
 	this->bHasWire = false;
@@ -36,8 +37,9 @@ UFGVertexAnimatedMeshComponent::UFGVertexAnimatedMeshComponent() : Super() {
 	this->mBlockInstancing = true;
 	this->WorldPositionOffsetDisableDistance = 100000;
 }
-void UFGVertexAnimatedMeshComponent::BeginPlay(){ }
-void UFGVertexAnimatedMeshComponent::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
+void UFGVertexAnimatedMeshComponent::BeginPlay(){ Super::BeginPlay(); }
+void UFGVertexAnimatedMeshComponent::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
+void UFGVertexAnimatedMeshComponent::PostLoad(){ Super::PostLoad(); }
 void UFGVertexAnimatedMeshComponent::GainedSignificance_Implementation(){ }
 void UFGVertexAnimatedMeshComponent::LostSignificance_Implementation(){ }
 bool UFGVertexAnimatedMeshComponent::ShouldAddToSignificanceManager() const{ return bool(); }
@@ -46,7 +48,7 @@ void UFGVertexAnimatedMeshComponent::OnProductionStatusChanged(EProductionStatus
 void UFGVertexAnimatedMeshComponent::OnBuildingCurrentPotentialChanged(float NewPotential){ }
 void UFGVertexAnimatedMeshComponent::DelayedOverclockingChanged(){ }
 void UFGVertexAnimatedMeshComponent::OnOverclockingChanged(EVTXAnimOverclockState NewState, bool IsSignificant){ }
-void UFGVertexAnimatedMeshComponent::UpdateEffectTimeline(const float Dt, const float Dist, const float WorldTime){ }
+void UFGVertexAnimatedMeshComponent::UpdateEffectTimeline(const float LastTickTime, const float Dist, const float WorldTime){ }
 void UFGVertexAnimatedMeshComponent::OnUpdateState(EVTXAnimProductionStatus NewState){ }
 void UFGVertexAnimatedMeshComponent::StartProducing(bool bFromFrozenIdle , int32 AnimationSequenceID){ }
 void UFGVertexAnimatedMeshComponent::StartWindup(){ }
@@ -62,7 +64,7 @@ TArray<UMaterialInterface*> UFGVertexAnimatedMeshComponent::GetMaterialsFromStat
 void UFGVertexAnimatedMeshComponent::UpdateMaterial(TArray<UMaterialInterface*> Materials){ }
 #if WITH_EDITOR
 #endif 
-void UFGNotifyBase::TryFireNotify(const float& Distance, const float& AnimDuration, const float& DeltaTime, UFGVertexAnimatedMeshComponent* Owner,const UFGNotifyBase* Entry, bool bForceSeek){ }
+void UFGNotifyBase::TryFireNotify(const float& Distance, const float& AnimDuration, const float& LastTickTime, UFGVertexAnimatedMeshComponent* Owner,const UFGNotifyBase* Entry, bool bForceSeek){ }
 void UFGStaticVFXNotify::Fire(UFGVertexAnimatedMeshComponent* Owner, float CurrentTime , bool bForceSeek) const{ }
 void UFGStaticSFXNotify::Fire(UFGVertexAnimatedMeshComponent* Owner, float CurrentTime , bool bForceSeek) const{ }
 #if WITH_EDITOR

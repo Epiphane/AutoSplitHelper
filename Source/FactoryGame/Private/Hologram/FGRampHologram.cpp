@@ -5,8 +5,7 @@
 AFGRampHologram::AFGRampHologram() : Super() {
 
 }
-void AFGRampHologram::BeginPlay(){ }
-bool AFGRampHologram::IsHologramIdenticalToActor(AActor* actor, const FVector& hologramLocationOffset) const{ return bool(); }
-void AFGRampHologram::UpdateZoop(){ }
-void AFGRampHologram::ConstructZoop(TArray<AActor*>& out_children){ }
+void AFGRampHologram::BeginPlay(){ Super::BeginPlay(); }
+bool AFGRampHologram::IsHologramIdenticalToActor(AActor* actor, const FTransform& hologramLocationOffset) const{ return bool(); }
+void AFGRampHologram::CreateZoopInstances(){ Super::CreateZoopInstances(); }
 void AFGRampHologram::SetZoopFromHitresult(const FHitResult& hitResult){ }

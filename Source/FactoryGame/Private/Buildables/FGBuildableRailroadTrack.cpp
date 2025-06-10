@@ -33,12 +33,15 @@ AFGBuildableRailroadTrack::AFGBuildableRailroadTrack() : Super() {
 	this->mMesh = nullptr;
 	this->mMeshLength = 0.0;
 	this->mSplineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComponent"));
+	this->mSplineComponent->SetMobility(EComponentMobility::Static);
 	this->mConnections.Add(CreateDefaultSubobject<UFGRailroadTrackConnectionComponent>(TEXT("TrackConnection0")));
+	this->mConnections[0]->SetMobility(EComponentMobility::Static);
 	this->mConnections.Add(CreateDefaultSubobject<UFGRailroadTrackConnectionComponent>(TEXT("TrackConnection1")));
+	this->mConnections[1]->SetMobility(EComponentMobility::Static);
 	this->mIsOwnedByPlatform = false;
 	this->mTrackGraphID = -1;
 	this->mBlockVisualizationMesh = nullptr;
-	this->mBlockVisualizationMeshLength = 0.0;
+	this->PhysicalMaterial = nullptr;
 	this->mHologramClass = AFGRailroadTrackHologram::StaticClass();
 	this->mSplineComponent->SetupAttachment(RootComponent);
 	this->mConnections[0]->SetupAttachment(RootComponent);
@@ -49,8 +52,8 @@ void AFGBuildableRailroadTrack::GetLifetimeReplicatedProps(TArray<FLifetimePrope
 	DOREPLIFETIME(AFGBuildableRailroadTrack, mSplineData);
 	DOREPLIFETIME(AFGBuildableRailroadTrack, mSignalBlockID);
 }
-void AFGBuildableRailroadTrack::BeginPlay(){ }
-void AFGBuildableRailroadTrack::Destroyed(){ }
+void AFGBuildableRailroadTrack::BeginPlay(){ Super::BeginPlay(); }
+void AFGBuildableRailroadTrack::Destroyed(){ Super::Destroyed(); }
 void AFGBuildableRailroadTrack::Dismantle_Implementation(){ }
 bool AFGBuildableRailroadTrack::CanDismantle_Implementation() const{ return bool(); }
 void AFGBuildableRailroadTrack::GetDismantleDependencies_Implementation(TArray<AActor*>& out_dismantleDependencies) const{ }
@@ -59,7 +62,7 @@ void AFGBuildableRailroadTrack::PostLoadGame_Implementation(int32 saveVersion, i
 int32 AFGBuildableRailroadTrack::GetDismantleRefundReturnsMultiplier() const{ return int32(); }
 void AFGBuildableRailroadTrack::GetClearanceData_Implementation(TArray< FFGClearanceData >& out_data) const{ }
 bool AFGBuildableRailroadTrack::ShouldBlockGuidelinePathForHologram(const  AFGHologram* hologram) const{ return bool(); }
-TArray<FInstanceData> AFGBuildableRailroadTrack::GetActorLightweightInstanceData_Implementation(){ return TArray<FInstanceData>(); }
+TArray<FInstanceData> AFGBuildableRailroadTrack::GetActorLightweightInstanceData_Implementation() const{ return TArray<FInstanceData>(); }
 void AFGBuildableRailroadTrack::ShowBlockVisualization(){ }
 void AFGBuildableRailroadTrack::StopBlockVisualization(){ }
 FRailroadTrackPosition AFGBuildableRailroadTrack::FindTrackPositionClosestToWorldLocation(const FVector& worldLocation){ return FRailroadTrackPosition(); }
@@ -69,7 +72,7 @@ TArray< AFGBuildableRailroadTrack* > AFGBuildableRailroadTrack::Split(AFGBuildab
 UFGPowerConnectionComponent* AFGBuildableRailroadTrack::GetThirdRail() const{ return nullptr; }
 void AFGBuildableRailroadTrack::OnVehicleEntered( AFGRailroadVehicle* vehicle){ }
 void AFGBuildableRailroadTrack::OnVehicleExited( AFGRailroadVehicle* vehicle){ }
-bool AFGBuildableRailroadTrack::IsConnectionOccupied(const  UFGRailroadTrackConnectionComponent* connection, float distance) const{ return bool(); }
+bool AFGBuildableRailroadTrack::IsConnectionOccupied(const  UFGRailroadTrackConnectionComponent* connection, float distance, AFGTrain* ignored) const{ return bool(); }
 bool AFGBuildableRailroadTrack::UpdateOverlappingTracks(){ return bool(); }
 TArray< AFGBuildableRailroadTrack* > AFGBuildableRailroadTrack::GetOverlappingTracks(){ return TArray<AFGBuildableRailroadTrack*>(); }
 void AFGBuildableRailroadTrack::AddOverlappingTrack(AFGBuildableRailroadTrack* track){ }
@@ -78,7 +81,10 @@ UFGConnectionComponent* AFGBuildableRailroadTrack::GetSplineConnection1() const{
 void AFGBuildableRailroadTrack::PostSerializedFromBlueprint(bool isBlueprintWorld){ }
 void AFGBuildableRailroadTrack::UnrotateForBlueprintPlaced(){ }
 void AFGBuildableRailroadTrack::CreateClearanceData( USplineComponent* splineComponent, const TArray< FSplinePointData >& splineData, const FTransform& trackTransform, TArray< FFGClearanceData >& out_clearanceData, float maxDistance){ }
+void AFGBuildableRailroadTrack::GenerateCachedClearanceData(TArray<FFGClearanceData>& out_clearanceData){ }
+void AFGBuildableRailroadTrack::PopulateSplineComponentFromSplinePointsData(){ }
 void AFGBuildableRailroadTrack::SetTrackGraphID(int32 trackGraphID){ }
 void AFGBuildableRailroadTrack::SetSignalBlock(TWeakPtr< FFGRailroadSignalBlock > block){ }
 void AFGBuildableRailroadTrack::SetupConnections(){ }
 void AFGBuildableRailroadTrack::OnRep_SignalBlockID(){ }
+void AFGBuildableRailroadTrack::RegisterTrackWithRailroadSubsystem(){ }

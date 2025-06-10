@@ -7,7 +7,9 @@
 
 AFGInteractableMarker::AFGInteractableMarker() : Super() {
 	this->mIconWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Icon"));
+	this->mIconWidget->SetMobility(EComponentMobility::Movable);
 	this->mSplineMesh = CreateDefaultSubobject<USplineMeshComponent>(TEXT("SplineMesh"));
+	this->mSplineMesh->SetMobility(EComponentMobility::Static);
 	this->mDesiredScreenRadius = 10.0;
 	this->mTrackedActor = nullptr;
 	this->mCachePlayerController = nullptr;
@@ -19,9 +21,10 @@ AFGInteractableMarker::AFGInteractableMarker() : Super() {
 	this->PrimaryActorTick.bAllowTickOnDedicatedServer = true;
 	this->PrimaryActorTick.TickInterval = 0.0;
 	this->RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	this->RootComponent->SetMobility(EComponentMobility::Movable);
 	this->mIconWidget->SetupAttachment(RootComponent);
 	this->mSplineMesh->SetupAttachment(RootComponent);
 }
-void AFGInteractableMarker::Tick(float dt){ }
+void AFGInteractableMarker::Tick(float dt){ Super::Tick(dt); }
 void AFGInteractableMarker::SetTrackedActor( AActor* trackedActor){ }
-void AFGInteractableMarker::BeginPlay(){ }
+void AFGInteractableMarker::BeginPlay(){ Super::BeginPlay(); }

@@ -16,9 +16,10 @@ void AFGTrainStationIdentifier::GetLifetimeReplicatedProps(TArray< FLifetimeProp
 	DOREPLIFETIME(AFGTrainStationIdentifier, mStation);
 	DOREPLIFETIME(AFGTrainStationIdentifier, mTrackGraphID);
 	DOREPLIFETIME(AFGTrainStationIdentifier, mStationName);
+	DOREPLIFETIME(AFGTrainStationIdentifier, mLastEditedBy);
 }
-void AFGTrainStationIdentifier::BeginPlay(){ }
-void AFGTrainStationIdentifier::EndPlay(const EEndPlayReason::Type endPlayReason){ }
+void AFGTrainStationIdentifier::BeginPlay(){ Super::BeginPlay(); }
+void AFGTrainStationIdentifier::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 void AFGTrainStationIdentifier::PreSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 void AFGTrainStationIdentifier::PostSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 void AFGTrainStationIdentifier::PreLoadGame_Implementation(int32 saveVersion, int32 gameVersion){ }
@@ -46,5 +47,6 @@ ECompassViewDistance AFGTrainStationIdentifier::GetActorCompassViewDistance(){ r
 void AFGTrainStationIdentifier::SetActorCompassViewDistance(ECompassViewDistance compassViewDistance){ }
 UMaterialInterface* AFGTrainStationIdentifier::GetActorRepresentationCompassMaterial(){ return nullptr; }
 void AFGTrainStationIdentifier::SetStationName(const FText& text){ }
+void AFGTrainStationIdentifier::SetLastEditedBy(TArray<FLocalUserNetIdBundle> lastEditedBy){ }
 void AFGTrainStationIdentifier::OnRep_StationName(){ }
 void AFGTrainStationIdentifier::OnRep_Station(){ }

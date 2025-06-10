@@ -10,16 +10,18 @@ AFGHookshot::AFGHookshot() : Super() {
 	this->mAccelRate = 0.0;
 	this->mBrakeAccelRate = 0.0;
 	this->mHookshotAudio = CreateDefaultSubobject<UAkComponent>(TEXT("HookshotAudio"));
+	this->mHookshotAudio->SetMobility(EComponentMobility::Movable);
 	this->mEquipmentSlot = EEquipmentSlot::ES_ARMS;
 	this->RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Scene"));
+	this->RootComponent->SetMobility(EComponentMobility::Movable);
 	this->mHookshotAudio->SetupAttachment(RootComponent);
 }
-void AFGHookshot::BeginPlay(){ }
+void AFGHookshot::BeginPlay(){ Super::BeginPlay(); }
 void AFGHookshot::OnPrimaryFirePressed(){ }
 void AFGHookshot::OnSecondaryFirePressed(){ }
 void AFGHookshot::Equip( AFGCharacterPlayer* character){ }
 void AFGHookshot::UnEquip(){ }
-void AFGHookshot::Tick(float deltaTime){ }
+void AFGHookshot::Tick(float deltaTime){ Super::Tick(deltaTime); }
 void AFGHookshot::WireDetach(){ }
 void AFGHookshot::AddEquipmentActionBindings(){ }
 void AFGHookshot::MoveAudioSourceInFrontOfPlayer(){ }

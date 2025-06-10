@@ -44,6 +44,7 @@ AFGWheeledVehicle::AFGWheeledVehicle() : Super() {
 	this->mIsUnloadingVehicle = false;
 	this->mVehicleMovement = CreateDefaultSubobject<UFGWheeledVehicleMovementComponent>(TEXT("MovementComp"));
 	this->mFoliageCollideBox = CreateDefaultSubobject<UBoxComponent>(TEXT("FoliageBox"));
+	this->mFoliageCollideBox->SetMobility(EComponentMobility::Movable);
 	this->mVehicleLightsOn = true;
 	this->mVehicleHonkOn = false;
 	this->mDefaultLockedSprintArmRotation = FRotator::ZeroRotator;
@@ -76,10 +77,10 @@ AFGWheeledVehicle::AFGWheeledVehicle() : Super() {
 	this->mFoliageCollideBox->SetupAttachment(mMesh);
 }
 void AFGWheeledVehicle::PostInitializeComponents(){ Super::PostInitializeComponents(); }
-void AFGWheeledVehicle::BeginPlay(){ }
-void AFGWheeledVehicle::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
-void AFGWheeledVehicle::Destroyed(){ }
-void AFGWheeledVehicle::Tick(float dt){ }
+void AFGWheeledVehicle::BeginPlay(){ Super::BeginPlay(); }
+void AFGWheeledVehicle::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
+void AFGWheeledVehicle::Destroyed(){ Super::Destroyed(); }
+void AFGWheeledVehicle::Tick(float dt){ Super::Tick(dt); }
 void AFGWheeledVehicle::DisplayDebug(UCanvas* canvas, const FDebugDisplayInfo& debugDisplay, float& YL, float& YPos){ }
 bool AFGWheeledVehicle::DriverEnter(AFGCharacterPlayer* driver){ return bool(); }
 bool AFGWheeledVehicle::DriverLeave(bool keepDriving){ return bool(); }
@@ -183,7 +184,7 @@ void AFGWheeledVehicle::Server_ToggleAutoPilot_Implementation(){ }
 void AFGWheeledVehicle::Server_TogglePathVisibility_Implementation(){ }
 void AFGWheeledVehicle::Server_ToggleRecording_Implementation(){ }
 void AFGWheeledVehicle::Server_ClearRecordedPath_Implementation(){ }
-void AFGWheeledVehicle::Server_SavePath_Implementation(const FString& saveName){ }
+void AFGWheeledVehicle::Server_SavePath_Implementation(const FString& saveName, const TArray< FLocalUserNetIdBundle >& lastEditedBy){ }
 void AFGWheeledVehicle::Server_UnsavePath_Implementation(AFGSavedWheeledVehiclePath* path){ }
 void AFGWheeledVehicle::Server_LoadPath_Implementation( AFGDrivingTargetList* targetList){ }
 void AFGWheeledVehicle::FindSavedPaths(const FString& textFilter, bool filterOnVehicleType, TArray< AFGSavedWheeledVehiclePath* >& result) const{ }

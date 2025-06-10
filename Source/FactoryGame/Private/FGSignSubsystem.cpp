@@ -31,9 +31,10 @@ AFGSignSubsystem::AFGSignSubsystem() : Super() {
 	this->PrimaryActorTick.TickInterval = 0.5;
 	this->SetHidden(false);
 	this->RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	this->RootComponent->SetMobility(EComponentMobility::Movable);
 }
-void AFGSignSubsystem::BeginPlay(){ }
-void AFGSignSubsystem::Tick(float DeltaSeconds){ }
+void AFGSignSubsystem::BeginPlay(){ Super::BeginPlay(); }
+void AFGSignSubsystem::Tick(float DeltaSeconds){ Super::Tick(DeltaSeconds); }
 void AFGSignSubsystem::UpdateAndSortPendingSigns(){ }
 void AFGSignSubsystem::AddWidgetSign(AFGBuildableWidgetSign* widgetSign){ }
 void AFGSignSubsystem::RemoveWidgetSign(AFGBuildableWidgetSign* widgetSign){ }
@@ -42,6 +43,7 @@ void AFGSignSubsystem::AddPixelSign(AFGBuildablePixelSign* pixelSign){ }
 void AFGSignSubsystem::RemovePixelSign(AFGBuildablePixelSign* pixelSign){ }
 bool AFGSignSubsystem::DoesSamePresetExists(uint32 GUID, FMappedSignData*& OutData){ return bool(); }
 void AFGSignSubsystem::RegisterNewPreset(AFGBuildableWidgetSign* Sign, uint32 GUID, UWidgetComponent* Widget, UMaterialInstanceDynamic* InMaterial){ }
-void AFGSignSubsystem::SetNewRenderTarget(uint32 GUID, UTextureRenderTarget2D* InRenderTarget, TFunction<void(void)>&& UpdateFunction){ }
+void AFGSignSubsystem::UpdatePresetMaterialInstance(uint32 GUID, const TFunctionRef<void(class UWidgetComponent* InWidgetComponent, UMaterialInstanceDynamic* InMaterialInstance)>& UpdateFunction){ }
 void AFGSignSubsystem::ResolveRemoved(AFGBuildableWidgetSign* Sign, uint32 GUID){ }
+void AFGSignSubsystem::UpdateRelevancy(){ }
 UWidgetComponent* AFGSignSubsystem::GetWidgetByGUID(uint32 GUID){ return nullptr; }

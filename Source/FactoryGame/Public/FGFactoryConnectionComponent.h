@@ -5,6 +5,7 @@
 #include "FactoryGame.h"
 #include "FGConnectionComponent.h"
 #include "FGInventoryComponent.h"
+#include "GameFramework/Actor.h"
 #include "FGFactoryConnectionComponent.generated.h"
 
 // For lazy people. This is used in nearly every BeginPlay of Proxies.
@@ -78,16 +79,19 @@ public:
 	/**
 	 * Set the inventory associated with this connection
 	 */
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|FactoryConnection" )
 	void SetInventory( class UFGInventoryComponent* inventory );
 
 	/**
 	* Sets a specified index for the component to access on its assigned inventory
 	*/
+	UFUNCTION( BlueprintCallable, Category = "FactoryGame|Factory|FactoryConnection" )
 	void SetInventoryAccessIndex( int32 index );
 
 	/**
 	* Gets the inventory access index specified for this factory connection
 	*/
+	UFUNCTION( BlueprintPure, Category = "FactoryGame|Factory|FactoryConnection" )
 	int32 GetInventoryAccessIndex() const { return mInventoryAccessIndex; }
 
 	/**
@@ -141,7 +145,7 @@ public:
 	bool CanSnapTo( UFGFactoryConnectionComponent* otherConnection ) const;
 	
 	/** Check if the given connection can connect to this. */
-	bool CanConnectTo( UFGFactoryConnectionComponent* otherConnection ) const;
+	bool CanConnectTo( const UFGFactoryConnectionComponent* otherConnection ) const;
 
 	/** Accessor for c++ constructors */
 	FORCEINLINE void SetForwardPeekAndGrabToBuildable( bool forwardPeekAndGrab ){ mForwardPeekAndGrabToBuildable = forwardPeekAndGrab; }
@@ -216,19 +220,22 @@ public:
 		float radius,
 		EFactoryConnectionConnector connector,
 		EFactoryConnectionDirection direction,
-		const TArray< TSubclassOf< class AFGBuildable > >& buildableClassFilter = {} );
+		const TArray< TSubclassOf< class AFGBuildable > >& buildableClassFilter = {},
+		const TSet< class UFGFactoryConnectionComponent* >& ignoredConnections = {} );
 
 	/**
 	 * Find all overlapping connections and returns them in a list.
 	 * Filters to not include blocked connections or incompatible connections.
 	 */
 	static int32 FindAllOverlappingConnections(
-		TArray< UFGFactoryConnectionComponent* > out_Connection,
+		TArray< UFGFactoryConnectionComponent* >& out_Connections,
 		UWorld* world,
 		const FVector& location,
 		float radius,
 		EFactoryConnectionConnector connector,
-		EFactoryConnectionDirection direction );
+		EFactoryConnectionDirection direction,
+		const TArray< TSubclassOf< class AFGBuildable > >& buildableClassFilter = {},
+		const TSet< class UFGFactoryConnectionComponent* >& ignoredConnections = {} );
 
 private:
 	/**
@@ -237,7 +244,7 @@ private:
 	 */
 	static UFGFactoryConnectionComponent* CheckIfSnapOnlyIsBlockedByOtherConnection(
 		UFGFactoryConnectionComponent* connectionToCheck,
-		const TArray< FOverlapResult >& potentialBlockers );
+		const TArray< struct FOverlapResult >& potentialBlockers );
 
 protected:
 	/** Physical type of connector used for this connection. */
@@ -245,7 +252,7 @@ protected:
 	EFactoryConnectionConnector mConnector;
 
 	/** Direction for this connection. */
-	UPROPERTY( EditDefaultsOnly, SaveGame, Category = "Connection" )
+	UPROPERTY( EditDefaultsOnly, Category = "Connection" )
 	EFactoryConnectionDirection mDirection;
 
 	/** How long the connector is extending, indicates where the connected conveyor may start turning. */
@@ -261,11 +268,11 @@ protected:
 	bool mHasConnectedComponent;
 
 	/** The inventory of this connection */
-	UPROPERTY( SaveGame )
+	UPROPERTY()
 	class UFGInventoryComponent* mConnectionInventory;
 
 	/** The inventory index utilized by this connection ( -1 for none specified ) */
-	UPROPERTY( SaveGame )
+	UPROPERTY()
 	int32 mInventoryAccessIndex;
 
 	/** Buildable owning us, cached for performance */

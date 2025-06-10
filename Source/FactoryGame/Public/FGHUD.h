@@ -65,8 +65,12 @@ struct FCompassEntry
 	/** True if special effect is visible, special effect will be set to false if time left expires */
 	bool bSpecialEffectVisible{true};
 	float SpecialEffectTime{0.0f};
+	/** This is actually not just text dimensions, but also the glyph sequence for this text */
 	bool bHasCachedTextDimensions{false};
 	FVector2f CachedTextDimensions{ForceInit};
+	/** Current font scaling this glyph sequence has been initialized with. Used to invalidate text dimensions if scaling changes */
+	float CachedRenderedTextScaling{0.0f};
+	TSharedPtr<const FShapedGlyphSequence> CachedShapedGlyphSequence;
 	float CachedDistanceToCamera{0.0f};
 
 	float MaxDrawRange{-1.0f};
@@ -76,6 +80,14 @@ struct FCompassEntry
 	// Should it display the name?
 	UPROPERTY( EditAnywhere, Category = "Compass Entry" )
 	bool bShouldShowName{false};
+
+	// <FL>[KonradA] When updating the Compass elements we also need to recalculate which ones can even be seen by the user due to UGC/Blocklist/Platformholder
+	// restrictions. Keep this here to later pass into the SCompassWidget
+	bool bNeedsUGCCensoring{ false };
+	// Also cache the last edited by that was used for evaluating the bNeedsUGCCensoring so we can react and update the former if the field has been updated instead 
+	// of running the expensive update operation often.
+	TArray< FLocalUserNetIdBundle > CachedLastEditedBy;
+	// </FL>
 
 	/** The representation this compass entry is bound to. Can be NULL in some cases */
 	UPROPERTY()
@@ -256,6 +268,11 @@ public:
 
 	UFUNCTION()
 	void OnActorRepresentationFiltered( ERepresentationType type, bool visible );
+
+	void OnCultureChanged();
+
+	/** Invalidates text dimensions and glyph sequences that have been cached by the compass widget */
+	void InvalidateCachedTextDimensionsAndGlyphs();
 
 	void SetCompassEntryVisibility(UFGActorRepresentation* actorRepresentation, bool visible);
 	void RegisterCardinalCompassDirections();

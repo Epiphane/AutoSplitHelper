@@ -28,14 +28,16 @@ void AFGActorRepresentationManager::GetLifetimeReplicatedProps(TArray<FLifetimeP
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGActorRepresentationManager, mActorRepresentationReplicator);
 }
-void AFGActorRepresentationManager::BeginPlay(){ }
-void AFGActorRepresentationManager::Tick(float DeltaSeconds){ }
+void AFGActorRepresentationManager::BeginPlay(){ Super::BeginPlay(); }
+void AFGActorRepresentationManager::Tick(float DeltaSeconds){ Super::Tick(DeltaSeconds); }
 UFGActorRepresentation* AFGActorRepresentationManager::CreateAndAddNewRepresentation(AActor* realActor, const bool isLocal , TSubclassOf<UFGActorRepresentation> representationClass){ return nullptr; }
 UFGActorRepresentation* AFGActorRepresentationManager::CreateNewRepresentationNoActor(FVector location,  UTexture2D* compassTexture, FLinearColor compassColor, float lifeSpan, bool shouldShowInCompass, bool shouldShowOnMap, ERepresentationType representationType , TSubclassOf<UFGActorRepresentation> representationClass){ return nullptr; }
 UFGActorRepresentation* AFGActorRepresentationManager::CreateAndAddNewRepresentationNoActor(FVector location,  UTexture2D* compassTexture, FLinearColor compassColor, float lifeSpan, bool shouldShowInCompass, bool shouldShowOnMap, ERepresentationType representationType , TSubclassOf<UFGActorRepresentation> representationClass){ return nullptr; }
 void AFGActorRepresentationManager::AddRepresentation( UFGActorRepresentation* actorRepresentation){ }
 bool AFGActorRepresentationManager::UpdateRepresentationOfActor(AActor* realActor){ return bool(); }
 bool AFGActorRepresentationManager::UpdateRepresentation(UFGActorRepresentation* actorRepresentation){ return bool(); }
+void AFGActorRepresentationManager::UpdateRepresentationsOfAllActors(){ }
+void AFGActorRepresentationManager::UpdateRepresentationsOfType(ERepresentationType representationType){ }
 bool AFGActorRepresentationManager::RemoveRepresentationOfActor(AActor* realActor){ return bool(); }
 void AFGActorRepresentationManager::RemoveRepresentation( UFGActorRepresentation* actorRepresentation){ }
 UFGActorRepresentation* AFGActorRepresentationManager::FindActorRepresentation(const AActor* realActor){ return nullptr; }

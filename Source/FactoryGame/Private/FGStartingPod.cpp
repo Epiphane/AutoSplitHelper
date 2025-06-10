@@ -20,6 +20,7 @@ AFGStartingPod::AFGStartingPod() : Super() {
 	this->mActorRepresentationTexture = nullptr;
 	this->mActorRepresentationColor = FLinearColor(0.0, 0.0, 0.0, 0.0);
 	this->mDropPodMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("DropPod Mesh"));
+	this->mDropPodMeshComponent->SetMobility(EComponentMobility::Movable);
 	this->mDropModSkeletalMesh = nullptr;
 	this->mLocalIntroSequenceState = EIntroSequencePlayState::None;
 	this->mCameraModifierLimitFOV = nullptr;
@@ -29,14 +30,15 @@ AFGStartingPod::AFGStartingPod() : Super() {
 	this->mDropPodSpawnLocation = FVector::ZeroVector;
 	this->mCompassMaterialInstance = nullptr;
 	this->RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
+	this->RootComponent->SetMobility(EComponentMobility::Movable);
 	this->mDropPodMeshComponent->SetupAttachment(RootComponent);
 }
 void AFGStartingPod::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGStartingPod, mDropPodSpawnLocation);
 }
-void AFGStartingPod::BeginPlay(){ }
-void AFGStartingPod::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
+void AFGStartingPod::BeginPlay(){ Super::BeginPlay(); }
+void AFGStartingPod::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 FVector AFGStartingPod::GetRefundSpawnLocationAndArea_Implementation(const FVector& aimHitLocation, float& out_radius) const{ return FVector(); }
 bool AFGStartingPod::CanDismantle_Implementation() const{ return bool(); }
 void AFGStartingPod::GetDismantleRefund_Implementation(TArray< FInventoryStack >& out_refund, bool noBuildCostEnabled) const{ }

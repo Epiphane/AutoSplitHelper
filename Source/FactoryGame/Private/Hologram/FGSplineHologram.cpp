@@ -7,6 +7,7 @@
 
 AFGSplineHologram::AFGSplineHologram() : Super() {
 	this->mSplineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("mSplineComponent"));
+	this->mSplineComponent->SetMobility(EComponentMobility::Movable);
 	this->mSplineData.Emplace();
 	this->mSplineData[0].Location = FVector::ZeroVector;
 	this->mSplineData[0].ArriveTangent = FVector((1, 0, 0));
@@ -23,12 +24,12 @@ void AFGSplineHologram::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& 
 	DOREPLIFETIME(AFGSplineHologram, mSplineData);
 	DOREPLIFETIME(AFGSplineHologram, mBuildStep);
 }
-void AFGSplineHologram::BeginPlay(){ }
+void AFGSplineHologram::BeginPlay(){ Super::BeginPlay(); }
 bool AFGSplineHologram::CanNudgeHologram() const{ return bool(); }
 bool AFGSplineHologram::IsConnectionSnapped(bool lastConnection){ return bool(); }
 void AFGSplineHologram::GetLastSplineData(FSplinePointData& data){ }
 void AFGSplineHologram::ResetBuildSteps(){ }
-bool AFGSplineHologram::IsHologramIdenticalToActor(AActor* actor, const FVector& hologramLocationOffset) const{ return bool(); }
+bool AFGSplineHologram::IsHologramIdenticalToActor(AActor* actor, const FTransform& hologramLocationOffset) const{ return bool(); }
 void AFGSplineHologram::OnRep_SplineData(){ }
 void AFGSplineHologram::UpdateSplineComponent(){ }
 void AFGSplineHologram::UpdateClearanceData(){ }

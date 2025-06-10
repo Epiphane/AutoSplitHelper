@@ -10,9 +10,12 @@ AFGJumpPadLauncherHologram::AFGJumpPadLauncherHologram() : Super() {
 	this->mBuildStep = EJumpPadHologramBuildStep::JPHBS_PlacementAndRotation;
 	this->mLaunchAngle = 45;
 	this->mLauncherMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LauncherMeshComponent"));
+	this->mLauncherMeshComponent->SetMobility(EComponentMobility::Movable);
 	this->mSplineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComponent"));
+	this->mSplineComponent->SetMobility(EComponentMobility::Movable);
 	this->mTrajectoryMeshScale = FVector::ZeroVector;
 	this->mDestinationMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DestinationMeshComponent"));
+	this->mDestinationMeshComponent->SetMobility(EComponentMobility::Movable);
 	this->mDestinationMeshHeightOffset = 400.0;
 	this->mTrajectoryMeshSeparationDistance = 200.0;
 	this->mDestinationMeshRotation = FRotator::ZeroRotator;
@@ -25,7 +28,7 @@ void AFGJumpPadLauncherHologram::GetLifetimeReplicatedProps(TArray<FLifetimeProp
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGJumpPadLauncherHologram, mLaunchAngle);
 }
-void AFGJumpPadLauncherHologram::BeginPlay(){ }
+void AFGJumpPadLauncherHologram::BeginPlay(){ Super::BeginPlay(); }
 bool AFGJumpPadLauncherHologram::TrySnapToActor(const FHitResult& hitResult){ return bool(); }
 void AFGJumpPadLauncherHologram::SetHologramLocationAndRotation(const FHitResult& hitResult){ }
 void AFGJumpPadLauncherHologram::ScrollRotate(int32 delta, int32 step){ }

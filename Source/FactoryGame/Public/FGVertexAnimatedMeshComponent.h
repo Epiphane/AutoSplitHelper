@@ -22,6 +22,7 @@
 
 // TODO Add non linear encoding to the textures, we need more once we are further away from 0.
 
+class UFGNotifyBase;
 class UAkAudioEvent;
 struct FCompressedRichCurve;
 class USkeletalMesh;
@@ -49,22 +50,22 @@ struct FVTXAnimationStateEntry
 	GENERATED_BODY()
 
 	/* Chance that this animation state is played.*/
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY( EditAnywhere, Category = "Vertex Animations" )
 	float chance = 1;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY( EditAnywhere, Category = "Vertex Animations" )
 	float AnimationLength = 1;
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY( EditAnywhere, Category = "Vertex Animations" )
 	UMaterialInterface* AnimationMaterialInstance;
-	
-	// Automatically copied from `mEdNotifies` cached as a direct pointer to the class to avoid re-instanced versions of the inline class.
-	UPROPERTY( VisibleDefaultsOnly, Category = "Vertex animimations" )
+
+	UPROPERTY( EditAnywhere, Category = "Vertex Animations", meta = (EditInline, DisplayName = "Notifies") )
 	TArray< UFGNotifyBase* > mNotifiesCDO;
 
 #if WITH_EDITORONLY_DATA
-	UPROPERTY( EditDefaultsOnly, Instanced, Category = "Vertex animimations" )
-	TArray< UFGNotifyBase* > mEdNotifies;
+	/** Deprecated, use Notifies instead */
+	UPROPERTY( Instanced )
+	TArray<UFGNotifyBase*> mEdNotifies_DEPRECATED;
 #endif
 };
 
@@ -134,10 +135,11 @@ public:
 	
 	UFGVertexAnimatedMeshComponent();
 
-	// Begin actor interface.
+	// Begin Actor interface
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	// End
+	virtual void PostLoad() override;
+	// End Actor interface
 
 	// Begin IFGSignificanceInterface
 	virtual void GainedSignificance_Implementation() override;
@@ -155,7 +157,8 @@ public:
 		return FMath::Fmod(( ( WorldTime - StartTime ) * Speed ) + CurrentSequenceDuration, CurrentSequenceDuration);
 	}
 	FORCEINLINE float GetSequenceLength() const { return CurrentSequenceDuration; }
-
+	FORCEINLINE void SetLastTickTime(float AnimationDurationLastTick ) { mTimeLastTime = AnimationDurationLastTick; }
+	FORCEINLINE float GetLastTickTime() const { return mTimeLastTime; }
 	void RandomizeAnimation();
 	
 	/* Called when parent buildable production status changed.*/
@@ -169,7 +172,7 @@ public:
 	void DelayedOverclockingChanged();
 
 	void OnOverclockingChanged(EVTXAnimOverclockState NewState, bool IsSignificant);
-	void UpdateEffectTimeline( const float Dt, const float Dist, const float WorldTime );
+	void UpdateEffectTimeline( const float LastTickTime, const float Dist, const float WorldTime );
 
 	FORCEINLINE void SetWorldTimeLastRandomization(float WorldTime) { mWorldTimeLastRandomization = WorldTime; }
 	FORCEINLINE float GetTimeSinceLastRandomization( const UWorld* World ) const { return World->TimeSince( mWorldTimeLastRandomization ); }
@@ -235,6 +238,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Animation")
 	float mUnderClockedAnimationSpeed = 0.5f;
+
+	UPROPERTY(EditDefaultsOnly,Category="Animation|Wire")
+	uint8 bNeedsSimulationForWires:1 = false;
+	
 	// Begin pre-cached states.
 	/*	Cached on property changed for runtime speed.*/
 	UPROPERTY()
@@ -260,7 +267,7 @@ protected:
 	int8 mCurrentSequence = 0;
 	
 private:
-	UPROPERTY(Transient)
+	UPROPERTY(VisibleInstanceOnly,Transient)
 	USkeletalMeshComponent* mSpawnedWireMeshComponent;
 
 	/*	Current animation state. */
@@ -279,7 +286,8 @@ private:
 	float CurrentSequenceDuration = 0.f;
 
 	float mTimeSinceLastTick = 0.f;
-
+	float mTimeLastTime = 0.f;
+	
 	/* Last world time we randomized the animation selection. */
 	float mWorldTimeLastRandomization = -1;
 
@@ -355,7 +363,7 @@ public:
 	virtual void Deactivate(UFGVertexAnimatedMeshComponent* Owner) const
 	{ }
 	
-	static void TryFireNotify( const float& Distance, const float& AnimDuration, const float& DeltaTime, UFGVertexAnimatedMeshComponent* Owner,const UFGNotifyBase* Entry, bool bForceSeek = false );
+	static void TryFireNotify( const float& Distance, const float& AnimDuration, const float& LastTickTime, UFGVertexAnimatedMeshComponent* Owner,const UFGNotifyBase* Entry, bool bForceSeek = false );
 #if WITH_EDITOR
 	virtual void Compress() {};
 #endif

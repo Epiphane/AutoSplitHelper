@@ -45,6 +45,7 @@ AFGProjectile::AFGProjectile() : Super() {
 	this->mInitialVelocity = FVector::ZeroVector;
 	this->mTraveledDistance = 0.0;
 	this->mCollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
+	this->mCollisionComp->SetMobility(EComponentMobility::Movable);
 	this->mProjectileMovement = CreateDefaultSubobject<UFGProjectileMovementComponent>(TEXT("ProjectileComp"));
 	this->PrimaryActorTick.TickGroup = ETickingGroup::TG_PrePhysics;
 	this->PrimaryActorTick.EndTickGroup = ETickingGroup::TG_PrePhysics;
@@ -58,7 +59,7 @@ AFGProjectile::AFGProjectile() : Super() {
 	this->bReplicateUsingRegisteredSubObjectList = true;
 	this->RootComponent = mCollisionComp;
 }
-void AFGProjectile::Tick(float DeltaSeconds){ }
+void AFGProjectile::Tick(float DeltaSeconds){ Super::Tick(DeltaSeconds); }
 void AFGProjectile::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGProjectile, mProjectileLifespan);

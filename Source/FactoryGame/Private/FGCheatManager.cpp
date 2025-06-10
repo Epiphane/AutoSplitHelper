@@ -3,10 +3,14 @@
 #include "FGCheatManager.h"
 #include "UObject/ObjectSaveContext.h"
 
-FString IFGCheatBoardParameterFilter::GetPrettifiedClassName(UClass* InClass) const{ return FString(); }
-FString IFGCheatBoardParameterFilter::GetPrettifiedAssetName(UObject* InAsset) const{ return FString(); }
-FString FFGCheatBoardParameterFilter_ItemDescriptor::GetPrettifiedClassName(UClass* InClass) const{ return FString(); }
-bool FFGCheatBoardParameterFilter_ItemDescriptor::IsClassFilteredOut(UClass* InClass) const{ return bool(); }
+FString IFGCheatBoardParameterFilter::GetPrettifiedNativeClassName(UClass* InNativeClass) const{ return FString(); }
+FString IFGCheatBoardParameterFilter::GetPrettifiedBlueprintName(const FCheatBoardBlueprintContext& Context) const{ return FString(); }
+FString IFGCheatBoardParameterFilter::GetPrettifiedAssetName(const FAssetData& InAssetData) const{ return FString(); }
+FString FFGCheatBoardParameterFilter_ItemDescriptor::GetPrettifiedNativeClassName(UClass* InNativeClass) const{ return IFGCheatBoardParameterFilter::GetPrettifiedNativeClassName(InNativeClass); }
+bool FFGCheatBoardParameterFilter_ItemDescriptor::IsNativeClassFilteredOut(UClass* InNativeClass) const{ return IFGCheatBoardParameterFilter::IsNativeClassFilteredOut(InNativeClass); }
+FString FFGCheatBoardParameterFilter_ItemDescriptor::GetPrettifiedBlueprintName(const FCheatBoardBlueprintContext& Context) const{ return IFGCheatBoardParameterFilter::GetPrettifiedBlueprintName(Context); }
+bool FFGCheatBoardParameterFilter_ItemDescriptor::IsBlueprintFilteredOut(const FCheatBoardBlueprintContext& Context) const{ return IFGCheatBoardParameterFilter::IsBlueprintFilteredOut(Context); }
+bool FFGCheatBoardParameterFilter_ItemDescriptor::IsExcludedParentClass(const UClass* InNativeParentClass){ return false; }
 void UFGCheatManager::InitCheatManager(){ }
 bool UFGCheatManager::IsSupportedForNetworking() const{ return bool(); }
 int32 UFGCheatManager::GetFunctionCallspace(UFunction* Function, FFrame* Stack){ return int32(); }
@@ -42,6 +46,7 @@ void UFGCheatManager::GiveResourceSinkCoupons(int32 numCoupons){ }
 void UFGCheatManager::EnableCreativeMode(){ }
 void UFGCheatManager::Server_SetCentralStorageUploadSpeed_Implementation(float seconds){ }
 void UFGCheatManager::SetCentralStorageUploadSpeed(float seconds){ }
+void UFGCheatManager::SetMaxDismantleRefundStacks(int32 maxDismantleRefundStacks){  }
 void UFGCheatManager::NoMessages(bool enabled){ }
 bool UFGCheatManager::NoMessages_Get(){ return bool(); }
 void UFGCheatManager::PumpiMode(bool enable){ }
@@ -80,6 +85,8 @@ void UFGCheatManager::RunGameplayTest(TSubclassOf<class UFGGameplayTest> gamepla
 void UFGCheatManager::Server_RunGameplayTest_Implementation(TSubclassOf<class UFGGameplayTest> gameplayTest){ }
 void UFGCheatManager::Server_SetSAMIntensity_Implementation(int32 newSAMIntensity){ }
 void UFGCheatManager::SetSAMIntensity(int32 newSAMIntensity){ }
+void UFGCheatManager::SpawnFallingGiftBundle(){ }
+void UFGCheatManager::Server_SpawnFallingGiftBundle_Implementation(){ }
 void UFGCheatManager::Server_Creature_CanAttackEachother_Implementation(bool canAttack){ }
 void UFGCheatManager::Creature_CanAttackEachother(bool canAttack){ }
 void UFGCheatManager::Creature_SetStressEnabled(bool enable){ }
@@ -209,17 +216,9 @@ void UFGCheatManager::Map_Reveal(){ }
 void UFGCheatManager::NetMulticast_Map_Hide_Implementation(){ }
 void UFGCheatManager::Server_Map_Hide_Implementation(){ }
 void UFGCheatManager::Map_Hide(){ }
-void UFGCheatManager::Photo_ToggleAdvancedPhotoMode(){ }
-void UFGCheatManager::Photo_SetManualFocusDistance(float manualFocusDistance){ }
-void UFGCheatManager::Photo_FocusTrackLookedAtObject(){ }
-void UFGCheatManager::Photo_SetAperture(float aperture){ }
-void UFGCheatManager::Photo_ToggleDebug(){ }
-void UFGCheatManager::Photo_ResetToDefault(){ }
-void UFGCheatManager::Photo_AddCurrentPlayerPosAndRot(){ }
-void UFGCheatManager::Photo_PlaySequence(){ }
-void UFGCheatManager::Photo_ToggleSequencer(){ }
+void UFGCheatManager::Server_ForceFOWUpdate_Implementation(){  }
+void UFGCheatManager::ForceFOWUpdate(){  }
 void UFGCheatManager::Online_TriggerPresenceUpdate(){ }
-void UFGCheatManager::Online_UpdateGameSession(){ }
 void UFGCheatManager::Online_DumpConnectionString(){ }
 void UFGCheatManager::Server_Vehicle_FlipDrivenVehicle_Implementation( AFGWheeledVehicle* vehicle){ }
 void UFGCheatManager::Vehicle_FlipDrivenVehicle(){ }
@@ -237,6 +236,10 @@ void UFGCheatManager::Server_Trains_EmptyAllFreightCars_Implementation(){ }
 void UFGCheatManager::Trains_EmptyAllFreightCars(){ }
 void UFGCheatManager::Server_Trains_RerailAll_Implementation(){ }
 void UFGCheatManager::Trains_RerailAll(){ }
+void UFGCheatManager::Trains_DismantleAll(){ }
+void UFGCheatManager::Trains_ValidateAndFixConnections(){ }
+void UFGCheatManager::Server_Trains_ValidateAndFixConnections_Implementation(){ }
+void UFGCheatManager::Server_Trains_DismantleAll_Implementation(){ }
 void UFGCheatManager::Server_Trains_MarkTrackGraphsAsChanged_Implementation(){ }
 void UFGCheatManager::Trains_MarkTrackGraphsAsChanged(){ }
 void UFGCheatManager::Server_Trains_MarkTrackGraphsForRebuild_Implementation(){ }
@@ -275,8 +278,6 @@ void UFGCheatManager::Server_PurgeInactiveClientsFromSave_Implementation( AFGCha
 void UFGCheatManager::PurgeInactiveClientsFromSave(bool fetchInventories){ }
 void UFGCheatManager::Server_PurgeAllBeaconsFromSave_Implementation(){ }
 void UFGCheatManager::PurgeAllBeaconsFromSave(){ }
-void UFGCheatManager::Server_PurgeDeathMarkersFromSave_Implementation(){ }
-void UFGCheatManager::PurgeDeathMarkersFromSave(){ }
 void UFGCheatManager::Server_PurgeAllTrainState_Implementation(){ }
 void UFGCheatManager::PurgeAllTrainState(){ }
 void UFGCheatManager::Server_ShowFactoryOnly_Implementation(bool environmentHidden){ }
@@ -310,24 +311,19 @@ void UFGCheatManager::DumpUnlockedRecipesAndSchematics(){ }
 void UFGCheatManager::DumpAllAvailableRecipes(){ }
 void UFGCheatManager::DumpGamePhases(){ }
 void UFGCheatManager::DumpPlayerCustomizationData(){ }
+void UFGCheatManager::LogPerInstancePrimitiveDataInfo(){  }
 void UFGCheatManager::Audio_ToggleLandingDebug(){ }
+void UFGCheatManager::Audio_TriggerAkEvent(TSoftObjectPtr<class UAkAudioEvent> EventName){  }
+void UFGCheatManager::Audio_SetGlobalRTPC(TSoftObjectPtr<class UAkRtpc> RtpcObject, float RtpcValue){  }
 void UFGCheatManager::RunHardwareBenchmark(int32 WorkScale , float CPUMultiplier , float GPUMultiplier){ }
 void UFGCheatManager::RandomizeBuildingsColorSlot(uint8 slotIndex){ }
 void UFGCheatManager::ShowSequenceList(){ }
 void UFGCheatManager::HitchNow(float ms){ }
-
-FFGCheatBoardGlobalParameterFilter UFGCheatManager::GlobalParameterFilter_ItemDescriptor() const {
-	return FFGCheatBoardGlobalParameterFilter();
-}
-
-FFGCheatBoardGlobalParameterFilter UFGCheatManager::GlobalParameterFilter_GameplayTest() const {
-	return FFGCheatBoardGlobalParameterFilter();
-}
-
-FFGCheatBoardGlobalParameterFilter UFGCheatManager::GlobalParameterFilter_GamePhase() const {
-	return FFGCheatBoardGlobalParameterFilter();
-}
-
+void UFGCheatManager::SpawnBuildableBlockAtPlayerLocation(TSubclassOf<class UFGRecipe> buildableRecipe, int32 blockSize){  }
+void UFGCheatManager::Server_SpawnBuildableBlockAtPlayerLocation_Implementation(TSubclassOf<class UFGRecipe> buildableRecipe, int32 blockSize){  }
+FFGCheatBoardGlobalParameterFilter UFGCheatManager::GlobalParameterFilter_ItemDescriptor() const{ return FFGCheatBoardGlobalParameterFilter(); }
+FFGCheatBoardGlobalParameterFilter UFGCheatManager::GlobalParameterFilter_GameplayTest() const{ return FFGCheatBoardGlobalParameterFilter(); }
+FFGCheatBoardGlobalParameterFilter UFGCheatManager::GlobalParameterFilter_GamePhase() const{ return FFGCheatBoardGlobalParameterFilter(); }
 void UFGCheatManager::CacheFunctionCategoryMapping(){ }
 bool UFGCheatManager::IsClient() const{ return bool(); }
 UActorComponent* UFGCheatManager::GetOuterPlayersUseComponent() const{ return nullptr; }

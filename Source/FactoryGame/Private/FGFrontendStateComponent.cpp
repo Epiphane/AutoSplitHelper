@@ -6,9 +6,15 @@ UFGFrontendStateComponent::UFGFrontendStateComponent(const FObjectInitializer& O
 	this->mAuthenticationSequence = nullptr;
 	this->mOnlineIntegrationModeModel = nullptr;
 }
-void UFGFrontendStateComponent::BeginPlay(){ }
-void UFGFrontendStateComponent::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
-void UFGFrontendStateComponent::OnOnlineIntegrationModeChanged(EOnlineIntegrationMode mode){ }
+void UFGFrontendStateComponent::BeginPlay(){ Super::BeginPlay(); }
+void UFGFrontendStateComponent::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
+void UFGFrontendStateComponent::BootstrapAuth(){  }
+void UFGFrontendStateComponent::OnOnlineIntegrationModeChanged(EOnlineIntegrationMode mode, bool bInvokedByUser){  }
 void UFGFrontendStateComponent::AuthenticationSequenceComplete(UOnlineAsyncOperation* InAsyncOp){ }
+void UFGFrontendStateComponent::StartConsoleFlow(bool bSuppressErrors){  }
+void UFGFrontendStateComponent::OnPremiumChecked(bool hasPremium){  }
+void UFGFrontendStateComponent::TickCheckInvalidOnlineIntegrationState(){  }
 void UFGFrontendStateComponent::OnlineModeSelectionConfirmed(bool popupConfirmed){ }
 void UFGFrontendStateComponent::TryShowMainScreen(){ }
+void UFGFrontendStateComponent::ShowUGCCommRestrictionDialog(){  }
+void UFGFrontendStateComponent::HandleAppResume(){  }

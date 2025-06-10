@@ -6,12 +6,14 @@
 
 AFGAmbientSoundSpline::AFGAmbientSoundSpline() : Super() {
 	this->mSpline = CreateDefaultSubobject<USplineComponent>(TEXT("Spline"));
+	this->mSpline->SetMobility(EComponentMobility::Static);
 	this->mSoundSpline = CreateDefaultSubobject<UFGSoundSplineComponent>(TEXT("SoundSpline"));
 	this->mSoundSpline->SetupAttachment(mSpline);
+	this->mSoundSpline->SetMobility(EComponentMobility::Static);
 	this->mSignificanceRange = 2000.0;
 }
-void AFGAmbientSoundSpline::BeginPlay(){ }
-void AFGAmbientSoundSpline::EndPlay(const EEndPlayReason::Type endPlayReason){ }
+void AFGAmbientSoundSpline::BeginPlay(){ Super::BeginPlay(); }
+void AFGAmbientSoundSpline::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 void AFGAmbientSoundSpline::GainedSignificance_Implementation(){ }
 void AFGAmbientSoundSpline::LostSignificance_Implementation(){ }
 float AFGAmbientSoundSpline::GetSignificanceRange(){ return float(); }

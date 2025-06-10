@@ -22,10 +22,13 @@ UFGCompassWidget::UFGCompassWidget() : Super() {
 TSharedRef<SWidget> UFGCompassWidget::RebuildWidget(){ return Super::RebuildWidget(); }
 TArray<FCompassEntry>& UFGCompassWidget::GetCompassEntries(){ return *(new TArray<FCompassEntry>); }
 bool UFGCompassWidget::ShouldHideCompass() const{ return bool(); }
+AFGHUD* UFGCompassWidget::GetOwningHUD() const{ return nullptr; }
+void SCompassWidget::Construct(const FArguments& InArgs, const TWeakObjectPtr<UFGCompassWidget>& OwnerCompassWidget){ }
 int32 SCompassWidget::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const{ return int32(); }
 FVector2D SCompassWidget::ComputeDesiredSize(float LayoutScaleMultiplier) const{ return FVector2D(); }
 FChildren* SCompassWidget::GetChildren(){ return nullptr; }
 void SCompassWidget::OnArrangeChildren(const FGeometry& AllottedGeometry, FArrangedChildren& ArrangedChildren) const{ }
 void SCompassWidget::DrawEntry(const FVector2f& RootLocation, const FCompassEntry& Entry, const FGeometry& AllottedGeometry, FSlateWindowElementList& OutDrawElements, int32& LayerId){ }
 void SCompassWidget::DrawEntrySpecialEffect(const FVector2f& RootLocation, const FCompassEntry& Entry, const FGeometry& AllottedGeometry, FSlateWindowElementList& OutDrawElements, int32& LayerId){ }
-void SCompassWidget::UpdateEntryTextMetrics(FCompassEntry& Entry, const FSlateFontInfo& FontInfo){ }
+FVector3f SCompassWidget::CalculateBlurParametersFromStrength(float blurStrength){ return FVector3f(); }
+void SCompassWidget::UpdateEntryTextRenderData(FCompassEntry& Entry, const FSlateFontInfo& FontInfo){ }

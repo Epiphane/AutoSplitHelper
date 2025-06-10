@@ -17,6 +17,9 @@
 #include "Misc/FileHelper.h"
 #include "Serialization/JsonReader.h"
 #include "Serialization/JsonSerializer.h"
+#include "ParseExecCommands.h"
+#include "Patching/BlueprintHookManager.h"
+#include "Patching/WidgetBlueprintHookManager.h"
 
 #ifndef FACTORYGAME_VERSION
 #define FACTORYGAME_VERSION 0
@@ -124,12 +127,6 @@ void FSatisfactoryModLoader::RegisterSubsystems() {
     //Initialize network manager handling mod packets
     UModNetworkHandler::InitializePatches();
 
-    //Initialize tooltip handler (only in non-editor configurations though, because it involves blueprint hooking)
-	if ( !GIsEditor )
-	{
-		UItemTooltipSubsystem::InitializePatches();
-	}
-
     //Register save metadata patch to enable storing a save's mod list and other mod-specified metadata
     FSaveMetadataPatch::Register();
 
@@ -140,6 +137,10 @@ void FSatisfactoryModLoader::RegisterSubsystems() {
 
 	//Register version checker for remote connections
 	FSMLNetworkManager::RegisterMessageTypeAndHandlers();
+
+	// Register static hooks for SCS hook manager if necessary
+	UWidgetBlueprintHookManager::RegisterStaticHooks();
+	UBlueprintHookManager::RegisterStaticHooks();
 }
 
 void FSatisfactoryModLoader::SetupShippingDebuggerSupport()
@@ -215,4 +216,30 @@ void FSatisfactoryModLoader::InitializeModLoading() {
     	RegisterSubsystems();
     }
     UE_LOG(LogSatisfactoryModLoader, Display, TEXT("Initialization finished!"));
+}
+
+void FSatisfactoryModLoader::ParseExecCmds()
+{
+    //ExecCmds is run natively by UE on non-Shipping builds, so we only want to run our reimplementation when in Shipping (in case CSS enables it later)
+#if UE_BUILD_SHIPPING && !(ENABLE_PGO_PROFILE)
+    UE_LOG(LogSatisfactoryModLoader, Display, TEXT("Parsing ExecCmds"));
+    ParseExecCommands::QueueDeferredCommands(ParseExecCommands::ParseExecCmdsFromCommandLine(TEXT("ExecCmds")));
+#endif
+}
+
+bool FSatisfactoryModLoader::IsAssetHookingAllowed()
+{
+#if WITH_EDITOR
+#if SML_ALLOW_PATCHES_IN_EDITOR
+	// Hooking in uncooked environment is allowed if we are not running a commandlet or are running a commandlet with -AllowCommandletHooking
+	// Hooking when cooking is explicitly disallowed, regardless of the argument presence
+	static bool StaticAllowCommandletHooking = FParse::Param(FCommandLine::Get(), TEXT("AllowCommandletHooking"));
+	return !IsRunningCookCommandlet() && (!IsRunningCommandlet() || StaticAllowCommandletHooking);
+#else
+	return false; // If no patches are allowed in the editor, asset hooking is not allowed either
+#endif
+#else
+	// Hooking in cooked builds is always allowed
+	return true;
+#endif
 }

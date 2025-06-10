@@ -11,6 +11,7 @@
 #include "Resources/FGItemDescriptor.h"
 #include "Engine/EngineTypes.h"
 #include "FGWeaponState.h"
+#include "Audio/AudioEventsCache.h"
 #include "FGAmmoType.generated.h"
 
 class AFGWeapon;
@@ -165,7 +166,11 @@ public:
 	FORCEINLINE USkeletalMesh* GetMagazineMesh() const { return mMagazineMesh; }
 
 	UFUNCTION( BlueprintPure, Category="Ammunition" )
-	FORCEINLINE TSubclassOf<UAnimInstance> GetMagazineAnimClass() const { return mMagazineMeshAnimClass; }
+	FORCEINLINE TSubclassOf< class UAnimInstance > GetMagazineAnimClass() const { return mMagazineMeshAnimClass; }
+
+	/** Tobias 2024-11-04: Hacky solution for overriding the idle animation for the snowball ammo. */
+	UFUNCTION( BlueprintPure, Category="Ammunition" )
+	FORCEINLINE class UAnimSequence* GetNobeliskWeaponIdleAnimationOverride() const { return mNobeliskWeaponIdleAnimationOverride; }
 
 	UFUNCTION( BlueprintPure, Category="Ammunition")
 	USkeletalMesh* GetMagazineMeshWithCustomMaterials();
@@ -174,7 +179,7 @@ public:
 	FORCEINLINE TArray<FSkeletalMaterial> GetMagazineMaterials() const { return mMagazineMeshMaterials; }
 
 	UFUNCTION( BlueprintPure, Category="Ammunition")
-	TArray< UMaterialInstance* > GetMagazineMaterials1p() const { return mMagazineMeshMaterials1p; }
+	TArray< class UMaterialInstance* > GetMagazineMaterials1p() const { return mMagazineMeshMaterials1p; }
 
 	UFUNCTION( BlueprintPure, Category="Ammunition" )
 	FORCEINLINE float GetMaxAmmoEffectiveRange() const { return mMaxAmmoEffectiveRange; }
@@ -189,10 +194,10 @@ public:
 	FORCEINLINE FVector GetMuzzleFlashScale() const { return mMuzzleFlashScale; }
 
 	UFUNCTION( BlueprintPure, Category = "Ammunition|FX" )
-	FORCEINLINE TArray<UAkAudioEvent*> GetFiringSounds() const { return mFiringSounds; }
+	FORCEINLINE TArray<TSoftObjectPtr<UAkAudioEvent>> GetFiringSounds() const { return mFiringSounds; }
 
 	UFUNCTION( BlueprintPure, Category = "Ammunition|FX" )
-	FORCEINLINE TArray<UAkAudioEvent*> GetFiringSounds1P() const { return mFiringSounds1P; }
+	FORCEINLINE TArray<TSoftObjectPtr<UAkAudioEvent>> GetFiringSounds1P() const { return mFiringSounds1P; }
 
 	/** Returns reload time multiplier in percent (1 = 100%, 0.5 = 50% time) */
 	UFUNCTION( BlueprintPure, Category="Ammunition|Modifiers" )
@@ -299,7 +304,11 @@ private:
 	USkeletalMesh* mMagazineMesh = nullptr;
  
 	UPROPERTY( EditDefaultsOnly, Category = "Item" )
-	TSubclassOf<UAnimInstance> mMagazineMeshAnimClass = nullptr;
+	TSubclassOf< class UAnimInstance > mMagazineMeshAnimClass = nullptr;
+
+	/** Tobias 2024-11-04: Hacky solution for overriding the idle animation for the snowball ammo. */
+	UPROPERTY( EditDefaultsOnly, Category = "Item" )
+	TObjectPtr< class UAnimSequence > mNobeliskWeaponIdleAnimationOverride;
 
 	UPROPERTY( EditDefaultsOnly, EditFixedSize, Category = "Item" )
 	TArray<FSkeletalMaterial> mMagazineMeshMaterials;
@@ -326,11 +335,14 @@ private:
 	FVector mMuzzleFlashScale = FVector::OneVector;
 
 	UPROPERTY( EditDefaultsOnly, Category = "Ammunition|FX" )
-	TArray<UAkAudioEvent*> mFiringSounds;
+	TArray<TSoftObjectPtr<UAkAudioEvent>> mFiringSounds;
 
 	UPROPERTY( EditDefaultsOnly, Category = "Ammunition|FX" )
-	TArray<UAkAudioEvent*> mFiringSounds1P;
+	TArray<TSoftObjectPtr<UAkAudioEvent>> mFiringSounds1P;
 
+	UPROPERTY( EditDefaultsOnly, Category = "Ammunition|FX" )
+	FAudioEventsCache mAudioEventsCache;
+	
 	/** To set the color of a spawned ammo type. */
 	UPROPERTY( EditDefaultsOnly, Category = "Ammunition|FX" )
 	FLinearColor mAmmoColor = FLinearColor::White;

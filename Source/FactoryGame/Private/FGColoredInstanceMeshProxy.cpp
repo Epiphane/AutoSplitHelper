@@ -16,6 +16,7 @@ UFGColoredInstanceMeshProxy::UFGColoredInstanceMeshProxy() : Super() {
 	this->mBlockInstancing = false;
 	this->mBlockInstancingWithLumen = false;
 	this->mBlockColoring = false;
+	this->mBlockBuildableCustomizationUpdates = false;
 	this->mHasScalabilityMaterial = false;
 	this->mOptimizationCategory = EDistanceCullCategory::FGDDC_NEVERCULL;
 	this->mNumCustomDataFloats = 20;
@@ -28,10 +29,12 @@ UFGColoredInstanceMeshProxy::UFGColoredInstanceMeshProxy() : Super() {
 	this->PrimaryComponentTick.bAllowTickOnDedicatedServer = false;
 	this->PrimaryComponentTick.TickInterval = 0.0;
 }
-void UFGColoredInstanceMeshProxy::BeginPlay(){ }
+void UFGColoredInstanceMeshProxy::BeginPlay(){ Super::BeginPlay(); }
 void UFGColoredInstanceMeshProxy::OnRegister(){ Super::OnRegister(); }
 void UFGColoredInstanceMeshProxy::OnUnregister(){ Super::OnUnregister(); }
 void UFGColoredInstanceMeshProxy::SetCustomizationData(const FFactoryCustomizationData& customizationData){ }
+void UFGColoredInstanceMeshProxy::ApplyCustomizationData(
+	const FResolvedFactoryCustomizationData& resolvedCustomizationData){  }
 void UFGColoredInstanceMeshProxy::SetHasPowerData(float newHasPower){ }
 void UFGColoredInstanceMeshProxy::SetUserDefinedData(TArray<float> userData){ }
 void UFGColoredInstanceMeshProxy::SetInstanced(bool setToInstanced){ }

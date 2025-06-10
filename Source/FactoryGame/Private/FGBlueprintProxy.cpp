@@ -13,11 +13,13 @@ AFGBlueprintProxy::AFGBlueprintProxy() : Super() {
 	this->mLocalBounds = FBox(FVector::ZeroVector, FVector::ZeroVector);
 	this->mBlueprintDescriptor = nullptr;
 	this->mBoundingBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Bounding Box"));
+	this->mBoundingBox->SetMobility(EComponentMobility::Static);
 	this->bReplicates = true;
 	this->RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	this->RootComponent->SetMobility(EComponentMobility::Static);
 	this->mBoundingBox->SetupAttachment(RootComponent);
 }
-void AFGBlueprintProxy::BeginPlay(){ }
+void AFGBlueprintProxy::BeginPlay(){ Super::BeginPlay(); }
 void AFGBlueprintProxy::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGBlueprintProxy, mBlueprintName);
@@ -25,11 +27,13 @@ void AFGBlueprintProxy::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& 
 	DOREPLIFETIME(AFGBlueprintProxy, mBuildables);
 	DOREPLIFETIME(AFGBlueprintProxy, mLightweightClassAndIndices);
 }
-void AFGBlueprintProxy::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
+void AFGBlueprintProxy::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 void AFGBlueprintProxy::RegisterBuildable( AFGBuildable* buildable){ }
+void AFGBlueprintProxy::ValidateExistanceOtherwiseSelfDestruct(){  }
 void AFGBlueprintProxy::RegisterLightweightInstance(TSubclassOf<  AFGBuildable > buildableClass, int32 index){ }
 void AFGBlueprintProxy::UnregisterBuildable( AFGBuildable* buildable){ }
 void AFGBlueprintProxy::UnregisterLightweightInstance(TSubclassOf<  AFGBuildable > buildableClass, int32 index){ }
+bool AFGBlueprintProxy::AreProxyBuildingsRegisteredAndValid() const{ return false; }
 int32 AFGBlueprintProxy::CollectBuildables(TArray<  AFGBuildable* >& out_buildables) const{ return int32(); }
 UFGBlueprintDescriptor* AFGBlueprintProxy::GetBlueprintDescriptor() const{ return nullptr; }
 void AFGBlueprintProxy::PreSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }

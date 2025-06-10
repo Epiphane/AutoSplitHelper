@@ -15,6 +15,7 @@ USessionMigrationSequence* UCommonSessionSubsystem::CreateSessionCreationSequenc
 USessionMigrationSequence* UCommonSessionSubsystem::CreateSessionJoiningSequence(const FSessionJoinParams& JoinParams){ return nullptr; }
 TFuture<USessionInformation*> UCommonSessionSubsystem::FetchFriendSession(UOnlineFriend* Friend, UOnlineIntegrationBackend* Backend){ return TFuture<USessionInformation*>(); }
 UE::Online::TOnlineResult<UE::Online::FGetSessionByName> UCommonSessionSubsystem::GetSessionByName(UE::Online::FGetSessionByName::Params&& Params, UOnlineIntegrationBackend* Backend){ return UE::Online::TOnlineResult<UE::Online::FGetSessionByName>({TSharedPtr<UE::Online::ISession>().ToSharedRef()}); }
+bool UCommonSessionSubsystem::IsProviderNameSupported(const FString& ProviderName){ return bool(); }
 UE::Online::FOnlineSessionId UCommonSessionSubsystem::MakeOnlineSessionId(const FString& SessionIdString){ return UE::Online::FOnlineSessionId(); }
 FString UCommonSessionSubsystem::OnlineSessionIdToString(UE::Online::FOnlineSessionId SessionId){ return FString(); }
 FString UCommonSessionSubsystem::ToString_OnlineSessionBackendLink(UOnlineSessionBackendLink* SessionBackendLink){ return FString(); }
@@ -28,9 +29,10 @@ TSharedPtr<const UE::Online::ISession> UCommonSessionSubsystem::GetSession(const
 void UCommonSessionSubsystem::JoinStartupSession(ULocalUserInfo* LocalUserInfo, FName SessionName){ }
 const TArray<FNetDriverDefinition>& UCommonSessionSubsystem::GetDefaultNetDriverDefinitions() const{ return *(new TArray<FNetDriverDefinition>); }
 void UCommonSessionSubsystem::SetPendingJoinRequest(const UE::Online::FUISessionJoinRequested& JoinRequest){ }
+bool UCommonSessionSubsystem::HasPendingJoinRequest() const{ return false; }
 void UCommonSessionSubsystem::RegisterSessionBackendMapping(UE::Online::FOnlineSessionId OnlineSessionId, UOnlineSessionBackendLink* SessionBackend){ }
-TFuture<USessionInformation*> UCommonSessionSubsystem::ResolveOnlineSession(ULocalUserInfo* LocalUser, UOnlineSessionBackendLink* BackendLink){ return TFuture<USessionInformation*>(); }
-TFuture<USessionInformation*> UCommonSessionSubsystem::ResolveOnlineSession(ULocalUserInfo* LocalUser, UE::Online::FOnlineSessionId SessionId){ return TFuture<USessionInformation*>(); }
+TFuture<USessionInformation*> UCommonSessionSubsystem::ResolveOnlineSession(ULocalUserInfo* LocalUser, UOnlineSessionBackendLink* BackendLink, TArray<FName> IgnorePlatformBackends, bool bForceSessionRequery, bool bSupressErrorDispatcher){ return TFuture<USessionInformation*>(); }
+TFuture<USessionInformation*> UCommonSessionSubsystem::ResolveOnlineSession(ULocalUserInfo* LocalUser, UE::Online::FOnlineSessionId SessionId, TArray<FName> IgnorePlatformBackends, bool bForceSessionRequery, bool bSupressErrorDispatcher){ return TFuture<USessionInformation*>(); }
 UOnlineSessionBackendLink* UCommonSessionSubsystem::FindOrCreateSessionBackendLink(UE::Online::FOnlineSessionId SessionId){ return nullptr; }
 UOnlineSessionBackendLink* UCommonSessionSubsystem::CreateSessionBackendLink(UE::Online::FOnlineSessionId SessionId){ return nullptr; }
 UOnlineSessionBackendLink* UCommonSessionSubsystem::FindSessionBackendLink(UE::Online::FOnlineSessionId SessionId){ return nullptr; }
@@ -47,7 +49,9 @@ void UCommonSessionSubsystem::TravelLocalSessionFailure(UWorld* World, ETravelFa
 void UCommonSessionSubsystem::HandlePostLoadMap(UWorld* World){ }
 void UCommonSessionSubsystem::BindDelegates(){ }
 UE::Online::ISessionsPtr UCommonSessionSubsystem::GetSessionsInterface(UOnlineIntegrationBackend* InBackend) const{ return MakeShareable<UE::Online::FSessionsCommon>(nullptr); }
+TFuture<UE::Online::TOnlineResult<UE::Online::FFindSessions>> UCommonSessionSubsystem::AddFindSessionsRequest(UE::Online::ISessionsPtr SessionsPtr, UE::Online::FFindSessions::Params&& Params){ return TFuture<UE::Online::TOnlineResult<UE::Online::FFindSessions>>(); }
 void UCommonSessionSubsystem::UpdatePresencePostLoadMap(const UWorld* World) const{ }
+void UCommonSessionSubsystem::UpdatePresence() const{ }
 USessionMigrationSequence* UCommonSessionStatics::JoinSession(APlayerController* PlayerController, USessionInformation* SessionInfo){ return nullptr; }
 USessionDefinition* UCommonSessionStatics::GetSessionDefinitionForWorld(const UWorld* World) { return nullptr; }
 void UCommonSessionStatics::CombineOptionsToString(FString& OutCombinedString, const TMap<FString, FString> &Options){ }

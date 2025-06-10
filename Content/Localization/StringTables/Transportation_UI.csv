@@ -66,7 +66,7 @@
 #transportation"
 "Drones/DronePort/MainTab/Status/CannotUnload","Cannot Unload","","","UI","#interface
 #transportation"
-"Drones/DronePort/MainTab/Status/Charging","Charging","","","UI","#interface
+"Drones/DronePort/MainTab/Status/Charging","Refueling","","","UI","#interface
 #transportation"
 "Drones/DronePort/MainTab/Status/Docked","Docked","","","UI","#interface
 #transportation"
@@ -113,9 +113,9 @@
 #transportation"
 "Drones/DronePort/MainTab/TripCost/Pattern","{trip_cost_in_fuel} per trip","","{trip_cost_in_fuel} = number, battery consumption","UI","#interface
 #transportation"
-"Drones/DronePort/MapText/BatteryConsumption/Pattern","Battery Consumption: <OrangeSmall>{amount} per minute</>","","{amount} = number, battery consumption","UI","#interface
+"Drones/DronePort/MapText/BatteryConsumption/Pattern","Fuel Consumption: <OrangeSmall>{amount} per minute</>","","{amount} = number, battery consumption","UI","#interface
 #transportation"
-"Drones/DronePort/MapText/BatteryConsumption/Unknown","Battery Consumption: <OrangeSmall>N/A</>","","","UI","#interface
+"Drones/DronePort/MapText/BatteryConsumption/Unknown","Fuel Consumption: <OrangeSmall>N/A</>","","","UI","#interface
 #transportation"
 "Drones/DronePort/MapText/DroneStatus/Pattern","Drone Status: <OrangeSmall>{Status}</>","Drone screen","{Status} = text","UI","#interface
 #transportation"
@@ -143,7 +143,7 @@
 #transportation"
 "Drones/DronePort/ThisPortTab/ThisPort/Status","Status","","","UI","#interface
 #transportation"
-"Drones/DronePort/ThisPortTab/Tooltip/BatteryConsumption","Battery Consumption:","","","UI","#interface
+"Drones/DronePort/ThisPortTab/Tooltip/BatteryConsumption","Fuel Consumption:","","","UI","#interface
 #transportation"
 "Drones/DronePort/ThisPortTab/Tooltip/BatteryConsumption/Pattern","{float_number_of_batteries} per minute","","{float_number_of_batteries} = number, number of batteries","UI","#buildable
 #transportation"
@@ -164,6 +164,8 @@
 #transportation"
 "Equipment/FactoryCart/LookAtDescription/Enter/Pattern","Press {BUTTON} to enter Factory Cart™","","{BUTTON} = text, key name","UI","#interface
 #transportation"
+"Equipment/FactoryCart/LookAtDescription/OpenInventory/Pattern","Press {BUTTON} to open Factory Cart™ Inventory","","{BUTTON} = text, key name","UI","#interface
+#transportation"
 "Equipment/FactoryCart/LookAtDescription/PickUp","Pick Up Factory Cart™","","","UI","#interface
 #transportation"
 "Equipment/FactoryCart/WorkBench/LookAtDescription/Open/Pattern","Press [{BUTTON}] to open Crafting Bench","","{BUTTON} = text, key name","UI","#interface
@@ -177,10 +179,10 @@
 "Portals/Name/TextBoxHint","Enter Name...","","","UI","Portal"
 "Portals/Portals/Available","Available Portals","","","UI","Portal"
 "Portals/Portals/Current","This Portal","","","UI","Portal"
-"Portals/Portals/List/CurrentLiked","Current Linked Portal","","","UI","Portal"
+"Portals/Portals/List/CurrentLiked","Currently Linked Portal","","","UI","Portal"
 "Portals/Portals/List/Invalid","Invalid","","","UI","Portal"
 "Portals/Portals/List/LinkedWithDifferentPortal","Linked with different Portal","","","UI","Portal"
-"Portals/Portals/List/NotMasterPortal","Not a Master Portal","","","UI","Portal"
+"Portals/Portals/List/NotMasterPortal","Not a Main Portal","","","UI","Portal"
 "Portals/Portals/List/NotPowered","Not powered","","","UI","Portal"
 "Portals/Portals/List/NotSatellitePortal","Not a Satellite Portal","","","UI","Portal"
 "Portals/Portals/Unavailable","Unavailable Portals","","","UI","Portal"
@@ -216,7 +218,7 @@ Fuel Info"
 <OrangeSmall>{TransferRateText}</>","Train Station screen","{TransferRateText} = number","UI","#interface
 #transportation"
 "Trains/DockingStation/IncomingTransferRateItemsPerMinute/Fluid/Pattern","<WhiteSmall>Incoming Transfer Rate:</>
-<OrangeSmall>{TransferRateText} items per minute</>","","{TransferRateText} = number","UI","#interface
+<OrangeSmall>{TransferRateText} m³ per minute</>","","{TransferRateText} = number","UI","#interface
 #transportation"
 "Trains/DockingStation/IncomingTransferRateItemsPerMinute/Pattern","<WhiteSmall>Incoming Transfer Rate:</>
 <OrangeSmall>{TransferRateText} items per minute</>","Train Station screen","{TransferRateText} = number","UI","#interface
@@ -360,6 +362,10 @@ Fuel Info"
 #transportation"
 "Trains/Locomotive/TimeTable/Edit/NextStation","Next Station","","","UI","#interface
 #transportation"
+"Trains/Locomotive/TimeTable/Prompt/Description","You have unsaved changes in the Timetable. Closing will revert those changes.
+
+Are you sure you wish to close?","","","",""
+"Trains/Locomotive/TimeTable/Prompt/Title","Unsaved Changes","","","",""
 "Trains/Locomotive/TimeTable/Setup/AvailableStation","Available Stations","","","UI","#interface
 #transportation"
 "Trains/Locomotive/TimeTable/Setup/AvailableStation/Search/TextBoxHint","Search for a station...","","","UI","#interface
@@ -430,7 +436,7 @@ Fuel Info"
 #transportation"
 "Trains/TrainStation/Name/TextBoxHint","Enter Name...","","","UI","#interface
 #transportation"
-"Trains/TrainStation/NextStop","Next Stop: ","","","UI","#interface
+"Trains/TrainStation/NextStop","Next Stop:","","","UI","#interface
 #transportation"
 "Trains/TrainStation/Notifications/01","Please mind the gap between the train and the platform.","","","UI","#interface
 #transportation"
@@ -540,7 +546,7 @@ Common Vehicles Tooltips"
 #transportation"
 "Vehicles/RecordMenu/AutopilotOn/Button","Enable Autopilot","Record menu that the player see when you enter a vehicle","","UI","#interface
 #transportation"
-"Vehicles/RecordMenu/HUD/Autopilot","Autopilot: ","Record menu that the player see when you enter a vehicle","","UI","Common Vehicles Tooltips"
+"Vehicles/RecordMenu/HUD/Autopilot","Autopilot:","Record menu that the player see when you enter a vehicle","","UI","Common Vehicles Tooltips"
 "Vehicles/RecordMenu/HUD/Speed","Speed","Record menu that the player see when you enter a vehicle","","UI","Common Vehicles Tooltips"
 "Vehicles/RecordMenu/HUD/Speed/Variable","KM/H","Record menu that the player see when you enter a vehicle","","UI","Common Vehicles Tooltips"
 "Vehicles/RecordMenu/HUD/VehiclePath","Vehicle Path","Record menu that the player see when you enter a vehicle","","UI","Common Vehicles Tooltips"
@@ -564,6 +570,7 @@ Common Vehicles Tooltips"
 {fuel_name} = text, fuel type","UI","Common Vehicles Tooltips"
 "Vehicles/RecordMenu/Path/FuelPerTrip","Fuel per Trip","Record menu that the player see when you enter a vehicle","","UI","Common Vehicles Tooltips"
 "Vehicles/RecordMenu/Path/FuelPerTrip/NoFuel","No Fuel","Record menu that the player see when you enter a vehicle","","UI","Common Vehicles Tooltips"
+"Vehicles/RecordMenu/Path/LastEditedBy","Last Edited By","Record menu that the player see when you enter a vehicle","","",""
 "Vehicles/RecordMenu/Path/Legnth","Path Length","Record menu that the player see when you enter a vehicle","","UI","Common Vehicles Tooltips"
 "Vehicles/RecordMenu/Path/Length/Pattern","{path_length} m","Record menu that the player see when you enter a vehicle","{path_length} = number, path length","UI","#buildable
 #transportation"

@@ -34,11 +34,13 @@ public:
 	virtual void ScrollRotate( int32 delta, int32 step ) override;
 	virtual AActor* GetUpgradedActor() const override;
 	virtual bool TryUpgrade( const FHitResult& hitResult ) override;
+	virtual bool ShouldBuildGunHitWireMeshes() const override;
 	virtual void CheckBlueprintCommingling() override;
 	virtual float GetBuildGunRangeOverride_Implementation() const override;
-	virtual void PostHologramPlacement( const FHitResult& hitResult ) override;
+	virtual void PostHologramPlacement( const FHitResult& hitResult, bool callForChildren ) override;
 	virtual bool CanNudgeHologram() const override;
 	virtual AFGHologram* GetNudgeHologramTarget() override;
+	virtual bool IsHologramIdenticalToActor(AActor* actor, const FTransform& hologramTransform) const override { return false; }
 	// End AFGHologram Interface
 
 	// Begin AFGBuildableHologram Interface
@@ -64,7 +66,7 @@ protected:
 
 	// Begin AFGHologram Interface
 	virtual void CheckValidPlacement() override;
-	virtual void CheckClearance( const FVector& locationOffset ) override;
+	virtual void CheckClearance() override;
 	virtual uint8 GetStencilForHologramMaterialState( EHologramMaterialState state ) const override;
 	// End AFGHologram Interface
 

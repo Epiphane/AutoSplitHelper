@@ -11,6 +11,7 @@ AFGResourceDeposit::AFGResourceDeposit() : Super() {
 	this->mIsEmptied = false;
 	this->mHasInitializedVisuals = false;
 	this->mDepositMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DepositMesh"));
+	this->mDepositMeshComponent->SetMobility(EComponentMobility::Movable);
 	this->mOverrideResourceClass = nullptr;
 	this->mCanBeRadioactive = true;
 	this->mCanPlaceResourceExtractor = false;
@@ -24,7 +25,7 @@ void AFGResourceDeposit::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 	DOREPLIFETIME(AFGResourceDeposit, mMineAmount);
 }
 void AFGResourceDeposit::PostLoad(){ Super::PostLoad(); }
-void AFGResourceDeposit::BeginPlay(){ }
+void AFGResourceDeposit::BeginPlay(){ Super::BeginPlay(); }
 void AFGResourceDeposit::RollResourceType(){ }
 void AFGResourceDeposit::TrySetDesiredResourceType(){ }
 void AFGResourceDeposit::SetupResourceInfo(){ }

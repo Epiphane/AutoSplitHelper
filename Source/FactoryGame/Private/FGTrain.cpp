@@ -68,6 +68,7 @@ AFGTrain::AFGTrain() : Super() {
 	this->bAlwaysRelevant = true;
 	this->bReplicates = true;
 	this->RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	this->RootComponent->SetMobility(EComponentMobility::Static);
 }
 void AFGTrain::Initialize( AFGRailroadVehicle* firstVehicle,  AFGRailroadVehicle* lastVehicle){ }
 void AFGTrain::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
@@ -83,12 +84,13 @@ void AFGTrain::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifeti
 	DOREPLIFETIME(AFGTrain, mDockingState);
 	DOREPLIFETIME(AFGTrain, mDockedAtStation);
 	DOREPLIFETIME(AFGTrain, mIsDerailed);
+	DOREPLIFETIME(AFGTrain, mLastEditedBy);
 	DOREPLIFETIME(AFGTrain, mTrainReplicationActor);
 }
-void AFGTrain::Tick(float dt){ }
-void AFGTrain::BeginPlay(){ }
-void AFGTrain::Destroyed(){ }
-void AFGTrain::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
+void AFGTrain::Tick(float dt){ Super::Tick(dt); }
+void AFGTrain::BeginPlay(){ Super::BeginPlay(); }
+void AFGTrain::Destroyed(){ Super::Destroyed(); }
+void AFGTrain::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 bool AFGTrain::IsLevelBoundsRelevant() const{ return bool(); }
 void AFGTrain::PreSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 void AFGTrain::PostSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }
@@ -102,8 +104,6 @@ void AFGTrain::TickSelfDriving(float dt){ }
 void AFGTrain::TickPlayerDriving(float dt){ }
 void AFGTrain::GainedSignificance_Implementation(){ }
 void AFGTrain::LostSignificance_Implementation(){ }
-void AFGTrain::GainedSignificance_Native(){ }
-void AFGTrain::LostSignificance_Native(){ }
 float AFGTrain::GetSignificanceRange(){ return float(); }
 bool AFGTrain::AddAsRepresentation(){ return bool(); }
 bool AFGTrain::UpdateRepresentation(){ return bool(); }
@@ -183,3 +183,4 @@ void AFGTrain::OnRep_TrainStatus(){ }
 void AFGTrain::OnRep_MultipleUnitMaster(){ }
 void AFGTrain::OnRep_TrainReplicationActor(){ }
 void AFGTrain::Cheat_Teleport( AFGBuildableRailroadStation* station){ }
+void AFGTrain::SetLastEditedBy(TArray<FLocalUserNetIdBundle> lastEditedBy){ }

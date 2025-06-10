@@ -7,10 +7,10 @@ UFGGameUI::UFGGameUI(const FObjectInitializer& ObjectInitializer) : Super(Object
 	this->mActiveAudioMessage = nullptr;
 	this->mControllerDragWidget = nullptr;
 }
-void UFGGameUI::NativeConstruct(){ }
+void UFGGameUI::NativeConstruct(){ Super::NativeConstruct(); }
 void UFGGameUI::ReleaseSlateResources(bool bReleaseChildren){ Super::ReleaseSlateResources(bReleaseChildren); }
 void UFGGameUI::PopAllWidgets_Implementation(){ }
-void UFGGameUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime){ }
+void UFGGameUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime){ Super::NativeTick(MyGeometry, InDeltaTime); }
 UFGInteractWidget* UFGGameUI::GetInteractWidgetOfClass(TSubclassOf< UFGInteractWidget > interactWidgetClass) const{ return nullptr; }
 void UFGGameUI::GetInteractWidgetsOfInteractObject(const UObject* InteractObject, TArray<UFGInteractWidget*>& OutInteractWidgets) const{ }
 bool UFGGameUI::ContainsInteractWidgetOfClass(TSubclassOf< UFGInteractWidget > interactWidgetClass) const{ return bool(); }
@@ -28,6 +28,8 @@ UFGInteractWidget* UFGGameUI::FindWidgetByClass(TSubclassOf<UFGInteractWidget> w
 void UFGGameUI::ResumeGame(){ }
 void UFGGameUI::Native_OnFactoryClipboardCopied(UObject* object,  UFGFactoryClipboardSettings* factoryClipboardSettings){ }
 void UFGGameUI::Native_OnFactoryClipboardPasted(UObject* object,  UFGFactoryClipboardSettings* factoryClipboardSettings){ }
+float UFGGameUI::GetBarkMessageCooldown(TSubclassOf<class UFGBarkMessageType> barkMessageType) const{ return 0; }
+void UFGGameUI::ClearBarkMessageCooldown(TSubclassOf<class UFGBarkMessageType> barkMessageType){  }
 UUserWidget* UFGGameUI::RequestWidget(TSubclassOf< UUserWidget > widgetClass){ return nullptr; }
 void UFGGameUI::ReleaseWidget(UUserWidget* widgetToRelease){ }
 void UFGGameUI::SetControllerDragWidget( UFGControllerDragWidget* widget){ }

@@ -11,6 +11,8 @@
 #include "FGBuildGunPaint.generated.h"
 
 
+struct FInstanceData;
+
 UENUM( BlueprintType )
 enum class EPaintMode : uint8
 {
@@ -49,15 +51,17 @@ public:
 	virtual bool CanSampleCustomizations() const override;
 	// End UFGBuildGunState
 
-	// Stencil Previews
-	void CreateStencilProxy( AActor* selected );
-	void DestroyStencilProxies( bool destroyComponents );
-
 	UFUNCTION( Server, Unreliable )
 	void Server_ExecutePrimaryFire();
 
 	UFUNCTION( Server, Reliable )
 	void Server_ExecutePaint( uint8 mode, FFactoryCustomizationData customizationData, AActor* hitActor );
+
+	UFUNCTION( Server, Reliable )
+	void Server_SetCustomizeClassFilter( TSubclassOf<AActor> actorToFilter );
+
+	UFUNCTION( Server, Reliable )
+	void Server_SetActiveRecipe( TSubclassOf< UFGCustomizationRecipe > customizationRecipe );
 
 	/** Start - Remove all these */
 	UFUNCTION( BlueprintCallable, Category = "FactoryGame|BuildGunPaint" )
@@ -88,6 +92,8 @@ public:
 	/** Sets the current class filters for customizing. */
 	UFUNCTION( BlueprintCallable, Category = "FactoryGame|BuildGunPaint" )
 	void SetCustomizeClassFilter( AActor* actorToFilter );
+	void SetCustomizeClassFilter_Internal( TSubclassOf< AActor > actorClass, TSubclassOf< UFGItemDescriptor > itemDesc );
+	
 
 	/** Return the currently active Color Descriptor */
 	UFUNCTION( BlueprintPure, Category = "FactoryGame|BuildGunPaint" )
@@ -142,6 +148,7 @@ public:
 	
 	/** Sets up components for the preview actor*/
 	USceneComponent* SetupComponent( USceneComponent* attachParent, UActorComponent* componentTemplate, const FName& componentName, const FName& attachSocketName );
+	USceneComponent* SetupAbstractInstanceComponent( USceneComponent* attachParent, const FInstanceData& instanceData );
 
 	//////////////////////////////////////////////////////////////////////////
 	/// Blueprint Events

@@ -8,10 +8,13 @@
 
 AFGObjectScanner::AFGObjectScanner() : Super() {
 	this->mScannerSkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ScannerSkeletalMesh"));
+	this->mScannerSkeletalMesh->SetMobility(EComponentMobility::Movable);
 	this->mBeepDelayMax = 1.5;
 	this->mBeepDelayMin = 0.2;
 	this->mDetectionRange = 500.0;
 	this->mUpdateClosestObjectTime = 2.0;
+	this->mClosestObject.Actor = nullptr;
+	this->mClosestObject.ActorLocation = FVector::ZeroVector;
 	this->mClosestObjectInScanRange = false;
 	this->mNormalizedDistanceToClosestObject = 0.0;
 	this->mAngleToClosestObject = 0.0;
@@ -25,10 +28,11 @@ AFGObjectScanner::AFGObjectScanner() : Super() {
 	this->mEquipmentSlot = EEquipmentSlot::ES_ARMS;
 	this->mArmAnimation = EArmEquipment::AE_ObjectScanner;
 	this->RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	this->RootComponent->SetMobility(EComponentMobility::Movable);
 	this->mScannerSkeletalMesh->SetupAttachment(RootComponent);
 }
-void AFGObjectScanner::BeginPlay(){ }
-void AFGObjectScanner::Tick(float deltaTime){ }
+void AFGObjectScanner::BeginPlay(){ Super::BeginPlay(); }
+void AFGObjectScanner::Tick(float deltaTime){ Super::Tick(deltaTime); }
 void AFGObjectScanner::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGObjectScanner, mClosestObject);

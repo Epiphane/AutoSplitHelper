@@ -33,6 +33,8 @@ public:
 	virtual bool ShouldBeConsideredForBase_Implementation() override;
 	virtual void GetClearanceData_Implementation( TArray< FFGClearanceData >& out_data ) const override;
 	virtual bool ShouldBlockGuidelinePathForHologram( const class AFGHologram* hologram ) const override;
+	virtual void OnSkinCustomizationApplied_Implementation( TSubclassOf<UFGFactoryCustomizationDescriptor_Skin> skin ) override;
+	virtual void ApplyCustomizationData_Native( const FFactoryCustomizationData& customizationData ) override;
 	// End Buildable interface
 
 	// Begin IFGDismantleInterface
@@ -41,15 +43,13 @@ public:
 	// End IFGDismantleInterface
 
 	// Begin abstract instance interface.
-	virtual TArray<FInstanceData> GetActorLightweightInstanceData_Implementation() override;
+	virtual TArray<FInstanceData> GetActorLightweightInstanceData_Implementation() const override;
 	virtual bool DoesContainLightweightInstances_Native() const override { return true; }
 	// End
 	
 	// Begin IFGSignificance Interface
 	virtual void GainedSignificance_Implementation() override;
 	virtual void LostSignificance_Implementation() override;
-	virtual void GainedSignificance_Native() override;				// TODO deprecate
-	virtual void LostSignificance_Native() override;				// TODO deprecate				
 	virtual	void SetupForSignificance() override;					// TODO deprecate		
 
 	virtual float GetSignificanceRange() override;
@@ -69,6 +69,8 @@ public:
 	virtual float FindOffsetClosestToLocation( const FVector& location ) const;
 	virtual void GetLocationAndDirectionAtOffset( float offset, FVector& out_location, FVector& out_direction ) const;
 
+	virtual TArray<FInstanceData> SetupAbstractInstances(const FFactoryCustomizationData& CustomizationData);
+	
 	// Begin IFGSplineBuildableInterface
 	virtual UFGConnectionComponent* GetSplineConnection0() const override;
 	virtual UFGConnectionComponent* GetSplineConnection1() const override;

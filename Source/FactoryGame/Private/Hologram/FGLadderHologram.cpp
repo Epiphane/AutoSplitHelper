@@ -13,6 +13,7 @@ AFGLadderHologram::AFGLadderHologram() : Super() {
 	this->mCanDragDown = true;
 	this->mCanDragUp = true;
 	this->mInstancedMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Instanced Mesh Component"));
+	this->mInstancedMeshComponent->SetMobility(EComponentMobility::Movable);
 	this->mBuildStep = ELadderHologramBuildStep::LHBS_SnapToActor;
 	this->mInstancedMeshComponent->SetupAttachment(RootComponent);
 }
@@ -21,12 +22,11 @@ void AFGLadderHologram::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& 
 	DOREPLIFETIME(AFGLadderHologram, mTargetSegmentHeight);
 	DOREPLIFETIME(AFGLadderHologram, mBuildStep);
 }
-void AFGLadderHologram::BeginPlay(){ }
+void AFGLadderHologram::BeginPlay(){ Super::BeginPlay(); }
 bool AFGLadderHologram::IsValidHitResult(const FHitResult& hitResult) const{ return bool(); }
 void AFGLadderHologram::SetHologramLocationAndRotation(const FHitResult& hitResult){ }
 bool AFGLadderHologram::DoMultiStepPlacement(bool isInputFromARelease){ return bool(); }
 bool AFGLadderHologram::TrySnapToActor(const FHitResult& hitResult){ return bool(); }
-void AFGLadderHologram::SetMaterial( UMaterialInterface* material){ }
 int32 AFGLadderHologram::GetBaseCostMultiplier() const{ return int32(); }
 void AFGLadderHologram::GetClearanceData(TArray< const FFGClearanceData* >& out_ClearanceData) const{ }
 void AFGLadderHologram::ConfigureActor( AFGBuildable* inBuildable) const{ }

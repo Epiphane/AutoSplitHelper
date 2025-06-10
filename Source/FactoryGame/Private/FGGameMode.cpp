@@ -39,9 +39,9 @@ AFGGameMode::AFGGameMode() : Super() {
 	this->PrimaryActorTick.TickInterval = 0.0;
 }
 void AFGGameMode::Serialize(FArchive& ar){ Super::Serialize(ar); }
-void AFGGameMode::BeginPlay(){ }
-void AFGGameMode::Tick(float DeltaSeconds){ }
-void AFGGameMode::EndPlay(const EEndPlayReason::Type endPlayReason){ }
+void AFGGameMode::BeginPlay(){ Super::BeginPlay(); }
+void AFGGameMode::Tick(float DeltaSeconds){ Super::Tick(DeltaSeconds); }
+void AFGGameMode::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 void AFGGameMode::PreSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 void AFGGameMode::PostSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 void AFGGameMode::PreLoadGame_Implementation(int32 saveVersion, int32 gameVersion){ }
@@ -64,6 +64,7 @@ void AFGGameMode::GenericPlayerInitialization(AController* C){ }
 bool AFGGameMode::IsPaused() const{ return bool(); }
 void AFGGameMode::InitStartSpot_Implementation(AActor* StartSpot, AController* NewPlayer){ }
 void AFGGameMode::PostActorsInitialized(const UWorld::FActorsInitializedParams& inParams){ }
+void AFGGameMode::SetLastAutoSaveId(uint8 newId){ }
 uint8 AFGGameMode::GenerateNextAutoSaveId(){ return uint8(); }
 void AFGGameMode::SetSaveSessionName(const FString& name){ }
 bool AFGGameMode::ShouldSetupSave() const{ return bool(); }

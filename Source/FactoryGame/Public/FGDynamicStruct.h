@@ -4,7 +4,6 @@
 
 #include "FactoryGame.h"
 #include "CoreMinimal.h"
-#include "UObject/StructOnScope.h"
 #include "FGDynamicStruct.generated.h"
 
 class FStructOnScope;
@@ -51,8 +50,7 @@ public:
 	FORCEINLINE UScriptStruct* GetStruct() const { return ScriptStruct; }
 	FORCEINLINE const void* GetStructValueRaw() const { return StructInstance; }
 	FORCEINLINE void* GetStructValueRaw() { return StructInstance; }
-	
-	FORCEINLINE bool IsValid() const { return ScriptStruct != nullptr && StructInstance != nullptr; }
+	FORCEINLINE bool IsValid() const { return ScriptStruct != nullptr; }
 
 	/** Converts the underlying struct to the string, using the UScriptStruct::ExportText */
 	FString ToString() const;
@@ -125,13 +123,21 @@ public:
 		return T{};
 	}
 
+	// Overrides for struct type traits
 	void AddStructReferencedObjects(class FReferenceCollector& Collector);
+	bool Identical(const FFGDynamicStruct* Other, uint32 PortFlags) const;
 	bool Serialize(FArchive& Ar);
+	bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess);
 
 	friend FArchive& operator<<( FArchive& Ar, FFGDynamicStruct& DynamicStruct )
 	{
 		DynamicStruct.Serialize( Ar );
 		return Ar;
+	}
+
+	friend bool operator==( const FFGDynamicStruct& A, const FFGDynamicStruct& B )
+	{
+		return A.Identical( B );
 	}
 };
 
@@ -143,5 +149,6 @@ struct TStructOpsTypeTraits<FFGDynamicStruct> : TStructOpsTypeTraitsBase2<FFGDyn
 		WithCopy = true,
 		WithAddStructReferencedObjects = true,
 		WithSerializer = true,
+		WithNetSerializer = true,
 	};
 };

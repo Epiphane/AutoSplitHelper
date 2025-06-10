@@ -38,8 +38,8 @@ AFGDroneVehicle::AFGDroneVehicle() : Super() {
 	this->mCurrentAction = nullptr;
 }
 void AFGDroneVehicle::Serialize(FArchive& Ar){ Super::Serialize(Ar); }
-void AFGDroneVehicle::BeginPlay(){ }
-void AFGDroneVehicle::Tick(float DeltaTime){ }
+void AFGDroneVehicle::BeginPlay(){ Super::BeginPlay(); }
+void AFGDroneVehicle::Tick(float DeltaTime){ Super::Tick(DeltaTime); }
 void AFGDroneVehicle::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGDroneVehicle, mMovementComponent);
@@ -47,7 +47,7 @@ void AFGDroneVehicle::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	DOREPLIFETIME(AFGDroneVehicle, mCurrentDockingState);
 	DOREPLIFETIME(AFGDroneVehicle, mDockedStation);
 }
-void AFGDroneVehicle::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
+void AFGDroneVehicle::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 void AFGDroneVehicle::PostNetReceiveLocationAndRotation(){ }
 bool AFGDroneVehicle::IsUseable_Implementation() const{ return bool(); }
 void AFGDroneVehicle::Dismantle_Implementation(){ }
@@ -74,6 +74,7 @@ float AFGDroneVehicle::GetActorFogOfWarRevealRadius(){ return float(); }
 ECompassViewDistance AFGDroneVehicle::GetActorCompassViewDistance(){ return ECompassViewDistance(); }
 void AFGDroneVehicle::SetActorCompassViewDistance(ECompassViewDistance compassViewDistance){ }
 UMaterialInterface* AFGDroneVehicle::GetActorRepresentationCompassMaterial(){ return nullptr; }
+TArray<FLocalUserNetIdBundle> AFGDroneVehicle::GetLastEditedBy() const{ return TArray<FLocalUserNetIdBundle>(); }
 void AFGDroneVehicle::NotifyPairedStationUpdated( AFGBuildableDroneStation* NewPairedStation){ }
 void AFGDroneVehicle::OnUndocked(){ }
 void AFGDroneVehicle::OnDockedStationDestroyed(){ }
@@ -123,6 +124,7 @@ FDroneAction* AFGDroneVehicle::MigrateLegacyAction( UFGDroneAction* action){ ret
 void AFGDroneVehicle::OnMovementFlyingModeChanged(EDroneFlyingMode NewFlyingMode){ }
 void AFGDroneVehicle::OnMovementBrakingStateChanged(bool IsBraking){ }
 FGDroneActionFactory::FGDroneActionFactory(AFGDroneVehicle* drone){ }
+struct FDroneAction* FGDroneActionFactory::CreateDroneActionFromName(const FName& name) const{ return nullptr; }
 #if !UE_BUILD_SHIPPING
 void FDroneAction::ShowDebug(FString& out_concatDebugString){ }
 #endif 

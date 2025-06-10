@@ -39,8 +39,8 @@ void AFGWeapon::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifet
 	DOREPLIFETIME(AFGWeapon, mCurrentAmmunitionClass);
 	DOREPLIFETIME(AFGWeapon, mCurrentMagazineObject);
 }
-void AFGWeapon::BeginPlay(){ }
-void AFGWeapon::Tick(float DeltaSeconds){ }
+void AFGWeapon::BeginPlay(){ Super::BeginPlay(); }
+void AFGWeapon::Tick(float DeltaSeconds){ Super::Tick(DeltaSeconds); }
 void AFGWeapon::LoadFromItemState_Implementation(const FFGDynamicStruct& itemState){ }
 FFGDynamicStruct AFGWeapon::SaveToItemState_Implementation() const{ return FFGDynamicStruct(); }
 bool AFGWeapon::CanPickBestUsableActor_Implementation() const{ return bool(); }
@@ -56,6 +56,7 @@ bool AFGWeapon::CanReload() const{ return bool(); }
 float AFGWeapon::GetReloadTimeLeft() const{ return float(); }
 FVector AFGWeapon::GetWeaponMeshSocketLocation_Implementation(FName socketName) const{ return FVector(); }
 void AFGWeapon::Server_CycleDesiredAmmunitionType_Implementation(){ }
+class UAnimSequence* AFGWeapon::GetNobeliskWeaponIdleAnimationOverride() const{ return nullptr; }
 void AFGWeapon::CycleDesiredAmmunitionType(){ }
 void AFGWeapon::Server_SetDesiredAmmoClass_Implementation(TSubclassOf< UFGAmmoType > newDesiredAmmoClass){ }
 void AFGWeapon::SetDesiredAmmoClass(TSubclassOf< UFGAmmoType > newDesiredAmmoClass){ }
@@ -69,6 +70,7 @@ void AFGWeapon::PlayFireEffect_Implementation(UFGAmmoType* AmmoTypeObject){ }
 void AFGWeapon::HandleDefaultEquipmentActionEvent(EDefaultEquipmentAction action, EDefaultEquipmentActionEvent actionEvent){ }
 bool AFGWeapon::IsEquipmentMontageTagAllowed_Implementation(FName montageTag) const{ return bool(); }
 void AFGWeapon::Input_Reload(const FInputActionValue& actionValue){ }
+void AFGWeapon::Input_AmmoSwitch(const FInputActionValue& actionValue){ }
 void AFGWeapon::AddEquipmentActionBindings(){ }
 void AFGWeapon::OnCameraModeChanged_Implementation(ECameraMode newCameraMode){ }
 void AFGWeapon::SetWeaponState(EWeaponState newState){ }

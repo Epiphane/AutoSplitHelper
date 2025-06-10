@@ -18,14 +18,18 @@ void UFGLocalPlayer::OnMaintainYAxisFOVUpdated(FString updatedCvar){ }
 void UFGLocalPlayer::GetUserWatermarkInformation(TArray<FString>& OutWatermarkData) const{ }
 void UFGLocalPlayer::UpdatePresence(){ }
 void UFGLocalPlayer::RefreshRecentRegisteredSocialAccountID(){ }
-TSharedPtr<const FUniqueNetId> UFGLocalPlayer::GetPlayerId() const{ return TSharedPtr<const FUniqueNetId>(); }
 void UFGLocalPlayer::PopulateEnhancedInputUserSettingsWithContexts( UEnhancedInputUserSettings* inputUserSettings){ }
 void UFGLocalPlayer::PopulateChildMappingContexts(const UFGInputMappingContext* mainContext, TArray<UFGInputMappingContext*>& out_childContexts){ }
 void UFGLocalPlayer::ForceHideEarlyLoadingScreen(){ }
+void UFGLocalPlayer::JoinPendingActivity(){  }
 void UFGLocalPlayer::OnLoginStatusChanged(ULocalUserInfo* userInfo, TSharedRef<UE::Online::FAccountInfo> accountInfo, UOnlineIntegrationBackend* backend){ }
+void UFGLocalPlayer::OnBackendConnectionStatusChanged(UOnlineIntegrationBackend* backend, EOnlineBackendConnectionStatus status){  }
+void UFGLocalPlayer::SendLocalPlayerToMainMenuAndShowError(){  }
 FString UFGLocalPlayer::GetPresenceString() const{ return FString(); }
 void UFGLocalPlayer::OnAboutToTravel(ULocalUserInfo* UserInfo, TMap<FString ,FString> &ExtraOptions){ }
 void UFGLocalPlayer::GetPresenceState(FPlayerPresenceState& outState) const{ }
+void UFGLocalPlayer::OnGameActivityActivationRequested(const FUniqueNetId& localUserId, const FString& activityId, const class FOnlineSessionSearchResult* sessionInfo){  }
+void UFGLocalPlayer::OnAdminEnumerateSaveGamesComplete(bool success, const TArray<struct FSaveHeader>& saveGames){  }
 void UFGLocalPlayer::PushErrorAndAutosave(TSubclassOf<class UFGErrorMessage> errorMessage){ }
 void UFGLocalPlayer::OnMapLoadedWithWorld(UWorld* InWorld){ }
 void UFGLocalPlayer::CheckEarlyLoadingScreenVisibility(){ }

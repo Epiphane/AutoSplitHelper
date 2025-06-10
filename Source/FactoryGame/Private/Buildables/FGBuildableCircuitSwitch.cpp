@@ -9,18 +9,22 @@ AFGBuildableCircuitSwitch::AFGBuildableCircuitSwitch() : Super() {
 	this->mBuildingTag = TEXT("");
 	this->mInteractionRegisterPlayerWithCircuit = true;
 }
-void AFGBuildableCircuitSwitch::BeginPlay(){ }
+void AFGBuildableCircuitSwitch::BeginPlay(){ Super::BeginPlay(); }
 void AFGBuildableCircuitSwitch::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGBuildableCircuitSwitch, mIsSwitchOn);
 	DOREPLIFETIME(AFGBuildableCircuitSwitch, mHasBuildingTag);
 	DOREPLIFETIME(AFGBuildableCircuitSwitch, mBuildingTag);
+	DOREPLIFETIME(AFGBuildableCircuitSwitch, mLastEditedBy);
 }
 void AFGBuildableCircuitSwitch::SetHasBuildingTag_Implementation(bool hasBuildingTag){ }
 void AFGBuildableCircuitSwitch::SetBuildingTag_Implementation(const FString& buildingTag){ }
+void AFGBuildableCircuitSwitch::SetLastEditedBy_Implementation(const TArray<FLocalUserNetIdBundle>& lastEditedBy){ }
+TArray<FLocalUserNetIdBundle> AFGBuildableCircuitSwitch::GetLastEditedBy_Implementation() const{ return TArray<FLocalUserNetIdBundle>(); }
 void AFGBuildableCircuitSwitch::SetSwitchOn(bool isSwitchOn){ }
 void AFGBuildableCircuitSwitch::OnRep_IsSwitchOn(){ }
 void AFGBuildableCircuitSwitch::OnRep_HasBuildingTag(){ }
 void AFGBuildableCircuitSwitch::OnRep_BuildingTag(){ }
+void AFGBuildableCircuitSwitch::OnRep_LastEditedBy(){ }
 void AFGBuildableCircuitSwitch::OnRep_IsBridgeConnected(){ }
 void AFGBuildableCircuitSwitch::BroadcastProductionStatus(){ }

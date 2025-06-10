@@ -21,7 +21,7 @@ void AFGJetPack::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLife
 	DOREPLIFETIME(AFGJetPack, mSelectedFuelType);
 	DOREPLIFETIME(AFGJetPack, mCurrentFuelType);
 }
-void AFGJetPack::Tick(const float deltaTime){ }
+void AFGJetPack::Tick(const float deltaTime){ Super::Tick(deltaTime); }
 void AFGJetPack::LoadFromItemState_Implementation(const FFGDynamicStruct& itemState){ }
 FFGDynamicStruct AFGJetPack::SaveToItemState_Implementation() const{ return FFGDynamicStruct(); }
 void AFGJetPack::DisableEquipment(){ }
@@ -40,7 +40,7 @@ void AFGJetPack::RegenerateFuel(const float delta){ }
 void AFGJetPack::Input_Thrust(const FInputActionValue& actionValue){ }
 void AFGJetPack::SetCurrentFuelType(int32 newCurrentFuelType, bool bForce){ }
 void AFGJetPack::SetSelectedFuelType(int32 newSelectedFuelType){ }
-void AFGJetPack::SetCurrentFuel(float newCurrentFuel){ }
+void AFGJetPack::SetCurrentFuel(const float newCurrentFuel){ }
 void AFGJetPack::Server_SetSelectedFuelType_Implementation(int32 newSelectedFuelType){ }
 void AFGJetPack::UpdateThrustingNoiseTimer(){ }
 bool AFGJetPack::CheckCanThrust() const{ return bool(); }

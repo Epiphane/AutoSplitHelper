@@ -33,12 +33,10 @@ void AFGResourceNodeBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 	DOREPLIFETIME(AFGResourceNodeBase, mDoSpawnParticle);
 }
 void AFGResourceNodeBase::PostLoad(){ Super::PostLoad(); }
-void AFGResourceNodeBase::BeginPlay(){ }
-void AFGResourceNodeBase::EndPlay(const EEndPlayReason::Type endPlayReason){ }
+void AFGResourceNodeBase::BeginPlay(){ Super::BeginPlay(); }
+void AFGResourceNodeBase::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 void AFGResourceNodeBase::GainedSignificance_Implementation(){ }
 void AFGResourceNodeBase::LostSignificance_Implementation(){ }
-void AFGResourceNodeBase::GainedSignificance_Native(){ }
-void AFGResourceNodeBase::LostSignificance_Native(){ }
 void AFGResourceNodeBase::PreSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 void AFGResourceNodeBase::PostSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 void AFGResourceNodeBase::PreLoadGame_Implementation(int32 saveVersion, int32 gameVersion){ }

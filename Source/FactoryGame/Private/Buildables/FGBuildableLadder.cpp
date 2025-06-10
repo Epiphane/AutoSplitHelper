@@ -12,12 +12,14 @@ AFGBuildableLadder::AFGBuildableLadder() : Super() {
 	this->mLadderSegmentMesh = nullptr;
 	this->mMaxSegmentCount = 1;
 	this->mFrontLadderComponent = CreateDefaultSubobject<UFGLadderComponent>(TEXT("Front Ladder Component"));
+	this->mFrontLadderComponent->SetMobility(EComponentMobility::Movable);
 	this->mBackLadderComponent = CreateDefaultSubobject<UFGLadderComponent>(TEXT("Back Ladder Component"));
+	this->mBackLadderComponent->SetMobility(EComponentMobility::Movable);
 	this->mHologramClass = AFGLadderHologram::StaticClass();
 	this->mFrontLadderComponent->SetupAttachment(RootComponent);
 	this->mBackLadderComponent->SetupAttachment(RootComponent);
 }
-void AFGBuildableLadder::BeginPlay(){ }
+void AFGBuildableLadder::BeginPlay(){ Super::BeginPlay(); }
 void AFGBuildableLadder::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGBuildableLadder, mNumSegments);

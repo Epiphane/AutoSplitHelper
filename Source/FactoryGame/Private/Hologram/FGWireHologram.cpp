@@ -26,7 +26,7 @@ void AFGWireHologram::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& Ou
 	DOREPLIFETIME(AFGWireHologram, mStartLocation);
 	DOREPLIFETIME(AFGWireHologram, mCurrentConnection);
 }
-void AFGWireHologram::BeginPlay(){ }
+void AFGWireHologram::BeginPlay(){ Super::BeginPlay(); }
 AActor* AFGWireHologram::Construct(TArray< AActor* >& out_children, FNetConstructionID netConstructionID){ return nullptr; }
 int32 AFGWireHologram::GetBaseCostMultiplier() const{ return int32(); }
 bool AFGWireHologram::DoMultiStepPlacement(bool isInputFromARelease){ return bool(); }
@@ -36,9 +36,10 @@ void AFGWireHologram::OnInvalidHitResult(){ }
 void AFGWireHologram::ScrollRotate(int32 delta, int32 step){ }
 AActor* AFGWireHologram::GetUpgradedActor() const{ return nullptr; }
 bool AFGWireHologram::TryUpgrade(const FHitResult& hitResult){ return bool(); }
+bool AFGWireHologram::ShouldBuildGunHitWireMeshes() const { return bool(); }
 void AFGWireHologram::CheckBlueprintCommingling(){ }
 float AFGWireHologram::GetBuildGunRangeOverride_Implementation() const{ return float(); }
-void AFGWireHologram::PostHologramPlacement(const FHitResult& hitResult){ }
+void AFGWireHologram::PostHologramPlacement(const FHitResult& hitResult, bool callForChildren){ }
 bool AFGWireHologram::CanNudgeHologram() const{ return bool(); }
 AFGHologram* AFGWireHologram::GetNudgeHologramTarget(){ return nullptr; }
 void AFGWireHologram::ConfigureActor( AFGBuildable* inBuildable) const{ }
@@ -46,9 +47,9 @@ bool AFGWireHologram::ShouldActorBeConsideredForGuidelines( AActor* actor) const
 void AFGWireHologram::SetConnection(int32 ix, UFGCircuitConnectionComponent* connection){ }
 UFGCircuitConnectionComponent* AFGWireHologram::GetConnection(int32 ix) const{ return nullptr; }
 bool AFGWireHologram::IsPowerTowerWire() const{ return bool(); }
-void AFGWireHologram::Destroyed(){ }
+void AFGWireHologram::Destroyed(){ Super::Destroyed(); }
 void AFGWireHologram::CheckValidPlacement(){ }
-void AFGWireHologram::CheckClearance(const FVector& locationOffset){ }
+void AFGWireHologram::CheckClearance(){ }
 uint8 AFGWireHologram::GetStencilForHologramMaterialState(EHologramMaterialState state) const{ return uint8(); }
 void AFGWireHologram::CheckValidSnap(){ }
 void AFGWireHologram::CheckLength(){ }

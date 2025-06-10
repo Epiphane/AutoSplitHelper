@@ -32,8 +32,8 @@ void AFGResourceSinkSubsystem::GetLifetimeReplicatedProps(TArray< FLifetimePrope
 	DOREPLIFETIME(AFGResourceSinkSubsystem, mNumResourceSinkCoupons);
 	DOREPLIFETIME(AFGResourceSinkSubsystem, mGlobalPointHistoryValues);
 }
-void AFGResourceSinkSubsystem::BeginPlay(){ }
-void AFGResourceSinkSubsystem::Tick(float DeltaSeconds){ }
+void AFGResourceSinkSubsystem::BeginPlay(){ Super::BeginPlay(); }
+void AFGResourceSinkSubsystem::Tick(float DeltaSeconds){ Super::Tick(DeltaSeconds); }
 void AFGResourceSinkSubsystem::PostLoadGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 AFGResourceSinkSubsystem* AFGResourceSinkSubsystem::Get(UWorld* world){ return nullptr; }
 AFGResourceSinkSubsystem* AFGResourceSinkSubsystem::Get(UObject* worldContext){ return nullptr; }
@@ -54,6 +54,7 @@ int32 AFGResourceSinkSubsystem::RemoveResourceSinkCoupons(int32 numCoupons){ ret
 int32 AFGResourceSinkSubsystem::GetResourceSinkPointsForItem(TSubclassOf<  UFGItemDescriptor > itemDescriptor){ return int32(); }
 bool AFGResourceSinkSubsystem::FindResourceSinkPointsForItem(TSubclassOf<  UFGItemDescriptor > itemDescriptor, int32& out_numPoints, EResourceSinkTrack& out_itemTrack){ return bool(); }
 void AFGResourceSinkSubsystem::HandleQueuedPoints(){ }
+void AFGResourceSinkSubsystem::HandleQueuedItemClasses(){ }
 void AFGResourceSinkSubsystem::HandleQueuedFailedItems(){ }
 void AFGResourceSinkSubsystem::InitCouponClass(){ }
 void AFGResourceSinkSubsystem::CalculateLevel(){ }

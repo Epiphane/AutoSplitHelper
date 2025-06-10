@@ -2,6 +2,7 @@
 
 #include "FGVehicleSubsystem.h"
 #include "Net/UnrealNetwork.h"
+#include "LocalUserInfo.h"
 
 AFGSavedWheeledVehiclePath::AFGSavedWheeledVehiclePath() : Super() {
 	this->mPathName = TEXT("");
@@ -19,6 +20,7 @@ void AFGSavedWheeledVehiclePath::PostLoadGame_Implementation(int32 saveVersion, 
 void AFGSavedWheeledVehiclePath::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGSavedWheeledVehiclePath, mPathName);
+	DOREPLIFETIME(AFGSavedWheeledVehiclePath, mLastEditedBy);
 	DOREPLIFETIME(AFGSavedWheeledVehiclePath, mTargetList);
 	DOREPLIFETIME(AFGSavedWheeledVehiclePath, mUserCount);
 	DOREPLIFETIME(AFGSavedWheeledVehiclePath, mIsInUse);
@@ -49,9 +51,9 @@ void AFGVehicleSubsystem::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 	DOREPLIFETIME(AFGVehicleSubsystem, mWheeledVehicles);
 	DOREPLIFETIME(AFGVehicleSubsystem, mSavedPaths);
 }
-void AFGVehicleSubsystem::BeginPlay(){ }
-void AFGVehicleSubsystem::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
-void AFGVehicleSubsystem::Tick(float dt){ }
+void AFGVehicleSubsystem::BeginPlay(){ Super::BeginPlay(); }
+void AFGVehicleSubsystem::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
+void AFGVehicleSubsystem::Tick(float dt){ Super::Tick(dt); }
 AFGVehicleSubsystem* AFGVehicleSubsystem::Get(UWorld* world){ return nullptr; }
 AFGVehicleSubsystem* AFGVehicleSubsystem::Get(UObject* worldContext){ return nullptr; }
 void AFGVehicleSubsystem::TickVehicleSimulation(float dt){ }
@@ -67,7 +69,7 @@ void AFGVehicleSubsystem::RemoveDockingStation( AFGBuildableDockingStation* stat
 void AFGVehicleSubsystem::RemoveTargetPoint( AFGTargetPoint* targetToRemove, bool updateList){ }
 void AFGVehicleSubsystem::InvalidateTargetList(const AFGDrivingTargetList* targetList) const{ }
 bool AFGVehicleSubsystem::IsPathNameTaken(const FString& name) const{ return bool(); }
-void AFGVehicleSubsystem::SaveWheeledVehiclePath(const FString& saveName,  AFGWheeledVehicleInfo* vehicle){ }
+void AFGVehicleSubsystem::SaveWheeledVehiclePath(const FString& saveName,  AFGWheeledVehicleInfo* vehicle, const TArray<FLocalUserNetIdBundle> & lastEditedBy){ }
 void AFGVehicleSubsystem::UnsaveWheeledVehiclePath(AFGSavedWheeledVehiclePath* path){ }
 void AFGVehicleSubsystem::FindSavedWheeledVehiclePaths(const FString& textFilter, TSubclassOf<  AFGWheeledVehicle > typeFilter, const AFGWheeledVehicleInfo* vehicle, TArray< AFGSavedWheeledVehiclePath* >& result){ }
 bool AFGVehicleSubsystem::IsWheeledVehiclePathInUse( AFGDrivingTargetList* targetList, const AFGWheeledVehicleInfo* byVehicle) const{ return bool(); }

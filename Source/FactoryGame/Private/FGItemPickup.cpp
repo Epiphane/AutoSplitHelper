@@ -28,9 +28,19 @@ void AFGItemPickup::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 	DOREPLIFETIME(AFGItemPickup, mItemState);
 }
 void AFGItemPickup::Serialize(FArchive& ar){ Super::Serialize(ar); }
-void AFGItemPickup::BeginPlay(){ }
-void AFGItemPickup::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
-void AFGItemPickup::PreSave(FObjectPreSaveContext SaveContext){ Super::PreSave(SaveContext); }
+void AFGItemPickup::BeginPlay(){ Super::BeginPlay(); }
+void AFGItemPickup::EndPlay(const EEndPlayReason::Type EndPlayReason){ Super::EndPlay(EndPlayReason); }
+void AFGItemPickup::PreSave(FObjectPreSaveContext SaveContext)
+{
+	Super::PreSave(SaveContext);
+#if WITH_EDITOR
+	// Cache scannable data from the world during the cooking process
+	// Avoid attempting to cache the data on the CDOs and Archetypes, and objects without a world context
+	if (SaveContext.IsCooking() && !HasAnyFlags(RF_ClassDefaultObject | RF_ArchetypeObject) && GetWorld() != nullptr) {
+		mItemPickupGuid = GetActorGuid();
+	}
+#endif
+}
 void AFGItemPickup::PreSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 void AFGItemPickup::PostSaveGame_Implementation(int32 saveVersion, int32 gameVersion){ }
 void AFGItemPickup::PreLoadGame_Implementation(int32 saveVersion, int32 gameVersion){ }
@@ -49,6 +59,8 @@ FText AFGItemPickup::GetLookAtDecription_Implementation( AFGCharacterPlayer* byC
 void AFGItemPickup::StopIsLookedAt_Implementation( AFGCharacterPlayer* byCharacter, const FUseState& state){ }
 void AFGItemPickup::PickUpByCharacter(AFGCharacterPlayer* byCharacter){ }
 const AFGPlayerController* AFGItemPickup::EatenByCreature(const int32 amount){ return nullptr; }
+bool AFGItemPickup::CanEverRespawn() const{ return bool(); }
+bool AFGItemPickup::CanBePickedUp(class AFGCharacterPlayer* byCharacter) const{ return bool(); }
 void AFGItemPickup::Multicast_PlayPickupEffect_Implementation(){ }
 float AFGItemPickup::GetNormalizedCollectionProgress(){ return float(); }
 void AFGItemPickup::RespawnItems(){ }

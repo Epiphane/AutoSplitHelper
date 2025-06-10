@@ -6,8 +6,8 @@ AFGCeilingLightHologram::AFGCeilingLightHologram() : Super() {
 	this->mNeedsValidFloor = false;
 	this->mUseBuildClearanceOverlapSnapp = false;
 }
-void AFGCeilingLightHologram::BeginPlay(){ }
+void AFGCeilingLightHologram::BeginPlay(){ Super::BeginPlay(); }
 bool AFGCeilingLightHologram::TrySnapToActor(const FHitResult& hitResult){ return bool(); }
 void AFGCeilingLightHologram::SetHologramLocationAndRotation(const FHitResult& hitResult){ }
 void AFGCeilingLightHologram::CheckValidPlacement(){ }
-void AFGCeilingLightHologram::CheckClearance(const FVector& locationOffset){ }
+void AFGCeilingLightHologram::CheckClearance(){ }

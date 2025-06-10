@@ -7,6 +7,7 @@
 
 AFGProjectAssembly::AFGProjectAssembly() : Super() {
 	this->mMainSkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MainMesh"));
+	this->mMainSkeletalMeshComponent->SetMobility(EComponentMobility::Movable);
 	this->mSpaceElevator = nullptr;
 	this->mMovementSpeed = 6000.0;
 	this->mProjectAssemblyHeight = 2350000.0;
@@ -23,6 +24,7 @@ AFGProjectAssembly::AFGProjectAssembly() : Super() {
 	this->bReplicates = true;
 	this->NetDormancy = ENetDormancy::DORM_DormantAll;
 	this->RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	this->RootComponent->SetMobility(EComponentMobility::Movable);
 	this->mMainSkeletalMeshComponent->SetupAttachment(RootComponent);
 }
 void AFGProjectAssembly::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
@@ -30,11 +32,12 @@ void AFGProjectAssembly::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 	DOREPLIFETIME(AFGProjectAssembly, mIsMovingToTarget);
 	DOREPLIFETIME(AFGProjectAssembly, mTargetLocation);
 }
-void AFGProjectAssembly::BeginPlay(){ }
-void AFGProjectAssembly::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
+void AFGProjectAssembly::BeginPlay(){ Super::BeginPlay(); }
+void AFGProjectAssembly::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
+void AFGProjectAssembly::OnGamePhaseChangedInternal(UFGGamePhase* newGamePhase, bool bSuppressNarrativeMessages){ }
 void AFGProjectAssembly::OnGamePhaseChanged_Implementation(UFGGamePhase* currentGamePhase){ }
 void AFGProjectAssembly::BeginMoveToTarget_Implementation(){ }
 void AFGProjectAssembly::OnTargetReached_Implementation(){ }
-void AFGProjectAssembly::Tick(float DeltaSeconds){ }
+void AFGProjectAssembly::Tick(float DeltaSeconds){ Super::Tick(DeltaSeconds); }
 void AFGProjectAssembly::UpdatePosition_Implementation(){ }
 void AFGProjectAssembly::OnRep_IsMovingToTarget(){ }

@@ -6,13 +6,13 @@
 AFGBuildableDroneHologram::AFGBuildableDroneHologram() : Super() {
 	this->mSnappedStation = nullptr;
 }
-void AFGBuildableDroneHologram::BeginPlay(){ }
-void AFGBuildableDroneHologram::Destroyed(){ }
+void AFGBuildableDroneHologram::BeginPlay(){ Super::BeginPlay(); }
+void AFGBuildableDroneHologram::Destroyed(){ Super::Destroyed(); }
 void AFGBuildableDroneHologram::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGBuildableDroneHologram, mSnappedStation);
 }
 bool AFGBuildableDroneHologram::TrySnapToActor(const FHitResult& hitResult){ return bool(); }
-void AFGBuildableDroneHologram::GetIgnoredClearanceActors(TArray< AActor* >& ignoredActors) const{ }
+void AFGBuildableDroneHologram::GetIgnoredClearanceActors(TSet< AActor* >& ignoredActors) const{ }
 void AFGBuildableDroneHologram::CheckValidPlacement(){ }
 AFGVehicle* AFGBuildableDroneHologram::ConstructVehicle(FNetConstructionID netConstructionID) const{ return nullptr; }

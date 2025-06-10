@@ -32,10 +32,10 @@ void UFGBuildGunStatePaint::SecondaryFire_Implementation(){ }
 void UFGBuildGunStatePaint::Scroll_Implementation(int32 delta){ }
 void UFGBuildGunStatePaint::BindInputActions( UFGEnhancedInputComponent* inputComponent){ }
 bool UFGBuildGunStatePaint::CanSampleCustomizations() const{ return bool(); }
-void UFGBuildGunStatePaint::CreateStencilProxy(AActor* selected){ }
-void UFGBuildGunStatePaint::DestroyStencilProxies(bool destroyComponents){ }
 void UFGBuildGunStatePaint::Server_ExecutePrimaryFire_Implementation(){ }
 void UFGBuildGunStatePaint::Server_ExecutePaint_Implementation(uint8 mode, FFactoryCustomizationData customizationData, AActor* hitActor){ }
+void UFGBuildGunStatePaint::Server_SetActiveRecipe_Implementation(TSubclassOf<UFGCustomizationRecipe> customizationRecipe){ }
+void UFGBuildGunStatePaint::Server_SetCustomizeClassFilter_Implementation(TSubclassOf<AActor> actorToFilter){ }
 void UFGBuildGunStatePaint::SetActiveCustomization(TSubclassOf< UFGFactoryCustomizationDescriptor > customizationDesc){ }
 void UFGBuildGunStatePaint::SetActiveSwatchDesc(TSubclassOf< UFGFactoryCustomizationDescriptor_Swatch > swatchDesc){ }
 void UFGBuildGunStatePaint::SetActivePatternDesc(TSubclassOf< UFGFactoryCustomizationDescriptor_Pattern > patternDesc){ }
@@ -45,12 +45,14 @@ void UFGBuildGunStatePaint::RemoveCustomization(TSubclassOf< UFGFactoryCustomiza
 void UFGBuildGunStatePaint::ClearAllCustomizations(){ }
 void UFGBuildGunStatePaint::SetActiveRecipe(TSubclassOf< UFGCustomizationRecipe > customizationRecipe){ }
 void UFGBuildGunStatePaint::SetCustomizeClassFilter(AActor* actorToFilter){ }
+void UFGBuildGunStatePaint::SetCustomizeClassFilter_Internal(TSubclassOf<AActor> actorClass, TSubclassOf<UFGItemDescriptor> itemDesc){ }
 bool UFGBuildGunStatePaint::IsCustomizationActive(TSubclassOf< UFGFactoryCustomizationDescriptor > customization){ return bool(); }
 bool UFGBuildGunStatePaint::IsRecipeActive(TSubclassOf<  UFGCustomizationRecipe > inClass){ return bool(); }
 TArray< FItemAmount > UFGBuildGunStatePaint::GetCustomizationCost() const{ return TArray<FItemAmount>(); }
 void UFGBuildGunStatePaint::SpawnPreviewActor(AFGBuildable* aimedAtBuildable, TSubclassOf< UFGRecipe > recipe, TSubclassOf< UFGFactoryCustomizationDescriptor_Material >& targetMaterialDesc){ }
 void UFGBuildGunStatePaint::SpawnPreviewForMaterial(AFGBuildable* aimedAtBuildable, TSubclassOf< UFGFactoryCustomizationDescriptor_Material >& targetMaterialDesc){ }
 USceneComponent* UFGBuildGunStatePaint::SetupComponent(USceneComponent* attachParent, UActorComponent* componentTemplate, const FName& componentName, const FName& attachSocketName){ return nullptr; }
+USceneComponent* UFGBuildGunStatePaint::SetupAbstractInstanceComponent(USceneComponent* attachParent, const FInstanceData& instanceData){ return nullptr; }
 void UFGBuildGunStatePaint::Input_SelectBuildingForCustomizeFilter(const FInputActionValue& actionValue){ }
 void UFGBuildGunStatePaint::ValidateCost(){ }
 void UFGBuildGunStatePaint::AddConstructDisqualifier(TSubclassOf<  UFGConstructDisqualifier > disqualifier){ }

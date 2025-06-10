@@ -14,6 +14,9 @@
 #include "FGRemoteCallObject.h"
 #include "FGStorySubsystem.generated.h"
 
+enum class ESchematicUnlockFlags : uint8;
+class UFGGamePhase;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams( FOnMessageStartedForPlayer, class AFGPlayerController*, player, class UFGMessage*, message );
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams( FOnMessageFinishedForPlayer, class AFGPlayerController*, player, class UFGMessage*, message );
 
 UCLASS()
@@ -25,6 +28,9 @@ public:
 		
 	UFUNCTION( Reliable, Client )
 	void Client_ForwardMessagesToGameUI( const TArray<class UFGMessage*>& newMessages );
+
+	UFUNCTION( Reliable, Server )
+	void Server_MessageStartedForPlayer( class AFGPlayerController* player, class UFGMessage* message );
 	
 	UFUNCTION( Reliable, Server )
 	void Server_MessageFinishedForPlayer( class AFGPlayerController* player, class UFGMessage* message );
@@ -117,18 +123,39 @@ public:
 	UFUNCTION()
 	void OnOnboardingStepUpdated( class UFGOnboardingStep* newOnboardingStep );
 	UFUNCTION()
-	void OnSchematicsPurchased( TArray< TSubclassOf< UFGSchematic > > newSchematics, class AFGCharacterPlayer* purchaseInstigator );
+	void OnSchematicsPurchased( TArray< TSubclassOf< UFGSchematic > > newSchematics, class AFGCharacterPlayer* purchaseInstigator, ESchematicUnlockFlags unlockFlags );
 	UFUNCTION()
-	void OnGamePhaseChanged( UFGGamePhase* currentGamePhase );
+	void OnGamePhaseChanged( UFGGamePhase* currentGamePhase, bool bSuppressNarrativeMessages );
 	UFUNCTION()
-	void OnGameCompleted();
+	void OnGameCompleted( bool bSuppressNarrativeMessages );
+	UFUNCTION()
+	void OnLocalPlayerMessageStarted( class UFGMessage* message );
 	UFUNCTION()
 	void OnLocalPlayerMessageFinished( class UFGMessage* message );
 	void OnItemPickuped( AFGPlayerState* playerState, const FItemAmount& totalAmountPickuped );
 	void OnItemManuallyCrafted( AFGPlayerState* playerState, const FItemAmount& totalAmountCrafted );
-	void OnBuildingBuilt( AFGPlayerState* playerState, TSubclassOf< class AActor > builtActor, int64 totalBuildCount );
-	void OnBuildingDismantled( AFGPlayerState* playerState, TSubclassOf< class AActor > builtActor, int64 totalDismantledCount );
+	void OnBuildingBuilt( AFGPlayerState* playerState, class AActor* builtActor, const struct FActorBuiltData& actorBuiltData );
+	void OnBuildingDismantled( AFGPlayerState* playerState, TSubclassOf< class AActor > builtActor, const struct FActorBuiltData& actorBuiltData );
+	void OnItemsSunk( TSet< TSubclassOf<UFGItemDescriptor> > items );
 	void OnFirstItemSinkFailure( TSubclassOf<UFGItemDescriptor> itemFailedToSink );
+	UFUNCTION()
+	void OnCalendarSlotUnlocked( int32 slot, bool isRandomUnlock, class UFGUnlock* unlock );
+	UFUNCTION()
+	void OnCalendarOpenedByPlayer( class AFGCharacterPlayer* byCharacter, class AFGBuildableCalendar* calendar, bool firstTime );
+
+	void OnMessageStartedForPlayer( class AFGPlayerController* player, class UFGMessage* message );
+	void OnMessageFinishedForPlayer( class AFGPlayerController* player, class UFGMessage* message );
+
+	void OnPlayerFinishedSpawning( class AFGCharacterPlayer* player );
+
+	void OnPersonalElevatorBeginMove( const TArray< class AFGCharacterPlayer* >& OccupyingPlayers, float estimatedTravelTime );
+	void OnPersonalElevatorEndMove( const TArray< class AFGCharacterPlayer* >& OccupyingPlayers, float estimatedTravelTime );
+
+	UFUNCTION( BlueprintCallable, Category = "Story" )
+	void OnToiletFlushed( class AFGCharacterPlayer* byCharacter, class AFGPioneerPotty* toilet );
+
+	void OnActorTookDamage( AActor* damagedActor, float damageAmount, const class UDamageType* damageType, class AController* instigatedBy, AActor* damageCauser );
+	
 	// Not bound to the space elevator delegate since we don't always have a space elevator built. So the space elevator calls this instead
 	void OnSpaceElevatorShipmentLockedIn( AFGPlayerState* playerState, class UFGGamePhase* gamePhase );
 	// Not bound to any delegate since we don't always have a space elevator built. The Build_SpaceElevator calls this
@@ -153,6 +180,9 @@ public:
 
 	/** Delegates */
 	UPROPERTY( BlueprintAssignable, Category = "Story" )
+	FOnMessageStartedForPlayer mOnMessageStartedForPlayerDelegate;
+    	
+	UPROPERTY( BlueprintAssignable, Category = "Story" )
 	FOnMessageFinishedForPlayer mOnMessageFinishedForPlayerDelegate;
 
 private:
@@ -165,8 +195,9 @@ private:
 	 * This function can handle an empty message array
 	 * @param messages The messages to attempt to play
 	 * @param instigatingPlayerState The player state that triggered the message.
+	 * @param bSuppressNarrativeMessages True if narrative messages should be triggered, but should not be routed to the game UI
 	 */
-	void TryPlayMessages( const TArray< class UFGMessage*>& messages, const AFGPlayerState* instigatingPlayerState );
+	void TryPlayMessages( const TArray< class UFGMessage*>& messages, const AFGPlayerState* instigatingPlayerState, bool bSuppressNarrativeMessages = false );
 
 private:
 	/**

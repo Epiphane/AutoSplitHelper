@@ -37,9 +37,11 @@ AFGHoverPack::AFGHoverPack() : Super() {
 	this->mCurrentRailroadTrack = nullptr;
 	this->mPowerInfo = CreateDefaultSubobject<UFGPowerInfoComponent>(TEXT("Power Info"));
 	this->mPowerConnection = CreateDefaultSubobject<UFGPowerConnectionComponent>(TEXT("Power Connection"));
+	this->mPowerConnection->SetMobility(EComponentMobility::Movable);
 	this->mEquipmentSlot = EEquipmentSlot::ES_BACK;
 	this->mBackAnimation = EBackEquipment::BE_Jetpack;
 	this->RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	this->RootComponent->SetMobility(EComponentMobility::Movable);
 	this->mPowerConnection->SetupAttachment(RootComponent);
 }
 void AFGHoverPack::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
@@ -51,8 +53,8 @@ void AFGHoverPack::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 	DOREPLIFETIME(AFGHoverPack, mCurrentConnectionLocation);
 	DOREPLIFETIME(AFGHoverPack, mCurrentRailroadTrack);
 }
-void AFGHoverPack::BeginPlay(){ }
-void AFGHoverPack::Tick(float deltaTime){ }
+void AFGHoverPack::BeginPlay(){ Super::BeginPlay(); }
+void AFGHoverPack::Tick(float deltaTime){ Super::Tick(deltaTime); }
 void AFGHoverPack::UnEquip(){ }
 void AFGHoverPack::OnCharacterMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode, EMovementMode NewMovementMode, uint8 NewCustomMode){ }
 void AFGHoverPack::AddEquipmentActionBindings(){ }
@@ -67,8 +69,8 @@ float AFGHoverPack::GetMaxDistanceFromCurrentConnection() const{ return float();
 float AFGHoverPack::GetHeightAboveCurrentConnection() const{ return float(); }
 void AFGHoverPack::SetHoverMode(EHoverPackMode HoverMode, bool UpdateMovementMode){ }
 void AFGHoverPack::ConnectToNearestPowerConnection(){ }
-EHoverConnectionStatus AFGHoverPack::GetPowerConnectionStatus( UFGPowerConnectionComponent* Connection) const{ return EHoverConnectionStatus(); }
-bool AFGHoverPack::IsPowerConnectionValid( UFGPowerConnectionComponent* Connection, bool CheckDistance) const{ return bool(); }
+EHoverConnectionStatus AFGHoverPack::GetPowerConnectionStatus( const UFGPowerConnectionComponent* Connection) const{ return EHoverConnectionStatus(); }
+bool AFGHoverPack::IsPowerConnectionValid( const UFGPowerConnectionComponent* Connection, bool CheckDistance) const{ return bool(); }
 bool AFGHoverPack::IsRailroadTrackValid( AFGBuildableRailroadTrack* RailroadTrack, bool CheckDistance) const{ return bool(); }
 void AFGHoverPack::HandlePowerConnection(const float DeltaTime){ }
 void AFGHoverPack::UpdateShowRangeWarning(){ }

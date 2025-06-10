@@ -13,7 +13,7 @@ AFGPowerPoleWallHologram::AFGPowerPoleWallHologram() : Super() {
 	this->mWireHologramOut = nullptr;
 	this->mDefaultPowerLineRecipe = nullptr;
 }
-void AFGPowerPoleWallHologram::BeginPlay(){ }
+void AFGPowerPoleWallHologram::BeginPlay(){ Super::BeginPlay(); }
 void AFGPowerPoleWallHologram::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AFGPowerPoleWallHologram, mUpgradeTarget);
@@ -21,11 +21,10 @@ void AFGPowerPoleWallHologram::GetLifetimeReplicatedProps(TArray< FLifetimePrope
 	DOREPLIFETIME(AFGPowerPoleWallHologram, mWireHologramIn);
 	DOREPLIFETIME(AFGPowerPoleWallHologram, mWireHologramOut);
 }
-void AFGPowerPoleWallHologram::Destroyed(){ }
+void AFGPowerPoleWallHologram::Destroyed(){ Super::Destroyed(); }
 USceneComponent* AFGPowerPoleWallHologram::SetupComponent(USceneComponent* attachParent, UActorComponent* componentTemplate, const FName& componentName, const FName& attachSocketName){ return nullptr; }
 AActor* AFGPowerPoleWallHologram::Construct(TArray< AActor* >& out_children, FNetConstructionID constructionID){ return nullptr; }
-void AFGPowerPoleWallHologram::SpawnChildren(AActor* hologramOwner, FVector spawnLocation, APawn* hologramInstigator){ }
-void AFGPowerPoleWallHologram::PostHologramPlacement(const FHitResult& hitResult){ }
+void AFGPowerPoleWallHologram::PostHologramPlacement(const FHitResult& hitResult, bool callForChildren){ }
 bool AFGPowerPoleWallHologram::IsValidHitResult(const FHitResult& hitResult) const{ return bool(); }
 bool AFGPowerPoleWallHologram::TryUpgrade(const FHitResult& hitResult){ return bool(); }
 AActor* AFGPowerPoleWallHologram::GetUpgradedActor() const{ return nullptr; }
@@ -36,4 +35,5 @@ void AFGPowerPoleWallHologram::OnInvalidHitResult(){ }
 bool AFGPowerPoleWallHologram::DoMultiStepPlacement(bool isInputFromARelease){ return bool(); }
 bool AFGPowerPoleWallHologram::ShouldBuildGunHitWireMeshes() const{ return bool(); }
 bool AFGPowerPoleWallHologram::AlignWithWire(const  AFGBuildableWire* wire, FVector& locationToAlign, FRotator& out_rotation) const{ return bool(); }
+void AFGPowerPoleWallHologram::SpawnWireChildHolograms(TSubclassOf<class UFGRecipe> wireRecipe){ }
 void AFGPowerPoleWallHologram::ResetByproductHolograms(){ }

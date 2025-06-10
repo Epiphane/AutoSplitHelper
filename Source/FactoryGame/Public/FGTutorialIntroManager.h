@@ -153,6 +153,9 @@ public:
 
 	// Skips the tutorial/onboarding. Finishes all tutorial steps. 
 	void SkipOnboarding();
+
+	/** Returns true if we should skip the onboarding/tutorial */
+	bool ShouldSkipOnboarding() const;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -196,11 +199,6 @@ public:
 	void OnRep_HasCompletedIntroTutorial();
 	UFUNCTION()
 	void OnRep_CurrentOnboardingStep();
-
-private:
-	/** Returns true if we should skip the onboarding/tutorial */
-	bool ShouldSkipOnboarding() const;
-
 public:
 	/** Called when mHasCompletedIntroSequence updates */
 	UPROPERTY(BlueprintAssignable,Category="Tutorial")
@@ -369,4 +367,9 @@ private:
 	TArray<class UFGOnboardingStep*> mCachedOnboardingSteps;
 
 	bool mIsPlayingIntroSequence;
+
+	// <FL>
+	UPROPERTY( SaveGame )
+	bool mHasStartedProgression01Activity;
+	// </FL>
 };

@@ -13,11 +13,14 @@ void AFGBuildableRoad::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 }
 AFGBuildableRoad::AFGBuildableRoad() : Super() {
 	this->mConnection0 = CreateDefaultSubobject<UFGRoadConnectionComponent>(TEXT("Connection0"));
+	this->mConnection0->SetMobility(EComponentMobility::Static);
 	this->mConnection1 = CreateDefaultSubobject<UFGRoadConnectionComponent>(TEXT("Connection1"));
+	this->mConnection1->SetMobility(EComponentMobility::Static);
 	this->mSplineComponent = CreateDefaultSubobject<UFGSplineComponent>(TEXT("SplineComponent"));
+	this->mSplineComponent->SetMobility(EComponentMobility::Movable);
 	this->mHologramClass = AFGRoadHologram::StaticClass();
 	this->mConnection0->SetupAttachment(RootComponent);
 	this->mConnection1->SetupAttachment(RootComponent);
 	this->mSplineComponent->SetupAttachment(RootComponent);
 }
-void AFGBuildableRoad::BeginPlay(){ }
+void AFGBuildableRoad::BeginPlay(){ Super::BeginPlay(); }

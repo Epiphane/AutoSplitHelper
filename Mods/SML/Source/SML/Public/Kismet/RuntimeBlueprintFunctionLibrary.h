@@ -117,8 +117,4 @@ public:
 	/** Allows Font Editing. This needs to be called before PreConstruct. */
 	UFUNCTION(BlueprintCallable, Category = "Widget | Advanced")
 	static void SetComboBoxFont(UComboBoxString* Box, FSlateFontInfo Font);
-
-	/** Allows Binding on BP Function. Function must be implemented in Blueprint */
-	UFUNCTION(BlueprintCallable, Category= "Widget | Advanced")
-	static void BindOnBPFunction(const TSubclassOf<UObject> Class, FObjFunctionBind Binding, const FString FunctionName, bool HookOffsetStart);
 };

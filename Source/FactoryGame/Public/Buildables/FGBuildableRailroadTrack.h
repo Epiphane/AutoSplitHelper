@@ -128,14 +128,14 @@ public:
 	// End Buildable interface
 
 	// Begin abstract instance interface.
-	virtual TArray<FInstanceData> GetActorLightweightInstanceData_Implementation() override;
+	virtual TArray<FInstanceData> GetActorLightweightInstanceData_Implementation() const override;
 	virtual bool DoesContainLightweightInstances_Native() const override { return true; }
 	// End abstract instance interface
 	
 	/** Show/hide the block color on this track. */
 	void ShowBlockVisualization();
 	void StopBlockVisualization();
-	bool IsBlockVisualizationActive() const { return mBlockVisualizationSplineMeshComponent.IsValid(); }
+	bool IsBlockVisualizationActive() const { return mBlockVisualizationSplineMeshComponents.Num() > 0; }
 	bool CanShowBlockVisualization() const { return mSignalBlockID != INDEX_NONE; }
 
 	/** Get the length of this track. */
@@ -213,7 +213,7 @@ public:
 	/** @return true if this track is occupied by any vehicles. */
 	bool IsOccupied() const { return mVehicles.Num() > 0; }
 	/** @return true if there is a vehicle to close to the given connection. */
-	bool IsConnectionOccupied( const class UFGRailroadTrackConnectionComponent* connection, float distance ) const;
+	bool IsConnectionOccupied( const class UFGRailroadTrackConnectionComponent* connection, float distance, AFGTrain* ignored ) const;
 
 	/** Does this track have a signal block. */
 	bool HasSignalBlock() const { return mSignalBlock.IsValid(); }
@@ -241,8 +241,14 @@ public:
 	void UnrotateForBlueprintPlaced();
 
 	static void CreateClearanceData( class USplineComponent* splineComponent, const TArray< FSplinePointData >& splineData, const FTransform& trackTransform, TArray< FFGClearanceData >& out_clearanceData, float maxDistance = -1.0f );
+
+protected:
+	void GenerateCachedClearanceData( TArray< FFGClearanceData >& out_clearanceData );
 	
 private:
+	/** Populates spline component from spline points data on the buildable */
+	void PopulateSplineComponentFromSplinePointsData();
+	
 	void SetTrackGraphID( int32 trackGraphID );
 	void SetSignalBlock( TWeakPtr< FFGRailroadSignalBlock > block );
 	void SetupConnections();
@@ -262,6 +268,10 @@ protected:
 private:
 	friend class AFGRailroadTrackHologram;
 	friend class AFGRailroadSubsystem;
+
+	/** Called to register the track with the railroad subsystem */
+	UFUNCTION()
+	void RegisterTrackWithRailroadSubsystem();
 
 	/** The spline component for this train track. */
 	UPROPERTY( VisibleAnywhere, Category = "Spline" )
@@ -305,28 +315,16 @@ private:
 	UPROPERTY( ReplicatedUsing = OnRep_SignalBlockID, VisibleAnywhere, Category = "Track" )
 	int32 mSignalBlockID;
 
-	/** The instance spline mesh component dynamic spawned when needed to preview feedback. */
-	TWeakObjectPtr< UInstancedSplineMeshComponent > mBlockVisualizationSplineMeshComponent;
+	/** The spline mesh components dynamic spawned when needed to preview feedback. */
+	TArray< TObjectPtr< USplineMeshComponent > > mBlockVisualizationSplineMeshComponents;
 
 	/* Mesh to use for block feedback. */
 	UPROPERTY( EditDefaultsOnly, Category = "Track|Block Visualization" )
 	UStaticMesh* mBlockVisualizationMesh;
 
-	/** Length of the block visualization mesh */
-	UPROPERTY( EditDefaultsOnly, Category = "Track|Block Visualization" )
-	float mBlockVisualizationMeshLength;
-
-	/** The offset for the spline data for the block visualization */
-	UPROPERTY( EditDefaultsOnly, Category = "Track|Block Visualization" )
-	int32 mBlockVisualizationNumPrimitiveDataFloats;
-	
-	/** The offset for the spline data for the block visualization */
-	UPROPERTY( EditDefaultsOnly, Category = "Track|Block Visualization" )
-	int32 mBlockVisualizationNumPerInstancePrimitiveDataCountOffset;
-	
-	/** Spline data settings for the visualization */
-	UPROPERTY( EditDefaultsOnly, Category = "Track|Block Visualization" )
-	FSplineDataSettings mBlockVisualizationSplineDataSettings;
+	/* Material assigned to the collision box proxies. */
+	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = "true"))
+	UPhysicalMaterial* PhysicalMaterial;
 
 	/** First index of the Custom Data used for the block visualization color. It will use 3 custom data floats for R/G/B channels of the color */
 	UPROPERTY( EditDefaultsOnly, Category = "Track|Block Visualization" )

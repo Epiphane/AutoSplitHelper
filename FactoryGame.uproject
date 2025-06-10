@@ -114,10 +114,6 @@
 			"Enabled": false
 		},
 		{
-			"Name": "OnlineFramework",
-			"Enabled": true
-		},
-		{
 			"Name": "OnlineSubsystemGooglePlay",
 			"Enabled": false
 		},
@@ -358,6 +354,29 @@
 		{
 			"Name": "WwiseNiagara",
 			"Enabled": true
+		},
+		{
+			"Name": "AnimationWarping",
+			"Enabled": true
+		},
+		{
+			"Name": "Gauntlet",
+			"Enabled": true
+		},
+		{
+			"Name": "TestFramework",
+			"Enabled": true
+		},
+		{
+			"Name": "ReliableMessaging",
+			"Enabled": true
+		},
+		{
+			"Name": "WinDualShock",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64"
+			]
 		}
 	],
 	"TargetPlatforms": [
@@ -368,10 +387,7 @@
 	"PreBuildSteps":
 	{
 		"Win64": [
-			"powershell -Command \"$file = '$(ProjectDir)\\Plugins\\Wwise\\Source\\AudiokineticTools\\Private\\WwiseProject\\AcousticTextureParamLookup.cpp'; if (Test-Path $file) { if (!(Select-String -Path $file -Pattern 'UE_LOG(LogAudiokineticTools, Warning,' -SimpleMatch -Quiet)) { (Get-Content $file) -replace 'UE_LOG\\(LogAudiokineticTools, Error,', 'UE_LOG(LogAudiokineticTools, Warning,' | Out-File -encoding UTF8 $file } }\""
-		],
-		"Linux": [
-			"if ! grep -q 'UE_LOG(LogAudiokineticTools, Warning,' $(ProjectDir)/Plugins/Wwise/Source/AudiokineticTools/Private/WwiseProject/AcousticTextureParamLookup.cpp; then sed -i 's/UE_LOG(LogAudiokineticTools, Error,/UE_LOG(LogAudiokineticTools, Warning,/' $(ProjectDir)/Plugins/Wwise/Source/AudiokineticTools/Private/WwiseProject/AcousticTextureParamLookup.cpp; fi"
+			"powershell -Command \"Set-ExecutionPolicy Bypass -Scope Process -Force;Unblock-File '$(ProjectDir)\\Mods\\WwisePatches\\applyPatches.ps1';& '$(ProjectDir)\\Mods\\WwisePatches\\applyPatches.ps1' '$(ProjectDir)'\""
 		]
 	}
 }

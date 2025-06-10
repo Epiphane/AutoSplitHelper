@@ -19,8 +19,8 @@ UFGDroneMovementComponent::UFGDroneMovementComponent() : Super() {
 	this->SetIsReplicatedByDefault(true);
 }
 void UFGDroneMovementComponent::OnRegister(){ Super::OnRegister(); }
-void UFGDroneMovementComponent::BeginPlay(){ }
-void UFGDroneMovementComponent::EndPlay(const EEndPlayReason::Type EndPlayReason){ }
+void UFGDroneMovementComponent::BeginPlay(){ Super::BeginPlay(); }
+void UFGDroneMovementComponent::EndPlay(const EEndPlayReason::Type endPlayReason){ Super::EndPlay(endPlayReason); }
 void UFGDroneMovementComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(UFGDroneMovementComponent, mFlyingMode);
@@ -46,6 +46,9 @@ void UFGDroneMovementComponent::TickDroneMovement(float deltaSeconds, FVector& o
 float UFGDroneMovementComponent::GetMaxSpeed() const{ return float(); }
 void UFGDroneMovementComponent::MoveToLocation(const FVector& Location, EDroneFlyingMode flyingMode, const FVector& directionToFace , EDroneDirectionFacingIstruction facingDirectionInstruction){ }
 void UFGDroneMovementComponent::FollowPath(const TArray< FVector >& Path, EDroneFlyingMode flyingMode, bool brakeWhenApproaching){ }
+#if !UE_BUILD_SHIPPING
+void UFGDroneMovementComponent::ShowDebug(){  }
+#endif
 void UFGDroneMovementComponent::OnRep_MovementInstruction(EDroneMovementInstruction previousInstruction){ }
 void UFGDroneMovementComponent::OnRep_FlyingMode(){ }
 void UFGDroneMovementComponent::SetFlyingMode(EDroneFlyingMode newFlyingMode){ }

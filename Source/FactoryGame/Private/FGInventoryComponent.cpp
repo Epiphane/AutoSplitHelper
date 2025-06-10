@@ -49,7 +49,7 @@ bool UFGInventoryComponent::NeedTransform_Implementation(){ return bool(); }
 bool UFGInventoryComponent::ShouldSave_Implementation() const{ return bool(); }
 void UFGInventoryComponent::GetConditionalReplicatedProps(TArray<FFGCondReplicatedProperty>& outProps) const{ }
 bool UFGInventoryComponent::IsPropertyRelevantForConnection(UNetConnection* netConnection, const FProperty* property) const{ return bool(); }
-void UFGInventoryComponent::BeginPlay(){ }
+void UFGInventoryComponent::BeginPlay(){ Super::BeginPlay(); }
 void UFGInventoryComponent::SetDefaultSize(int32 defaultSize){ }
 void UFGInventoryComponent::Resize(int32 newSize){ }
 void UFGInventoryComponent::SortInventory(){ }
@@ -63,6 +63,7 @@ int32 UFGInventoryComponent::FindFirstIndexWithItemType(TSubclassOf<UFGItemDescr
 int32 UFGInventoryComponent::AddStack(const FInventoryStack& stack, const bool allowPartialAdd){ return int32(); }
 void UFGInventoryComponent::AddStacks(const TArray< FInventoryStack >& stacks){ }
 int32 UFGInventoryComponent::AddStackToIndex(const int32 idx, const FInventoryStack& stack, const bool allowPartialAdd , UFGInventoryComponent* sourceInventory){ return int32(); }
+int32 UFGInventoryComponent::AddStackToIndex_Unsafe(const int32 idx, const FInventoryStack& stack, const bool allowPartialAdd, UFGInventoryComponent* sourceInventory){ return int32(); }
 bool UFGInventoryComponent::GetStackFromIndex(const int32 idx, FInventoryStack& out_stack) const{ return bool(); }
 void UFGInventoryComponent::Remove(TSubclassOf< UFGItemDescriptor > itemClass, int32 num){ }
 void UFGInventoryComponent::RemoveFromIndex(const int32 idx, const int32 num, UFGInventoryComponent* targetInventory){ }
