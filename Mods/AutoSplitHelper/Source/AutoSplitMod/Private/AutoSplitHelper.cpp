@@ -10,7 +10,6 @@
 #include "FGResearchManager.h"
 #include "Registry/ModContentRegistry.h"
 #include "Patching/BlueprintHookManager.h"
-#include "Patching/BlueprintHookHelper.h"
 
 bool UAutoSplitHelper::HasSubscribed = false;
 
@@ -78,11 +77,11 @@ void UAutoSplitHelper::DispatchLifecycleEvent(ELifecyclePhase Phase)
                 UE_LOG(LogAutoSplitHelper, Display, TEXT("Schematic Purchased: %s"), *schematic->GetName());
             });
 
-            SUBSCRIBE_METHOD(AFGGamePhaseManager::UpdateCurrentGamePhase, [](auto&, AFGGamePhaseManager*, class UFGGamePhase* inPhase) {
+            SUBSCRIBE_METHOD(AFGGamePhaseManager::UpdateCurrentGamePhase, [](auto&, AFGGamePhaseManager*, class UFGGamePhase* inPhase, bool) {
                 UE_LOG(LogAutoSplitHelper, Display, TEXT("SetGamePhase: %s"), *inPhase->GetName());
             });
 
-            SUBSCRIBE_METHOD(AFGGamePhaseManager::SetGameIsCompleted, [](auto&, AFGGamePhaseManager*) {
+            SUBSCRIBE_METHOD(AFGGamePhaseManager::SetGameIsCompleted, [](auto&, AFGGamePhaseManager*, bool) {
                 UE_LOG(LogAutoSplitHelper, Display, TEXT("SetGameIsCompleted"));
             }); 
 

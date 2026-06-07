@@ -288,11 +288,11 @@ protected:
 
 	/** If true, this user is allowed to be a guest */
 	UPROPERTY(BlueprintReadOnly, Category = UserInfo)
-	uint32 bCanBeGuest: 1 = false;
+	bool bCanBeGuest = false;
 
 	/** If true, this is a guest user attached to primary user 0 */
 	UPROPERTY(BlueprintReadOnly, Category = UserInfo)
-	uint32 bIsGuest: 1 = false;
+	bool bIsGuest = false;
 
 	/** The game session this player is currently in, if any. */
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = UserInfo)
